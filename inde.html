@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StreamGram - โซเชียลวิดีโอและสตอรี่</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- FontAwesome สำหรับไอคอน -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Top Navigation Bar (YouTube Style Header) -->
+    <header class="navbar">
+        <div class="nav-left">
+            <i class="fa-solid fa-bars menu-icon"></i>
+            <h1 class="logo"><i class="fa-solid fa-play-circle"></i> StreamGram</h1>
+        </div>
+        <div class="nav-center">
+            <input type="text" placeholder="ค้นหาวิดีโอ, สตอรี่...">
+            <button class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+        <div class="nav-right">
+            <button class="icon-btn" id="upload-trigger"><i class="fa-solid fa-video"></i></button>
+            <button class="icon-btn"><i class="fa-solid fa-bell"></i></button>
+            <div class="user-avatar"></div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <a href="#" class="sidebar-item active"><i class="fa-solid fa-house"></i> หน้าแรก</a>
+            <a href="#" class="sidebar-item"><i class="fa-solid fa-compass"></i> สำรวจ</a>
+            <a href="#" class="sidebar-item"><i class="fa-solid fa-clapperboard"></i> คลิปสั้น</a>
+            <a href="#" class="sidebar-item"><i class="fa-solid fa-bolt"></i> การติดตาม</a>
+            <hr>
+            <a href="#" class="sidebar-item"><i class="fa-solid fa-user-shield"></i> ช่องของคุณ</a>
+            <a href="#" class="sidebar-item"><i class="fa-solid fa-clock-rotate-left"></i> ประวัติการเข้าชม</a>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="content">
+            
+            <!-- Instagram Style Stories Bar -->
+            <section class="stories-wrapper">
+                <div class="stories-container" id="stories-container">
+                    <!-- สตอรี่จะถูกสร้างด้วย JavaScript -->
+                </div>
+            </section>
+
+            <!-- YouTube Style Video Grid -->
+            <section class="video-section">
+                <h2>วิดีโอแนะนำสำหรับคุณ</h2>
+                <div class="video-grid" id="video-grid">
+                    <!-- วิดีโอจะถูกสร้างด้วย JavaScript -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Upload Modal -->
+    <div class="modal" id="upload-modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-modal">&times;</span>
+            <h2>อัพโหลดวิดีโอใหม่</h2>
+            <form id="upload-form">
+                <div class="upload-dropzone" id="dropzone">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <p>ลากและวางไฟล์วิดีโอที่นี่ หรือคลิกเพื่อเลือกไฟล์</p>
+                    <input type="file" id="video-file-input" accept="video/*" hidden>
+                </div>
+                <input type="text" id="video-title" placeholder="ชื่อวิดีโอ" required>
+                <textarea id="video-desc" placeholder="คำอธิบายวิดีโอ..."></textarea>
+                <button type="submit" class="primary-btn">เผยแพร่วิดีโอ</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Story Viewer Modal -->
+    <div class="story-viewer" id="story-viewer">
+        <span class="close-story" id="close-story">&times;</span>
+        <div class="story-box">
+            <div class="story-progress-bar"><div id="progress"></div></div>
+            <div class="story-user-info">
+                <div id="story-avatar" class="mini-avatar"></div>
+                <span id="story-username">Username</span>
+            </div>
+            <div class="story-content-display" id="story-display">
+                <!-- เนื้อหาสตอรี่ -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
