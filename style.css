@@ -457,3 +457,44 @@ body {
     font-size: 0.85rem;
     margin-top: 6px;
 }
+/* Follow & Follow Back Button Styles */
+.follow-action-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.follow-btn {
+    background-color: #f1f1f1;
+    color: #0f0f0f;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 18px;
+    font-weight: bold;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.follow-btn:hover {
+    background-color: #d1d1d1;
+}
+
+/* เมื่อกดติดตามแล้ว (Following) */
+.follow-btn.following {
+    background-color: #272727;
+    color: #f1f1f1;
+    border: 1px solid #3f3f3f;
+}
+
+/* ป้ายสถานะติดตามกลับ (Follow Back Badge) */
+.follow-back-badge {
+    background-color: #22c55e;
+    color: #fff;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: bold;
+    display: inline-block;
+}
