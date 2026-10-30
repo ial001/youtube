@@ -241,3 +241,45 @@ window.addEventListener('DOMContentLoaded', () => {
         currentUserAvatar.style.backgroundSize = 'cover';
     }
 });
+// --- ระบบติดต่อเจ้าหน้าที่ (Contact Support System) ---
+
+const supportModal = document.getElementById('support-modal');
+const supportTrigger = document.getElementById('support-trigger');
+const closeSupport = document.getElementById('close-support');
+const supportForm = document.getElementById('support-form');
+const supportFeedback = document.getElementById('support-feedback');
+
+// เปิด-ปิด Modal ติดต่อเจ้าหน้าที่
+supportTrigger.addEventListener('click', (e) => {
+    e.preventDefault();
+    supportFeedback.textContent = '';
+    supportForm.reset();
+    supportModal.style.display = 'flex';
+});
+
+closeSupport.addEventListener('click', () => {
+    supportModal.style.display = 'none';
+});
+
+// ส่งข้อความหาเจ้าหน้าที่
+supportForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const topic = document.getElementById('support-topic').value;
+    const message = document.getElementById('support-message').value.trim();
+    
+    if (!message) return;
+
+    // ดึงชื่อบัญชีปัจจุบันที่กำลังใช้งานอยู่มาแนบไปกับเรื่องที่แจ้ง
+    const activeAcc = accounts[currentAccountIndex] || { name: 'Unknown User' };
+
+    // จำลองการส่งข้อมูลไปยังเซิร์ฟเวอร์ (สามารถนำไปต่อยอดใช้ EmailJS หรือ Backend จริงได้)
+    console.log(`[Support Ticket Sent] จากบัญชี: ${activeAcc.name} | หัวข้อ: ${topic} | ข้อความ: ${message}`);
+
+    supportFeedback.style.color = '#10b981'; // สีเขียว
+    supportFeedback.textContent = '✅ ส่งข้อความหาเจ้าหน้าที่สำเร็จ! เจ้าหน้าที่กำลังตรวจสอบและจะติดต่อกลับเร็วๆ นี้';
+
+    // ปิด Modal อัตโนมัติหลังจาก 2 วินาที
+    setTimeout(() => {
+        supportModal.style.display = 'none';
+    }, 2000);
+});
