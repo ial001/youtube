@@ -128,3 +128,116 @@ window.addEventListener('DOMContentLoaded', () => {
     renderStories();
     renderVideos();
 });
+// --- ระบบจัดการบัญชีและการตั้งค่า (Multi-Account & Shared Code) ---
+
+// ข้อมูลจำลองระบบบัญชี (เก็บใน LocalStorage จำลองเพื่อให้จำค่าได้)
+let accounts = JSON.parse(localStorage.getItem('streamgram_accounts')) || [
+    { id: 1, name: 'Dev Channel (หลัก)', avatar: 'https://picsum.photos/seed/acc1/100' },
+    { id: 2, name: 'Gamer Pro', avatar: 'https://picsum.photos/seed/acc2/100' }
+];
+
+let currentAccountIndex = parseInt(localStorage.getItem('streamgram_current_acc')) || 0;
+
+// โค้ดกลางที่ใช้ร่วมกันได้ทุกบัญชี (กำหนดไว้ล่วงหน้า)
+const VALID_SHARED_CODES = {
+    "STREAM2026": "ยินดีด้วย! คุณได้รับสิทธิ์สมาชิก VIP ฟรี 30 วัน 🎉",
+    "YOUTUBEINSTA": "ปลดล็อกฟีเจอร์พิเศษ: โค้ดนี้ใช้ร่วมกันได้ทุกบัญชีสำเร็จ! ✅",
+    "VIPCODE": "โค้ดลับใช้งานสำเร็จ ได้รับแต้มพิเศษ 500 พอยท์ 🌟"
+};
+
+// Element Selectors
+const settingsModal = document.getElementById('settings-modal');
+const settingsTrigger = document.getElementById('settings-trigger');
+const closeSettings = document.getElementById('close-settings');
+const accountsList = document.getElementById('accounts-list');
+const settingsUsername = document.getElementById('settings-username');
+const currentUserAvatar = document.getElementById('current-user-avatar');
+const settingsAvatar = document.getElementById('settings-avatar');
+const addAccountBtn = document.getElementById('add-account-btn');
+const newAccountNameInput = document.getElementById('new-account-name');
+
+// เปิด-ปิด Modal ตั้งค่า
+settingsTrigger.addEventListener('click', () => {
+    updateSettingsUI();
+    settingsModal.style.display = 'flex';
+});
+closeSettings.addEventListener('click', () => settingsModal.style.display = 'none');
+
+// อัปเดต UI หน้าตั้งค่าและบัญชีปัจจุบัน
+function updateSettingsUI() {
+    const activeAcc = accounts[currentAccountIndex] || accounts[0];
+    settingsUsername.textContent = activeAcc.name;
+    currentUserAvatar.style.backgroundImage = `url(${activeAcc.avatar})`;
+    currentUserAvatar.style.backgroundSize = 'cover';
+    settingsAvatar.style.backgroundImage = `url(${activeAcc.avatar})`;
+    settingsAvatar.style.backgroundSize = 'cover';
+
+    // เรนเดอร์รายชื่อบัญชีทั้งหมด
+    accountsList.innerHTML = accounts.map((acc, index) => `
+        <div class="account-item ${index === currentAccountIndex ? 'active-account' : ''}">
+            <span style="font-size: 0.9rem;">${acc.name} ${index === currentAccountIndex ? '(ใช้งานอยู่)' : ''}</span>
+            ${index !== currentAccountIndex ? `<button class="switch-btn" onclick="switchAccount(${index})">สลับ</button>` : '<span style="color:#3ea6ff; font-size:0.8rem;">ใช้งานอยู่</span>'}
+        </div>
+    `).join('');
+}
+
+// ฟังก์ชันสลับบัญชี
+window.switchAccount = function(index) {
+    currentAccountIndex = index;
+    localStorage.setItem('streamgram_current_acc', currentAccountIndex);
+    updateSettingsUI();
+    alert(`สลับไปยังบัญชี "${accounts[currentAccountIndex].name}" เรียบร้อยแล้ว!`);
+};
+
+// ฟังก์ชันเพิ่มบัญชีใหม่
+addAccountBtn.addEventListener('click', () => {
+    const name = newAccountNameInput.value.trim();
+    if (!name) return alert('กรุณากรอกชื่อบัญชี');
+
+    const newAcc = {
+        id: accounts.length + 1,
+        name: name,
+        avatar: `https://picsum.photos/seed/${name}/100`
+    };
+
+    accounts.push(newAcc);
+    localStorage.setItem('streamgram_accounts', JSON.stringify(accounts));
+    newAccountNameInput.value = '';
+    updateSettingsUI();
+    alert('เพิ่มบัญชีใหม่สำเร็จ!');
+});
+
+// ระบบใส่โค้ดเดียวกัน (Shared Code System)
+const sharedCodeInput = document.getElementById('shared-code-input');
+const submitCodeBtn = document.getElementById('submit-code-btn');
+const codeFeedback = document.getElementById('code-feedback');
+
+submitCodeBtn.addEventListener('click', () => {
+    const code = sharedCodeInput.value.trim().toUpperCase();
+    if (!code) {
+        codeFeedback.style.color = '#ff4e45';
+        codeFeedback.textContent = 'กรุณากรอกโค้ดก่อนกดใช้งาน';
+        return;
+    }
+
+    // ตรวจสอบว่าโค้ดถูกต้องหรือไม่ (โค้ดชุดเดียวกัน ไม่ว่าจะบัญชีไหนกรอกก็ใช้ได้เหมือนกัน)
+    if (VALID_SHARED_CODES[code]) {
+        codeFeedback.style.color = '#10b981'; // สีเขียว
+        codeFeedback.textContent = VALID_SHARED_CODES[code];
+        
+        // บันทึกสถานะว่าบัญชีนี้ใช้โค้ดนี้แล้ว (หรือจะให้ใช้ซ้ำได้อิสระ)
+        console.log(`บัญชี ${accounts[currentAccountIndex].name} ใช้โค้ด: ${code} สำเร็จ`);
+    } else {
+        codeFeedback.style.color = '#ff4e45'; // สีแดง
+        codeFeedback.textContent = '❌ โค้ดไม่ถูกต้องหรือหมดอายุแล้ว';
+    }
+});
+
+// โหลดการตั้งค่าบัญชีตั้งแต่เริ่มต้นเปิดเว็บ
+window.addEventListener('DOMContentLoaded', () => {
+    const activeAcc = accounts[currentAccountIndex] || accounts[0];
+    if(currentUserAvatar) {
+        currentUserAvatar.style.backgroundImage = `url(${activeAcc.avatar})`;
+        currentUserAvatar.style.backgroundSize = 'cover';
+    }
+});
