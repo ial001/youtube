@@ -95,3 +95,48 @@
     <script src="script.js"></script>
 </body>
 </html>
+<!-- ในส่วน .nav-right ของ index.html ให้เปลี่ยนเป็นแบบนี้ -->
+<div class="nav-right">
+    <button class="icon-btn" id="upload-trigger" title="อัพโหลดวิดีโอ"><i class="fa-solid fa-video"></i></button>
+    <button class="icon-btn" id="settings-trigger" title="ตั้งค่าระบบ"><i class="fa-solid fa-gear"></i></button>
+    <div class="user-avatar" id="current-user-avatar" title="บัญชีปัจจุบัน"></div>
+</div>
+<!-- Settings & Account Modal -->
+<div class="modal" id="settings-modal">
+    <div class="modal-content settings-box">
+        <span class="close-modal" id="close-settings">&times;</span>
+        <h2><i class="fa-solid fa-gear"></i> การตั้งค่า & จัดการบัญชี</h2>
+        
+        <div class="settings-section">
+            <h3>👤 บัญชีปัจจุบัน</h3>
+            <div class="current-account-card">
+                <div class="mini-avatar" id="settings-avatar"></div>
+                <div>
+                    <strong id="settings-username">User_1</strong>
+                    <p style="font-size: 0.8rem; color: #aaa;">สถานะ: ออนไลน์</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <h3>🔄 สลับบัญชี / เพิ่มบัญชีใหม่</h3>
+            <div id="accounts-list" class="accounts-list">
+                <!-- รายการบัญชีจะถูกเรนเดอร์ด้วย JS -->
+            </div>
+            <div class="add-account-group">
+                <input type="text" id="new-account-name" placeholder="ชื่อบัญชีใหม่...">
+                <button type="button" class="primary-btn" id="add-account-btn">เพิ่มบัญชี</button>
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <h3>🎟️ ระบบใส่โค้ดเดียวกัน (Shared Code)</h3>
+            <p style="font-size: 0.85rem; color: #aaa; margin-bottom: 8px;">ใส่โค้ดลับหรือโค้ดกิจกรรมร่วมกันได้ทุกบัญชี</p>
+            <div class="code-input-group">
+                <input type="text" id="shared-code-input" placeholder="กรอกโค้ด เช่น STREAM2026">
+                <button type="button" class="primary-btn" id="submit-code-btn">ใช้โค้ด</button>
+            </div>
+            <p id="code-feedback" class="code-feedback"></p>
+        </div>
+    </div>
+</div>
