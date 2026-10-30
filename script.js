@@ -283,3 +283,90 @@ supportForm.addEventListener('submit', (e) => {
         supportModal.style.display = 'none';
     }, 2000);
 });
+// --- ระบบกดติดตาม และติดตามกลับ (Follow & Follow Back System) ---
+
+// เก็บสถานะการติดตามของแต่ละบัญชี (Key: ชื่อบัญชี, Value: Array ของชื่อช่องที่ติดตาม)
+let userFollows = JSON.parse(localStorage.getItem('streamgram_user_follows')) || {};
+
+// เก็บสถานะว่าช่องไหนติดตามบัญชีเรากลับบ้าง (จำลอง)
+let isFollowingBack = JSON.parse(localStorage.getItem('streamgram_follow_back')) || {
+    'Dev Code': true,       // ช่องนี้ติดตามกลับแล้ว
+    'Foodie Guide': false,  // ยังไม่ได้ติดตามกลับ
+    'Home Studio': true,
+    'Lofi Vibes': false
+};
+
+// ฟังก์ชันตรวจสอบว่าบัญชีปัจจุบันติดตามช่องนี้หรือยัง
+function checkIfFollowing(channelName) {
+    const activeAccName = accounts[currentAccountIndex].name;
+    if (!userFollows[activeAccName]) {
+        userFollows[activeAccName] = [];
+    }
+    return userFollows[activeAccName].includes(channelName);
+}
+
+// ฟังก์ชันกดติดตาม / เลิกติดตาม
+window.toggleFollow = function(channelName) {
+    const activeAccName = accounts[currentAccountIndex].name;
+    if (!userFollows[activeAccName]) {
+        userFollows[activeAccName] = [];
+    }
+
+    const index = userFollows[activeAccName].indexOf(channelName);
+    if (index > -1) {
+        // ถ้าติดตามอยู่แล้ว ให้ยกเลิกการติดตาม (Unfollow)
+        userFollows[activeAccName].splice(index, 1);
+        alert(`คุณเลิกติดตามช่อง ${channelName} แล้ว`);
+    } else {
+        // ถ้ายังไม่ได้ติดตาม ให้กดติดตาม (Follow)
+        userFollows[activeAccName].push(channelName);
+        
+        // เช็คว่าช่องนั้นติดตามกลับเราด้วยไหม
+        const followsBack = isFollowingBack[channelName] || false;
+        if (followsBack) {
+            alert(`🎉 คุณติดตามช่อง ${channelName} แล้ว และช่องนี้ "ติดตามคุณกลับแล้ว" ด้วย!`);
+        } else {
+            alert(`✅ ติดตามช่อง ${channelName} สำเร็จ!`);
+        }
+    }
+
+    // บันทึกลง LocalStorage และรีเฟรชหน้าจอวิดีโอ
+    localStorage.setItem('streamgram_user_follows', JSON.stringify(userFollows));
+    renderVideos();
+};
+
+// ปรับปรุงฟังก์ชัน renderVideos ให้มีปุ่มติดตามและป้ายติดตามกลับ
+const originalRenderVideos = renderVideos;
+renderVideos = function() {
+    const activeAccName = accounts[currentAccountIndex].name;
+    const followingList = userFollows[activeAccName] || [];
+
+    videoGrid.innerHTML = videosData.map(video => {
+        const isFollowing = followingList.includes(video.channel);
+        const followsBack = isFollowingBack[video.channel] || false;
+
+        return `
+            <div class="video-card">
+                <img src="${video.thumb}" class="video-thumbnail" alt="thumbnail">
+                <div class="video-info-container">
+                    <div class="channel-icon"></div>
+                    <div class="video-details" style="width: 100%;">
+                        <h3>${video.title}</h3>
+                        <p>${video.channel} ${followsBack ? '<span class="follow-back-badge">ติดตามคุณกลับแล้ว</span>' : ''}</p>
+                        <p>${video.views} • ${video.time}</p>
+                        <div class="follow-action-container">
+                            <button class="follow-btn ${isFollowing ? 'following' : ''}" onclick="toggleFollow('${video.channel}')">
+                                ${isFollowing ? '✓ กำลังติดตาม' : '+ ติดตาม'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// โหลดการแสดงผลวิดีโอใหม่พร้อมปุ่มติดตามเมื่อเปิดเว็บ
+window.addEventListener('DOMContentLoaded', () => {
+    renderVideos();
+});
