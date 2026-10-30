@@ -140,3 +140,36 @@
         </div>
     </div>
 </div>
+<!-- ในส่วนของ <aside class="sidebar"> ให้เพิ่มเมบานี้ต่อท้ายได้เลย -->
+<hr>
+<a href="#" class="sidebar-item" id="support-trigger"><i class="fa-solid fa-headset"></i> ติดต่อเจ้าหน้าที่</a>
+<!-- Support Contact Modal -->
+<div class="modal" id="support-modal">
+    <div class="modal-content support-box">
+        <span class="close-modal" id="close-support">&times;</span>
+        <h2><i class="fa-solid fa-headset" style="color: #3ea6ff;"></i> ศูนย์ช่วยเหลือ & ติดต่อเจ้าหน้าที่</h2>
+        <p style="font-size: 0.85rem; color: #aaa; margin-bottom: 15px;">
+            ส่งข้อความหาทีมงานได้ทุกบัญชี ระบบจะบันทึกคำขอของคุณไว้
+        </p>
+
+        <form id="support-form">
+            <div class="form-group" style="margin-bottom: 12px;">
+                <label style="font-size: 0.85rem; display:block; margin-bottom:5px;">หัวข้อที่ต้องการความช่วยเหลือ</label>
+                <select id="support-topic" style="width: 100%; padding: 10px; background: #121212; border: 1px solid #444; border-radius: 6px; color: #fff; outline: none;">
+                    <option value="general">ปัญหาการใช้งานทั่วไป</option>
+                    <option value="account">ปัญหาเกี่ยวกับบัญชี / สลับบัญชี</option>
+                    <option value="code">ปัญหาการใช้โค้ด / โค้ดใช้งานไม่ได้</option>
+                    <option value="video">ปัญหาการอัปโหลดวิดีโอ</option>
+                </select>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label style="font-size: 0.85rem; display:block; margin-bottom:5px;">รายละเอียด / ข้อความถึงเจ้าหน้าที่</label>
+                <textarea id="support-message" placeholder="พิมพ์ข้อความของคุณที่นี่..." rows="4" style="width: 100%; padding: 10px; background: #121212; border: 1px solid #444; border-radius: 6px; color: #fff; outline: none; resize: none;" required></textarea>
+            </div>
+
+            <button type="submit" class="primary-btn" style="width: 100%;">ส่งเรื่องหาเจ้าหน้าที่</button>
+        </form>
+        <p id="support-feedback" style="font-size: 0.85rem; margin-top: 10px; text-align: center;"></p>
+    </div>
+</div>
