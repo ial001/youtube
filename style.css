@@ -1,3 +1,6 @@
+/* ==========================================
+   1. Global Reset & Basic Layout
+   ========================================== */
 * {
     margin: 0;
     padding: 0;
@@ -8,9 +11,12 @@
 body {
     background-color: #0f0f0f;
     color: #f1f1f1;
+    overflow-x: hidden;
 }
 
-/* Navbar */
+/* ==========================================
+   2. Header Navigation Bar
+   ========================================== */
 .navbar {
     position: fixed;
     top: 0;
@@ -23,6 +29,7 @@ body {
     align-items: center;
     padding: 0 20px;
     z-index: 100;
+    border-bottom: 1px solid #2d2d2d;
 }
 
 .nav-left, .nav-right {
@@ -35,10 +42,11 @@ body {
     font-size: 1.2rem;
     color: #ff0000;
     cursor: pointer;
+    user-select: none;
 }
 
 .logo i {
-    color: #3ea6ff; /* ปรับสีไอคอนรูปโลกบน Navbar ให้เป็นสีฟ้า */
+    color: #3ea6ff;
 }
 
 .menu-icon {
@@ -60,6 +68,10 @@ body {
     border-radius: 20px 0 0 20px;
     color: #fff;
     outline: none;
+}
+
+.nav-center input:focus {
+    border-color: #3ea6ff;
 }
 
 .search-btn {
@@ -86,6 +98,8 @@ body {
     border-radius: 50%;
     cursor: pointer;
     transition: opacity 0.2s, transform 0.2s;
+    background-size: cover;
+    background-position: center;
 }
 
 .user-avatar:hover {
@@ -93,7 +107,9 @@ body {
     transform: scale(1.05);
 }
 
-/* Layout */
+/* ==========================================
+   3. Main Container & Sidebar
+   ========================================== */
 .main-container {
     display: flex;
     margin-top: 60px;
@@ -108,6 +124,8 @@ body {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    border-right: 1px solid #2d2d2d;
+    overflow-y: auto;
 }
 
 .sidebar-item {
@@ -135,9 +153,10 @@ body {
     margin-left: 240px;
     padding: 20px;
     width: calc(100% - 240px);
+    min-height: calc(100vh - 60px);
 }
 
-/* Page Views Control */
+/* Page Views Routing */
 .page-view {
     display: none;
 }
@@ -146,56 +165,16 @@ body {
     display: block;
 }
 
-/* Channel Header Box */
-.channel-header-box {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    background: #1a1a1a;
-    padding: 20px;
-    border-radius: 12px;
-}
-
-/* Shorts Container */
-.shorts-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 15px;
-}
-
-.short-card {
-    height: 350px;
-    background: #1f1f1f;
-    border-radius: 12px;
-    overflow: hidden;
-    position: relative;
-    display: flex;
-    align-items: flex-end;
-    padding: 15px;
-    background-size: cover;
-    background-position: center;
-    cursor: pointer;
-}
-
-.short-card::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-}
-
-.short-info {
-    position: relative;
-    z-index: 2;
-}
-
-/* Stories Bar */
+/* ==========================================
+   4. Stories Section
+   ========================================== */
 .stories-wrapper {
     overflow-x: auto;
     padding-bottom: 15px;
     margin-bottom: 20px;
     scrollbar-width: none;
 }
+
 .stories-wrapper::-webkit-scrollbar {
     display: none;
 }
@@ -242,7 +221,9 @@ body {
     white-space: nowrap;
 }
 
-/* Video Grid */
+/* ==========================================
+   5. Video Grid & Short Cards Layout
+   ========================================== */
 .video-section h2, .page-view h2 {
     margin-bottom: 15px;
     font-size: 1.2rem;
@@ -301,11 +282,49 @@ body {
     color: #aaa;
 }
 
-/* Modal General */
+/* Shorts Container */
+.shorts-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.short-card {
+    height: 350px;
+    background: #1f1f1f;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    padding: 15px;
+    background-size: cover;
+    background-position: center;
+    cursor: pointer;
+}
+
+.short-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+}
+
+.short-info {
+    position: relative;
+    z-index: 2;
+}
+
+/* ==========================================
+   6. General Modal Component
+   ========================================== */
 .modal {
     display: none;
     position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
     background: rgba(0,0,0,0.7);
     justify-content: center;
     align-items: center;
@@ -319,15 +338,38 @@ body {
     width: 500px;
     max-width: 90%;
     position: relative;
+    border: 1px solid #333;
 }
 
 .close-modal {
     position: absolute;
-    top: 15px; right: 20px;
+    top: 15px; 
+    right: 20px;
     font-size: 1.5rem;
     cursor: pointer;
+    color: #aaa;
 }
 
+.close-modal:hover {
+    color: #fff;
+}
+
+.primary-btn {
+    padding: 10px;
+    background: #3ea6ff;
+    color: #000;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.primary-btn:hover {
+    opacity: 0.9;
+}
+
+/* Upload Modal Specifics */
 #upload-form {
     display: flex;
     flex-direction: column;
@@ -358,17 +400,7 @@ body {
     outline: none;
 }
 
-.primary-btn {
-    padding: 10px;
-    background: #3ea6ff;
-    color: #000;
-    font-weight: bold;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-/* Settings Modal Styles */
+/* Settings & Support Box */
 .settings-box, .support-box {
     width: 450px;
     max-height: 85vh;
@@ -387,70 +419,12 @@ body {
     color: #3ea6ff;
 }
 
-.preset-avatar-option {
-    transition: transform 0.2s, border-color 0.2s;
-}
-
-.preset-avatar-option:hover {
-    transform: scale(1.15);
-    border-color: #3ea6ff !important;
-}
-
-#edit-profile-form input[type="text"]:focus,
-#edit-profile-form textarea:focus {
-    border-color: #3ea6ff;
-}
-
-.current-account-card {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: #1a1a1a;
-    padding: 10px 15px;
-    border-radius: 8px;
-}
-
-.accounts-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 12px;
-    max-height: 150px;
-    overflow-y: auto;
-}
-
-.account-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #181818;
-    padding: 8px 12px;
-    border-radius: 6px;
-    border: 1px solid #333;
-}
-
-.account-item.active-account {
-    border-color: #3ea6ff;
-    background: #1e293b;
-}
-
-.switch-btn {
-    background: #3ea6ff;
-    color: #000;
-    border: none;
-    padding: 4px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 0.8rem;
-}
-
-.add-account-group, .code-input-group {
+.code-input-group {
     display: flex;
     gap: 10px;
 }
 
-.add-account-group input, .code-input-group input {
+.code-input-group input {
     flex: 1;
     padding: 8px 12px;
     background: #121212;
@@ -478,7 +452,9 @@ body {
     color: #aaa;
 }
 
-/* Story Viewer Modal */
+/* ==========================================
+   7. Story Viewer Modal
+   ========================================== */
 .story-viewer {
     display: none;
     position: fixed;
@@ -548,7 +524,9 @@ body {
     z-index: 3000;
 }
 
-/* Instagram Direct Message & Notes Modal Styles */
+/* ==========================================
+   8. Instagram Direct Messages & Notes System
+   ========================================== */
 .ig-dm-box {
     width: 480px;
     height: 650px;
@@ -843,93 +821,65 @@ body {
     to { opacity: 1; transform: scale(1); }
 }
 
-.theme-box {
-    width: 420px;
-}
-
-.theme-options-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-}
-
-.theme-card {
-    background: #181818;
-    border: 1px solid #333;
-    border-radius: 10px;
-    padding: 10px;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    transition: transform 0.2s, border-color 0.2s;
-}
-
-.theme-card:hover {
-    transform: translateY(-3px);
-    border-color: #3ea6ff;
-}
-
-.theme-preview {
-    width: 100%;
-    height: 50px;
-    border-radius: 6px;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding: 6px;
-}
-
-.theme-preview span {
-    width: 30px;
-    height: 18px;
-    border-radius: 10px;
-}
-
-.theme-card span {
-    font-size: 0.8rem;
-    color: #ccc;
-}
-
-.theme-emoji-bar {
+/* ==========================================
+   9. Floating Theme Picker & Chat Themes
+   ========================================== */
+.theme-picker-bar {
     position: fixed;
-    background: #262626;
-    border: 1px solid #444;
-    border-radius: 30px;
-    padding: 6px 12px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    background: rgba(30, 30, 30, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 40px;
+    padding: 8px 14px;
     display: flex;
-    gap: 10px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.6);
-    z-index: 3000;
+    align-items: center;
+    gap: 12px;
+    z-index: 9999;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transition: transform 0.15s ease, opacity 0.15s ease;
     opacity: 0;
-    pointer-events: none;
-    transform: translateY(10px) scale(0.9);
-    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.theme-emoji-bar.show {
-    opacity: 1;
-    pointer-events: auto;
-    transform: translateY(0) scale(1);
-}
-
-.theme-emoji-item {
-    font-size: 1.3rem;
-    cursor: pointer;
-    transition: transform 0.2s;
     user-select: none;
+}
+
+.theme-picker-bar.show {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.theme-option {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
+    transition: transform 0.15s ease, background-color 0.15s ease;
+    font-size: 1.2rem;
 }
 
-.theme-emoji-item:hover {
-    transform: scale(1.3);
+.theme-option.hovered, .theme-option:hover {
+    transform: scale(1.25);
+    background: rgba(255, 255, 255, 0.2);
 }
 
-/* --- ชุดธีมสีต่างๆ ของกล่องแชท --- */
+.theme-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+}
+.default-icon { background: #3a3a3c; border-radius: 6px; }
+.purple-icon { background: linear-gradient(135deg, #a855f7, #6366f1); }
+.green-icon { background: linear-gradient(135deg, #34d399, #10b981); }
+.orange-icon { background: linear-gradient(135deg, #fb923c, #f97316); }
+
+/* Chat Themes */
+.chat-messages.theme-default { background: #121212 !important; }
+
 .chat-messages.theme-rainbow {
     background: #0f0f0f !important;
     border: 3px solid transparent !important;
@@ -990,68 +940,9 @@ body {
     color: #ffedd5 !important;
 }
 
-/* --- ส่วนประวัติการเล่นเกม (Game Activity Log) --- */
-.game-activity-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.game-activity-card {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #181818;
-    border: 1px solid #333;
-    padding: 12px 18px;
-    border-radius: 10px;
-    transition: background 0.2s;
-}
-
-.game-activity-card:hover {
-    background: #222;
-}
-
-.game-info {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.game-icon {
-    width: 45px;
-    height: 45px;
-    background: #3ea6ff;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.4rem;
-    color: #000;
-}
-
-.game-details h4 {
-    font-size: 1rem;
-    color: #fff;
-    margin-bottom: 4px;
-}
-
-.game-details p {
-    font-size: 0.8rem;
-    color: #aaa;
-}
-
-.game-time-badge {
-    background: #262626;
-    border: 1px solid #444;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    color: #10b981;
-    font-weight: 600;
-}
-
-/* --- Video Player Layout & Mini Player Styles --- */
+/* ==========================================
+   10. Video Player Components
+   ========================================== */
 .video-player-box {
     max-width: 1100px;
     width: 95%;
@@ -1163,161 +1054,7 @@ body {
     height: 380px;
 }
 
-@media (max-width: 768px) {
-    .sidebar {
-        width: 70px;
-    }
-    .sidebar-item span {
-        display: none;
-    }
-    .content {
-        margin-left: 70px;
-        width: calc(100% - 70px);
-    }
-    .player-layout {
-        flex-direction: column;
-    }
-    .video-container {
-        height: 250px;
-    }
-    .video-live-chat {
-        height: 300px;
-    }
-}
-
-/* --- Splash Screen --- */
-#splash-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: #0f0f0f;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
-}
-
-#splash-screen.hide {
-    opacity: 0;
-    visibility: hidden;
-}
-
-.splash-content {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-}
-
-.splash-logo {
-    width: 90px;
-    height: 90px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 4rem;
-    color: #3ea6ff; /* ปรับสีไอคอนรูปโลกให้เป็นสีฟ้าสดใส */
-    animation: pulse 1.5s infinite alternate;
-}
-
-#splash-img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    filter: drop-shadow(0 0 10px rgba(62, 166, 255, 0.5)); /* เงาเรืองแสงสำหรับรูปภาพ */
-}
-
-.splash-title {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #fff;
-    letter-spacing: 1px;
-}
-
-.splash-loader {
-    width: 40px;
-    height: 40px;
-    border: 3px solid rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    border-top-color: #3ea6ff;
-    animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-@keyframes pulse {
-    from { transform: scale(1); }
-    to { transform: scale(1.1); }
-}
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-@keyframes pulse {
-    from { transform: scale(1); }
-    to { transform: scale(1.1); }
-}
-/* --- กรอบเท่ๆ สไตล์ Cyber Neon รอบชื่อ StreamGram --- */
-.splash-title-box {
-    position: relative;
-    padding: 8px 24px;
-    border-radius: 12px;
-    background: rgba(18, 18, 18, 0.8);
-    border: 2px solid #3ea6ff;
-    box-shadow: 0 0 15px rgba(62, 166, 255, 0.5), inset 0 0 10px rgba(62, 166, 255, 0.2);
-    animation: borderGlow 2s infinite alternate;
-}
-
-.splash-title {
-    font-size: 2.2rem;
-    font-weight: 800;
-    color: #ffffff;
-    letter-spacing: 2px;
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
-}
-
-/* เอฟเฟกต์กรอบเรืองแสงสลับสีนีออน */
-@keyframes borderGlow {
-    0% {
-        border-color: #3ea6ff;
-        box-shadow: 0 0 15px rgba(62, 166, 255, 0.6), inset 0 0 10px rgba(62, 166, 255, 0.3);
-    }
-    100% {
-        border-color: #e1306c;
-        box-shadow: 0 0 20px rgba(225, 48, 108, 0.7), inset 0 0 12px rgba(225, 48, 108, 0.4);
-    }
-}
-
-/* ข้อความและปุ่มแจ้งเตือนสถานะเน็ต */
-.net-status-text {
-    font-size: 0.9rem; 
-    color: #aaa;
-    margin-top: 5px;
-}
-
-.retry-btn {
-    padding: 10px 20px;
-    background: linear-gradient(45deg, #3ea6ff, #0072ff);
-    color: #fff;
-    border: none;
-    border-radius: 20px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 10px;
-    box-shadow: 0 4px 12px rgba(62, 166, 255, 0.4);
-    transition: transform 0.2s;
-}
-
-.retry-btn:hover {
-    transform: scale(1.05);
-}
-/* --- ปุ่มกดติดตาม & ปุ่ม ไลก์ / ดิสไลก์ --- */
+/* Like & Sub Buttons */
 .sub-btn {
     padding: 8px 16px;
     background-color: #fff;
@@ -1364,344 +1101,433 @@ body {
 .action-btn.active-dislike {
     color: #ff4e45;
 }
-/* --- แอนิเมชันลูกโลกขยายใหญ่เรืองแสง --- */
+
+/* ==========================================
+   11. Splash Screen
+   ========================================== */
+#splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #0f0f0f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+#splash-screen.hide {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.splash-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.splash-logo {
+    width: 90px;
+    height: 90px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 4rem;
+    color: #3ea6ff;
+    animation: pulse 1.5s infinite alternate;
+}
+
+.splash-title-box {
+    position: relative;
+    padding: 8px 24px;
+    border-radius: 12px;
+    background: rgba(18, 18, 18, 0.8);
+    border: 2px solid #3ea6ff;
+    box-shadow: 0 0 15px rgba(62, 166, 255, 0.5), inset 0 0 10px rgba(62, 166, 255, 0.2);
+    animation: borderGlow 2s infinite alternate;
+}
+
+.splash-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 2px;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+}
+
+.splash-loader {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    border-top-color: #3ea6ff;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.1); }
+}
+
+@keyframes borderGlow {
+    0% {
+        border-color: #3ea6ff;
+        box-shadow: 0 0 15px rgba(62, 166, 255, 0.6), inset 0 0 10px rgba(62, 166, 255, 0.3);
+    }
+    100% {
+        border-color: #e1306c;
+        box-shadow: 0 0 20px rgba(225, 48, 108, 0.7), inset 0 0 12px rgba(225, 48, 108, 0.4);
+    }
+}
+
+.net-status-text {
+    font-size: 0.9rem; 
+    color: #aaa;
+    margin-top: 5px;
+}
+
+.retry-btn {
+    padding: 10px 20px;
+    background: linear-gradient(45deg, #3ea6ff, #0072ff);
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    box-shadow: 0 4px 12px rgba(62, 166, 255, 0.4);
+    transition: transform 0.2s;
+}
+
+.retry-btn:hover {
+    transform: scale(1.05);
+}
+
+/* Globe Animation */
 #big-globe i {
     animation: globePulse 2s infinite ease-in-out;
     filter: drop-shadow(0 0 10px rgba(62, 166, 255, 0.8));
 }
 
 @keyframes globePulse {
-    0% {
-        transform: scale(1);
-        color: #3ea6ff;
-    }
-    50% {
-        transform: scale(1.15);
-        color: #00e5ff;
-        filter: drop-shadow(0 0 20px rgba(0, 229, 255, 0.9));
-    }
-    100% {
-        transform: scale(1);
-        color: #3ea6ff;
-    }
+    0% { transform: scale(1); color: #3ea6ff; }
+    50% { transform: scale(1.15); color: #00e5ff; filter: drop-shadow(0 0 20px rgba(0, 229, 255, 0.9)); }
+    100% { transform: scale(1); color: #3ea6ff; }
 }
-/* แถบเลือกธีมทรงแคปซูล (Floating Theme Bar) */
-.theme-picker-bar {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.9);
-    background: rgba(30, 30, 30, 0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 40px;
-    padding: 8px 14px;
+
+/* ==========================================
+   12. Full Page Profile View & VIP Exclusive Items
+   ========================================== */
+.full-profile-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding-bottom: 40px;
+}
+
+.profile-banner-full {
+    height: 180px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #1e3d59, #17b978);
+    transition: background 0.4s ease;
+}
+
+.profile-header-full {
     display: flex;
-    align-items: center;
-    gap: 12px;
-    z-index: 9999;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    transition: transform 0.15s ease, opacity 0.15s ease;
-    opacity: 0;
-    user-select: none;
-    -webkit-user-select: none;
+    align-items: flex-end;
+    gap: 20px;
+    padding: 0 20px;
+    margin-top: -50px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
 }
 
-.theme-picker-bar.show {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-}
-
-/* ปุ่มตัวเลือกธีม */
-.theme-option {
-    width: 36px;
-    height: 36px;
+.avatar-box-full {
+    position: relative;
+    width: 110px;
+    height: 110px;
     border-radius: 50%;
+    border: 4px solid #0f0f0f;
+    overflow: hidden;
+    background: #222;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    transition: all 0.3s ease;
+}
+
+.main-avatar-img {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+}
+
+.avatar-hover-icon {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    transition: transform 0.15s ease, background-color 0.15s ease;
-    font-size: 1.2rem;
-}
-
-.theme-option.hovered, .theme-option:hover {
-    transform: scale(1.25);
-    background: rgba(255, 255, 255, 0.2);
-}
-
-/* ไอคอนวงกลมสีต่างๆ */
-.theme-icon {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-}
-.default-icon { background: #3a3a3c; border-radius: 6px; }
-.purple-icon { background: linear-gradient(135deg, #a855f7, #6366f1); }
-.green-icon { background: linear-gradient(135deg, #34d399, #10b981); }
-.orange-icon { background: linear-gradient(135deg, #fb923c, #f97316); }
-
-/* สไตล์พื้นหลังธีมสำหรับห้องแชท */
-.chat-messages.theme-default { background: #121212 !important; }
-.chat-messages.theme-rainbow { background: linear-gradient(180deg, #2b1055, #7597de) !important; }
-.chat-messages.theme-instagram { background: linear-gradient(180deg, #3b0764, #831843) !important; }
-.chat-messages.theme-cyberpunk { background: #0f172a !important; }
-.chat-messages.theme-emerald { background: #064e3b !important; }
-.chat-messages.theme-sunset { background: #451a03 !important; }
-/* การ์ดโปรไฟล์สาธารณะ */
-.profile-view-card {
-    max-width: 500px !important;
-    padding: 0 !important;
-    overflow: hidden;
-    border-radius: 20px !important;
-    background: #181818 !important;
-    border: 1px solid #333;
-}
-
-.profile-banner {
-    height: 120px;
-    background: linear-gradient(135deg, #1e3d59, #17b978);
-    background-size: cover;
-    background-position: center;
-}
-
-.profile-header-details {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    padding: 0 20px;
-    margin-top: -40px;
-}
-
-.profile-main-avatar {
-    width: 85px;
-    height: 85px;
-    border-radius: 50%;
-    border: 4px solid #181818;
-    background-size: cover;
-    background-position: center;
-    background-color: #333;
-}
-
-.profile-actions-btns {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 5px;
-}
-
-.follow-btn {
-    border-radius: 20px !important;
-    padding: 8px 18px !important;
-    font-size: 0.9rem !important;
-}
-
-.message-btn {
-    background: #252525 !important;
-    border: 1px solid #444 !important;
-    border-radius: 50% !important;
-    width: 38px;
-    height: 38px;
-}
-
-.profile-info-body {
-    padding: 15px 20px 25px 20px;
-}
-
-.profile-info-body h2 {
-    font-size: 1.3rem;
     color: #fff;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.avatar-box-full:hover .avatar-hover-icon {
+    opacity: 1;
+}
+
+.profile-title-group {
+    flex: 1;
+}
+
+.profile-title-group h2 {
     margin: 0;
+    font-size: 1.6rem;
+    color: #fff;
 }
 
 .profile-tag {
-    font-size: 0.85rem;
-    color: #888;
-    margin: 2px 0 8px 0;
+    color: #3ea6ff;
+    font-size: 0.9rem;
+    margin: 2px 0 6px;
 }
 
 .profile-bio-text {
+    color: #ccc;
     font-size: 0.9rem;
-    color: #ddd;
-    line-height: 1.4;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
 }
 
-/* Badges */
 .profile-badges {
     display: flex;
     gap: 8px;
-    margin-bottom: 15px;
+    flex-wrap: wrap;
 }
 
 .badge {
-    font-size: 0.75rem;
-    padding: 3px 10px;
+    padding: 4px 10px;
     border-radius: 12px;
-    font-weight: 500;
+    font-size: 0.75rem;
+    font-weight: 600;
 }
 
 .badge-vip { background: rgba(255, 215, 0, 0.15); color: #ffd700; border: 1px solid rgba(255, 215, 0, 0.3); }
 .badge-creator { background: rgba(62, 166, 255, 0.15); color: #3ea6ff; border: 1px solid rgba(62, 166, 255, 0.3); }
+.badge-online { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
 
-/* Stats Bar */
-.profile-stats-bar {
+.profile-actions-full {
     display: flex;
-    justify-content: space-around;
-    background: #121212;
-    padding: 12px;
+    gap: 10px;
+}
+
+.action-btn-pill {
+    padding: 8px 14px;
+    border-radius: 20px;
+    border: none;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.action-btn-pill:hover { transform: translateY(-2px); }
+
+.btn-edit { background: #282828; color: #fff; border: 1px solid #444; }
+.btn-edit:hover { background: #353535; }
+
+.btn-vip { background: linear-gradient(135deg, #ffd700, #ffa500); color: #000; }
+.btn-vip:hover { filter: brightness(1.1); }
+
+.btn-logout { background: #281515; color: #ff4e45; border: 1px solid #4d1c1c; padding: 8px 12px; }
+.btn-logout:hover { background: #ff4e45; color: #fff; }
+
+.profile-stats-bar-full {
+    display: flex;
+    gap: 30px;
+    background: #181818;
+    padding: 15px 25px;
     border-radius: 12px;
     border: 1px solid #2a2a2a;
-    text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
-.stat-item strong {
-    display: block;
-    font-size: 1.1rem;
-    color: #fff;
+.stat-item strong { display: block; color: #fff; font-size: 1.1rem; }
+.stat-item span { color: #888; font-size: 0.8rem; }
+
+.profile-content-layout {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 20px;
 }
 
-.stat-item span {
-    font-size: 0.8rem;
-    color: #888;
-}
-
-/* Tabs */
-.profile-tab-menu {
-    display: flex;
-    border-bottom: 1px solid #333;
+.accounts-section-card, .profile-edit-box, .vip-exclusive-box {
+    background: #181818;
+    border: 1px solid #2d2d2d;
+    border-radius: 12px;
+    padding: 16px;
     margin-bottom: 15px;
 }
 
-.profile-tab-btn {
-    flex: 1;
-    background: none;
-    border: none;
-    color: #888;
-    padding: 10px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    border-bottom: 2px solid transparent;
+.section-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
 }
 
-.profile-tab-btn.active {
-    color: #3ea6ff;
-    border-bottom: 2px solid #3ea6ff;
-    font-weight: bold;
+.section-title-row h3 { margin: 0; font-size: 0.95rem; color: #3ea6ff; }
+.active-acc-count { font-size: 0.75rem; color: #777; }
+
+.accounts-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+
+.account-item-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 10px;
+    background: #111;
+    border: 1px solid #282828;
+    border-radius: 8px;
 }
+
+.account-item-card.active { border-color: #3ea6ff; background: #15222e; }
+
+.acc-info-mini { display: flex; align-items: center; gap: 10px; }
+.acc-avatar-mini { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+
+.add-account-group { display: flex; gap: 8px; }
+.add-account-group input {
+    flex: 1; padding: 7px 10px; background: #101010; border: 1px solid #333; border-radius: 6px; color: #fff; font-size: 0.82rem; outline: none;
+}
+.add-account-group button { padding: 7px 12px; font-size: 0.8rem; border-radius: 6px; }
+
+.form-group { margin-bottom: 12px; }
+.form-group label { display: block; font-size: 0.8rem; color: #aaa; margin-bottom: 4px; }
+.form-group input, .form-group textarea {
+    width: 100%; padding: 8px 10px; background: #101010; border: 1px solid #333; border-radius: 6px; color: #fff; font-size: 0.85rem; outline: none; box-sizing: border-box;
+}
+
+.preset-avatar-grid { display: flex; gap: 8px; margin-top: 5px; }
+.preset-avatar-item { width: 36px; height: 36px; border-radius: 50%; cursor: pointer; border: 1px solid #444; transition: transform 0.2s; }
+.preset-avatar-item:hover { transform: scale(1.1); border-color: #3ea6ff; }
+
+/* ธีมแบนเนอร์ 120 แบบ Selector */
+.theme-scroll-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+    gap: 8px;
+    max-height: 140px;
+    overflow-y: auto;
+    padding: 8px;
+    background: #111;
+    border: 1px solid #282828;
+    border-radius: 8px;
+    margin-top: 8px;
+}
+
+.vip-theme-dot {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 2px solid #333;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.vip-theme-dot:hover, .vip-theme-dot.selected {
+    transform: scale(1.15);
+    border-color: #ffd700;
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+}
+
+/* กรอบรูปเอฟเฟกต์ 120 แบบ Selector */
+.frame-scroll-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+    gap: 10px;
+    max-height: 160px;
+    overflow-y: auto;
+    padding: 8px;
+    background: #111;
+    border: 1px solid #282828;
+    border-radius: 8px;
+    margin-top: 8px;
+}
+
+.vip-frame-option {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #222;
+    transition: transform 0.2s, border-color 0.2s;
+    position: relative;
+    border: 1px solid #333;
+}
+
+.vip-frame-option:hover, .vip-frame-option.selected {
+    transform: scale(1.1);
+    border-color: #3ea6ff;
+}
+
+.vip-frame-preview-mini {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #555;
+}
+
+.profile-tab-menu { display: flex; gap: 10px; border-bottom: 1px solid #2a2a2a; margin-bottom: 15px; }
+.profile-tab-btn { background: none; border: none; color: #888; padding: 8px 14px; font-size: 0.9rem; cursor: pointer; border-bottom: 2px solid transparent; }
+.profile-tab-btn.active { color: #3ea6ff; border-bottom-color: #3ea6ff; font-weight: 600; }
 
 .profile-tab-content { display: none; }
 .profile-tab-content.active-tab-content { display: block; }
 
-.profile-video-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    max-height: 200px;
-    overflow-y: auto;
-}
-/* การ์ดโปรไฟล์รูปแบบใหม่ */
-.profile-view-card {
-    max-width: 500px !important;
-    padding: 0 !important;
-    overflow: hidden;
-    border-radius: 20px !important;
-    background: #181818 !important;
-    border: 1px solid #333;
+/* ==========================================
+   13. Responsive Media Queries
+   ========================================== */
+@media (max-width: 850px) {
+    .profile-content-layout { 
+        grid-template-columns: 1fr; 
+    }
 }
 
-.profile-banner {
-    height: 125px;
-    background: linear-gradient(135deg, #1e3d59, #17b978);
-    transition: background 0.3s ease;
+@media (max-width: 768px) {
+    .sidebar {
+        width: 70px;
+    }
+    .sidebar-item span {
+        display: none;
+    }
+    .content {
+        margin-left: 70px;
+        width: calc(100% - 70px);
+    }
+    .player-layout {
+        flex-direction: column;
+    }
+    .video-container {
+        height: 250px;
+    }
+    .video-live-chat {
+        height: 300px;
+    }
 }
-
-.profile-header-details {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    padding: 0 20px;
-    margin-top: -40px;
-}
-
-.profile-main-avatar {
-    width: 85px;
-    height: 85px;
-    border-radius: 50%;
-    border: 4px solid #181818;
-    background-size: cover;
-    background-position: center;
-    background-color: #333;
-}
-
-.profile-actions-btns {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 5px;
-}
-
-.edit-btn {
-    background: #333 !important;
-    border: 1px solid #555 !important;
-    border-radius: 20px !important;
-    font-size: 0.85rem !important;
-}
-
-.vip-buy-btn {
-    background: linear-gradient(135deg, #ffd700, #ffa500) !important;
-    color: #000 !important;
-    font-weight: bold !important;
-    border-radius: 20px !important;
-    font-size: 0.85rem !important;
-}
-
-.profile-info-body { padding: 15px 20px 25px 20px; }
-.profile-info-body h2 { font-size: 1.3rem; color: #fff; margin: 0; }
-.profile-tag { font-size: 0.85rem; color: #888; margin: 2px 0 8px 0; }
-.profile-bio-text { font-size: 0.9rem; color: #ddd; line-height: 1.4; margin-bottom: 12px; }
-
-.profile-badges { display: flex; gap: 8px; margin-bottom: 15px; }
-.badge { font-size: 0.75rem; padding: 4px 10px; border-radius: 12px; font-weight: 500; }
-.badge-vip { background: rgba(255, 215, 0, 0.15); color: #ffd700; border: 1px solid rgba(255, 215, 0, 0.4); }
-.badge-creator { background: rgba(62, 166, 255, 0.15); color: #3ea6ff; border: 1px solid rgba(62, 166, 255, 0.4); }
-
-.profile-stats-bar {
-    display: flex;
-    justify-content: space-around;
-    background: #121212;
-    padding: 12px;
-    border-radius: 12px;
-    border: 1px solid #2a2a2a;
-    text-align: center;
-    margin-bottom: 15px;
-}
-.stat-item strong { display: block; font-size: 1.1rem; color: #fff; }
-.stat-item span { font-size: 0.8rem; color: #888; }
-
-/* กล่องระบบสิทธิพิเศษ VIP */
-.vip-exclusive-box {
-    background: #121212;
-    border: 1px dashed #ffd700;
-    border-radius: 12px;
-    padding: 12px;
-    margin-bottom: 15px;
-}
-.vip-exclusive-box h3 { font-size: 0.95rem; color: #ffd700; margin-top: 0; }
-
-.color-dot {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid #fff;
-    transition: transform 0.2s;
-}
-.color-dot:hover { transform: scale(1.15); }
-
-.profile-tab-menu { display: flex; border-bottom: 1px solid #333; margin-bottom: 15px; }
-.profile-tab-btn {
-    flex: 1; background: none; border: none; color: #888; padding: 10px; cursor: pointer; font-size: 0.9rem; border-bottom: 2px solid transparent;
-}
-.profile-tab-btn.active { color: #3ea6ff; border-bottom: 2px solid #3ea6ff; font-weight: bold; }
-.profile-tab-content { display
