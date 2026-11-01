@@ -42,9 +42,6 @@
             <button class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
         </div>
         <div class="nav-right">
-            <a href="register.html" class="primary-btn" style="text-decoration: none; padding: 6px 14px; font-size: 0.85rem; border-radius: 20px; display: flex; align-items: center; gap: 6px;">
-                <i class="fa-solid fa-user-plus"></i> สมัครสมาชิก
-            </a>
             <button class="icon-btn" id="upload-trigger" title="อัปโหลดวิดีโอ"><i class="fa-solid fa-video"></i></button>
             <button class="icon-btn" id="settings-trigger" title="ตั้งค่าระบบ"><i class="fa-solid fa-gear"></i></button>
             <div class="user-avatar" id="current-user-avatar" title="จัดการโปรไฟล์ & บัญชี"></div>
@@ -309,6 +306,214 @@
             <div style="font-size: 3.5rem; color: #ffd700; margin-bottom: 10px;">
                 <i class="fa-solid fa-crown"></i>
             </div>
+            <h2>สมัครสมาชิก VIP</h2>
+            <p style="color: #aaa; font-size: 0.85rem; margin-top: 4px;">ปลดล็อกสิทธิพิเศษ กรอบรูปมีเอฟเฟกต์ 120 แบบ และธีม 120 แบบ!</p>
+            
+            <div style="margin: 15px 0; text-align: left;">
+                <label style="font-size: 0.8rem; color: #aaa;">มีโค้ดส่วนลดจากเพื่อนหรือไม่?</label>
+                <div style="display: flex; gap: 8px; margin-top: 4px;">
+                    <input type="text" id="vip-discount-input" placeholder="ใส่โค้ดส่วนลด เช่น VIPGIFT..." style="flex:1; padding: 8px; background: #181818; border: 1px solid #444; color: #fff; border-radius: 6px; outline: none;">
+                    <button class="primary-btn" id="apply-discount-btn" style="background: #333; font-size: 0.8rem;">ใช้โค้ด</button>
+                </div>
+                <p id="discount-msg" style="font-size: 0.75rem; margin-top: 4px;"></p>
+            </div>
+
+            <button class="primary-btn" id="confirm-pay-vip-btn" style="width: 100%; padding: 12px; background: linear-gradient(135deg, #ffd700, #ffa500); color: #000; font-weight: bold; border-radius: 8px; border: none; cursor: pointer;">
+                💳 ชำระเงิน 99 บาท (เปิดใช้งาน VIP ทันที)
+            </button>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settings-modal">
+        <div class="modal-content settings-box">
+            <span class="close-modal" id="close-settings">&times;</span>
+            <h2><i class="fa-solid fa-gear"></i> การตั้งค่าระบบ</h2>
+            
+            <div class="settings-section">
+                <h3>🎟️ ระบบใส่โค้ดเดียวกัน (Shared Code)</h3>
+                <p style="font-size: 0.85rem; color: #aaa; margin-bottom: 8px;">ใส่โค้ดลับหรือโค้ดกิจกรรมร่วมกันได้ทุกบัญชี</p>
+                <div class="code-input-group">
+                    <input type="text" id="shared-code-input" placeholder="กรอกโค้ด เช่น STREAM2026">
+                    <button type="button" class="primary-btn" id="submit-code-btn">ใช้โค้ด</button>
+                </div>
+                <p id="code-feedback" class="code-feedback"></p>
+            </div>
+
+            <div class="settings-section">
+                <h3><i class="fa-solid fa-headset" style="color: #3ea6ff;"></i> ติดต่อเจ้าหน้าที่ & ศูนย์ช่วยเหลือ</h3>
+                <p style="font-size: 0.85rem; color: #aaa; margin-bottom: 12px;">หากพบปัญหาการใช้งาน สามารถส่งข้อความหาทีมงานระบบได้ทันที</p>
+                <button type="button" class="primary-btn" id="open-support-from-settings" style="width: 100%;">
+                    <i class="fa-solid fa-envelope"></i> ส่งข้อความแจ้งเจ้าหน้าที่
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Support Modal -->
+    <div class="modal" id="support-modal">
+        <div class="modal-content support-box">
+            <span class="close-modal" id="close-support">&times;</span>
+            <h2><i class="fa-solid fa-headset" style="color: #3ea6ff;"></i> ศูนย์ช่วยเหลือ & ติดต่อเจ้าหน้าที่</h2>
+            <form id="support-form">
+                <div class="form-group" style="margin-bottom: 12px;">
+                    <label style="font-size: 0.85rem; display:block; margin-bottom:5px;">บัญชีผู้ติดต่อ</label>
+                    <input type="text" id="support-user-display" readonly style="width:100%; padding:8px; background:#181818; border:1px solid #333; color:#888; border-radius:6px;">
+                </div>
+                <div class="form-group" style="margin-bottom: 12px;">
+                    <label style="font-size: 0.85rem; display:block; margin-bottom:5px;">หัวข้อที่ต้องการความช่วยเหลือ</label>
+                    <select id="support-topic" style="width: 100%; padding: 10px; background: #121212; border: 1px solid #444; border-radius: 6px; color: #fff; outline: none;">
+                        <option value="general">ปัญหาการใช้งานทั่วไป</option>
+                        <option value="account">ปัญหาเกี่ยวกับบัญชี / สลับบัญชี</option>
+                        <option value="code">ปัญหาการใช้โค้ด (Shared Code)</option>
+                        <option value="video">ปัญหาการอัปโหลดวิดีโอ</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label style="font-size: 0.85rem; display:block; margin-bottom:5px;">รายละเอียดข้อความ</label>
+                    <textarea id="support-message" rows="4" placeholder="อธิบายปัญหา..." required style="width: 100%; padding: 10px; background: #121212; border: 1px solid #444; border-radius: 6px; color: #fff; outline: none;"></textarea>
+                </div>
+                <button type="submit" class="primary-btn" style="width: 100%;">ส่งข้อความถึงเจ้าหน้าที่</button>
+            </form>
+            <div class="support-history" style="margin-top: 20px; border-top: 1px solid #333; padding-top: 15px;">
+                <h3 style="font-size: 0.95rem; margin-bottom: 10px;">ประวัติการติดต่อของระบบ</h3>
+                <div id="tickets-list" style="max-height: 120px; overflow-y: auto; font-size: 0.8rem; color: #ccc;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Story Viewer Modal -->
+    <div class="story-viewer" id="story-viewer">
+        <span class="close-story" id="close-story">&times;</span>
+        <div class="story-box">
+            <div class="story-progress-bar"><div id="progress"></div></div>
+            <div class="story-user-info">
+                <div id="story-avatar" class="mini-avatar"></div>
+                <span id="story-username">Username</span>
+            </div>
+            <div class="story-content-display" id="story-display"></div>
+        </div>
+    </div>
+
+    <!-- Chat Modal -->
+    <div class="modal" id="chat-modal">
+        <div class="modal-content ig-dm-box">
+            <span class="close-modal" id="close-chat">&times;</span>
+            <div class="ig-dm-header">
+                <h2><i class="fa-solid fa-paper-plane" style="color: #e1306c;"></i> ข้อความแชท (Direct Messages)</h2>
+            </div>
+            <div class="ig-dm-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="dm-search-input" placeholder="ค้นหาเพื่อน หรือข้อความ...">
+            </div>
+            <div class="ig-notes-section">
+                <div class="ig-notes-container" id="ig-notes-container"></div>
+            </div>
+            <div class="ig-messages-title">
+                <span>ข้อความ</span>
+                <span class="requests-link">คำขอ (1)</span>
+            </div>
+            <div class="ig-chat-list" id="ig-chat-list"></div>
+            <div class="ig-active-chat" id="ig-active-chat" style="display: none;">
+                <div class="ig-active-header">
+                    <button id="back-to-list" class="icon-btn"><i class="fa-solid fa-chevron-left"></i></button>
+                    <div class="mini-avatar" id="active-user-avatar"></div>
+                    <strong id="active-user-name">User</strong>
+                    <button id="clear-chat-btn" class="icon-btn" style="margin-left: auto; font-size: 0.9rem; color: #ff4e45;" title="ล้างประวัติแชทคนนี้">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+                <div class="chat-messages" id="chat-messages"></div>
+                <form id="chat-form" class="chat-input-area">
+                    <input type="text" id="chat-input" placeholder="ส่งข้อความ..." required autocomplete="off">
+                    <button type="submit" class="primary-btn"><i class="fa-solid fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Note Viewer Modal -->
+    <div class="modal" id="note-viewer-modal">
+        <div class="modal-content note-viewer-box">
+            <span class="close-modal" id="close-note-viewer">&times;</span>
+            <div class="note-viewer-content">
+                <div class="note-big-bubble" id="note-view-text">Hanging with friends!</div>
+                <div class="note-avatar-wrapper">
+                    <img src="" id="note-view-avatar" class="note-big-avatar" alt="User Avatar">
+                </div>
+                <h3 id="note-view-username" style="margin-top: 12px; font-size: 1.1rem;">Username</h3>
+                <p style="color: #888; font-size: 0.8rem; margin-top: 4px;">Shared with followers you follow back</p>
+                <form id="note-reply-form" style="margin-top: 20px; width: 100%; display: flex; gap: 8px;">
+                    <input type="text" id="note-reply-input" placeholder="ส่งข้อความตอบกลับ..." style="flex: 1; padding: 10px 14px; background: #121212; border: 1px solid #444; border-radius: 20px; color: #fff; outline: none;">
+                    <button type="submit" class="primary-btn" style="border-radius: 20px; padding: 0 16px;">ส่ง</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Player Modal -->
+    <div class="modal" id="video-player-modal">
+        <div class="modal-content video-player-box" id="video-player-box">
+            <div class="player-actions">
+                <button id="pip-btn" title="แยกจอเล่นวิดีโอ"><i class="fa-solid fa-clone"></i></button>
+                <button id="toggle-size-btn" title="ย่อหน้าจอเพื่อแชท"><i class="fa-solid fa-compress" id="size-icon"></i></button>
+                <span class="close-modal" id="close-video-player">&times;</span>
+            </div>
+            <div class="player-layout">
+                <div class="video-main-section">
+                    <div class="video-container">
+                        <video id="main-video-player" controls autoplay style="width: 100%; height: 100%; object-fit: contain;">
+                            <source id="video-source" src="" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="video-play-details" style="margin-top: 15px;">
+                        <h2 id="player-video-title" style="font-size: 1.2rem; color: #fff;">ชื่อวิดีโอ</h2>
+                        <div class="video-action-bar" style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; flex-wrap: wrap; gap: 10px;">
+                            <div class="channel-info-group" style="display: flex; align-items: center; gap: 12px;">
+                                <div class="channel-icon" style="width: 40px; height: 40px; border-radius: 50%; background: #555;"></div>
+                                <div>
+                                    <strong id="player-video-channel" style="color: #fff; font-size: 1rem; display: block;">ชื่อช่อง</strong>
+                                    <span id="player-video-views" style="color: #aaa; font-size: 0.8rem;">ยอดชม</span>
+                                </div>
+                                <button id="subscribe-btn" class="sub-btn" style="margin-left: 10px;">ติดตาม</button>
+                            </div>
+                            <div class="like-dislike-group" style="display: flex; background: #222; border-radius: 20px; overflow: hidden; border: 1px solid #333;">
+                                <button id="like-btn" class="action-btn"><i class="fa-regular fa-thumbs-up"></i> <span id="like-count">1.2K</span></button>
+                                <div style="width: 1px; background: #444; margin: 6px 0;"></div>
+                                <button id="dislike-btn" class="action-btn"><i class="fa-regular fa-thumbs-down"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="video-live-chat" id="video-live-chat">
+                    <div class="chat-header">
+                        <h3><i class="fa-solid fa-comments" style="color: #3ea6ff;"></i> แชทสด</h3>
+                    </div>
+                    <div class="chat-box" id="live-chat-messages">
+                        <div class="chat-item bot"><strong>ระบบ:</strong> ยินดีต้อนรับเข้าสู่แชทสด!</div>
+                    </div>
+                    <form id="live-chat-form" class="chat-input-area" style="padding: 10px; display: flex; gap: 8px;">
+                        <input type="text" id="live-chat-input" placeholder="พิมพ์ข้อความ..." required autocomplete="off" style="flex: 1; padding: 8px 12px; background: #121212; border: 1px solid #444; border-radius: 20px; color: #fff; outline: none;">
+                        <button type="submit" class="primary-btn" style="border-radius: 20px; padding: 0 14px;"><i class="fa-solid fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Theme Picker Bar -->
+    <div id="theme-picker-bar" class="theme-picker-bar" style="display: none;">
+        <div class="theme-option active" data-theme="default" title="มืดคลาสสิก"><div class="theme-icon default-icon"></div></div>
+        <div class="theme-option" data-theme="rainbow" title="สายรุ้ง"><i class="fa-solid fa-rainbow" style="color: #ff4500;"></i></div>
+        <div class="theme-option" data-theme="instagram" title="อินสตาแกรม"><div class="theme-icon purple-icon"></div></div>
+        <div class="theme-option" data-theme="cyberpunk" title="ไซเบอร์พังก์"><i class="fa-solid fa-flower-tulip" style="color: #ff69b4;"></i></div>
+        <div class="theme-option" data-theme="emerald" title="เอเมอรัลด์"><div class="theme-icon green-icon"></div></div>
+        <div class="theme-option" data-theme="sunset" title="ซันเซ็ต"><div class="theme-icon orange-icon"></div></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
             <h2>สมัครสมาชิก VIP</h2>
             <p style="color: #aaa; font-size: 0.85rem; margin-top: 4px;">ปลดล็อกสิทธิพิเศษ กรอบรูปมีเอฟเฟกต์ 120 แบบ และธีม 120 แบบ!</p>
             
