@@ -1,0 +1,200 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
+    background-color: #0f0f0f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+}
+
+/* พื้นหลังรูปโลกเรืองแสงแบบสตรีม/ไซเบอร์ */
+.globe-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(62, 166, 255, 0.25) 0%, rgba(15, 15, 15, 0.9) 70%),
+                url('https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?q=80&w=1920') no-repeat center center/cover;
+    filter: brightness(0.7) contrast(1.1);
+    animation: pulseGlobe 8s infinite alternate ease-in-out;
+}
+
+/* ชั้นม่านดำกรองความสว่าง */
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 15, 15, 0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+/* กล่องการ์ดสมัครสมาชิก */
+.register-card {
+    position: relative;
+    z-index: 10;
+    width: 420px;
+    max-width: 90%;
+    padding: 35px 30px;
+    background: rgba(24, 24, 24, 0.85);
+    border: 1px solid rgba(62, 166, 255, 0.3);
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(62, 166, 255, 0.2), inset 0 0 15px rgba(255, 255, 255, 0.05);
+    text-align: center;
+    animation: fadeIn 0.8s ease-out;
+}
+
+.logo-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 6px;
+}
+
+.globe-icon {
+    font-size: 2.2rem;
+    color: #3ea6ff;
+    animation: spinSlow 20s linear infinite;
+    filter: drop-shadow(0 0 10px #3ea6ff);
+}
+
+.logo-box h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 1px;
+}
+
+.subtitle {
+    font-size: 0.85rem;
+    color: #aaa;
+    margin-bottom: 25px;
+}
+
+/* อินพุตฟอร์ม */
+#register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-group i {
+    position: absolute;
+    left: 14px;
+    color: #3ea6ff;
+    font-size: 1rem;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 14px 12px 42px;
+    background: rgba(18, 18, 18, 0.9);
+    border: 1px solid #333;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 0.9rem;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.input-group input:focus {
+    border-color: #3ea6ff;
+    box-shadow: 0 0 10px rgba(62, 166, 255, 0.4);
+    background: #121212;
+}
+
+/* กล่องตัวเลือก VIP */
+.vip-option-box {
+    text-align: left;
+    background: rgba(255, 215, 0, 0.08);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    padding: 10px 12px;
+    border-radius: 8px;
+    margin-top: 4px;
+}
+
+.vip-option-box label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.8rem;
+    color: #ddd;
+    cursor: pointer;
+}
+
+.vip-option-box input[type="checkbox"] {
+    accent-color: #ffd700;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+/* ปุ่มกดสมัคร */
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    background: linear-gradient(135deg, #3ea6ff, #0072ff);
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 4px 15px rgba(62, 166, 255, 0.4);
+    transition: transform 0.2s, filter 0.2s;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.15);
+}
+
+.form-footer {
+    margin-top: 20px;
+    font-size: 0.85rem;
+    color: #888;
+}
+
+.form-footer a {
+    color: #3ea6ff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.form-footer a:hover {
+    text-decoration: underline;
+}
+
+/* Animations */
+@keyframes spinSlow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pulseGlobe {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.08); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
