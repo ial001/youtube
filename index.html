@@ -9,14 +9,26 @@
 </head>
 <body>
 
-    <!-- Splash Screen (หน้าเปิดแอปรูปโลก) -->
+    <!-- Splash Screen (หน้าเปิดแอป + กรอบชื่อ StreamGram เท่ๆ & เช็กอินเทอร์เน็ต) -->
     <div id="splash-screen">
         <div class="splash-content">
             <div class="splash-logo">
                 <i class="fa-solid fa-earth-americas"></i>
             </div>
-            <h1 class="splash-title">StreamGram</h1>
-            <div class="splash-loader"></div>
+            
+            <!-- กรอบนีออนเรืองแสงรอบชื่อ StreamGram -->
+            <div class="splash-title-box">
+                <h1 class="splash-title">StreamGram</h1>
+            </div>
+
+            <!-- ตัวโหลด และ ข้อความแจ้งเตือนเน็ต -->
+            <div class="splash-loader" id="splash-loader"></div>
+            <p class="net-status-text" id="net-status-text">กำลังตรวจสอบการเชื่อมต่ออินเทอร์เน็ต...</p>
+            
+            <!-- ปุ่มลองเชื่อมต่ออีกครั้ง (จะแสดงเมื่อไม่ได้ต่ออินเทอร์เน็ต) -->
+            <button id="retry-net-btn" class="retry-btn" style="display: none;">
+                <i class="fa-solid fa-rotate-right"></i> ลองเชื่อมต่ออีกครั้ง
+            </button>
         </div>
     </div>
 
