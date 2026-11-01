@@ -1,763 +1,1265 @@
-// ==========================================
-// 1. ข้อมูลจำลอง (Mock Data)
-// ==========================================
-
-// ตัวอย่างลิงก์วิดีโอสำหรับเปิดเล่นจริง
-const SAMPLE_VIDEO_URL = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
-const SAMPLE_SHORT_URL = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4';
-
-// ข้อมูลสตอรี่
-const storiesData = [
-    { id: 1, name: 'TechDaily', avatar: 'https://picsum.photos/seed/user1/100', contentBg: '#1e3d59', text: '🚀 เปิดตัวเทคโนโลยีใหม่ล่าสุดประจำปี!' },
-    { id: 2, name: 'TravelVibe', avatar: 'https://picsum.photos/seed/user2/100', contentBg: '#17b978', text: '🌴 บรรยากาศทะเลวันนี้สดใสมากกก' },
-    { id: 3, name: 'ChefHome', avatar: 'https://picsum.photos/seed/user3/100', contentBg: '#ff6e40', text: '🍳 สอนทำเมนูลับฉบับคนงบน้อย' },
-    { id: 4, name: 'GameMaster', avatar: 'https://picsum.photos/seed/user4/100', contentBg: '#7c3aed', text: '🎮 สตรีมเกมยาวไปคืนนี้ เจอกัน!' },
-    { id: 5, name: 'MusicStation', avatar: 'https://picsum.photos/seed/user5/100', contentBg: '#db2777', text: '🎵 เพลงใหม่ปล่อยแล้ว ไปฟังกันเลย' }
-];
-
-// ข้อมูลวิดีโอหลัก (ใส่ลิงก์สำหรับเล่นวิดีโอ)
-let videosData = [
-    { id: 1, title: 'สร้างเว็บด้วย HTML CSS แบบจัดเต็มใน 1 ชั่วโมง', channel: 'Dev Code', views: '1.2ล้าน ครั้ง', time: '2 วันที่แล้ว', thumb: 'https://picsum.photos/seed/vid1/400/225', videoUrl: SAMPLE_VIDEO_URL },
-    { id: 2, title: 'ตะลุยสตรีทฟู้ดกรุงเทพ กินแหลก 10 ร้านดัง!', channel: 'Foodie Guide', views: '450K ครั้ง', time: '1 สัปดาห์ที่แล้ว', thumb: 'https://picsum.photos/seed/vid2/400/225', videoUrl: SAMPLE_VIDEO_URL },
-    { id: 3, title: 'รีวิวห้องนอนมินิมอล งบหลักพัน แต่งออกมาสวยมาก', channel: 'Home Studio', views: '89K ครั้ง', time: '3 วันที่แล้ว', thumb: 'https://picsum.photos/seed/vid3/400/225', videoUrl: SAMPLE_VIDEO_URL },
-    { id: 4, title: 'รวมเพลงฟังสบายๆ ตอนทำงาน โฟกัสยาวๆ', channel: 'Lofi Vibes', views: '3.4ล้าน ครั้ง', time: '1 เดือนที่แล้ว', thumb: 'https://picsum.photos/seed/vid4/400/225', videoUrl: SAMPLE_VIDEO_URL }
-];
-
-// ข้อมูลคลิปสั้น (Shorts)
-const shortsData = [
-    { id: 101, title: 'เทคนิคเขียน CSS แบบโปร! 🔥', views: '50K', bg: 'https://picsum.photos/seed/short1/300/500', videoUrl: SAMPLE_SHORT_URL },
-    { id: 102, title: 'พาสุนัขไปเที่ยวสวนสาธารณะ 🐶', views: '120K', bg: 'https://picsum.photos/seed/short2/300/500', videoUrl: SAMPLE_SHORT_URL },
-    { id: 103, title: 'สูตรกาแฟทำง่ายที่บ้าน ☕', views: '85K', bg: 'https://picsum.photos/seed/short3/300/500', videoUrl: SAMPLE_SHORT_URL }
-];
-
-// ข้อมูล Instagram Notes
-const notesData = [
-    { id: 1, name: 'ของฉัน', avatar: 'https://picsum.photos/seed/user1/100', note: 'Hanging with friends!' },
-    { id: 2, name: 'Lucas Kato', avatar: 'https://picsum.photos/seed/user2/100', note: 'Who is free today? 🔥' },
-    { id: 3, name: 'Maya Ortiz', avatar: 'https://picsum.photos/seed/user3/100', note: 'Is this thing on?' },
-    { id: 4, name: 'Miley Cyrus', avatar: 'https://picsum.photos/seed/user5/100', note: 'New Song! 🎵' }
-];
-
-// ข้อมูลรายการแชทผู้ใช้
-const chatUsersData = [
-    { id: 1, name: 'Lalisa Wongsuwan', lastMsg: 'lol not today • 2m', avatar: 'https://picsum.photos/seed/chat1/100' },
-    { id: 2, name: 'Marissa Richmond', lastMsg: 'Did you leave yet? • 4m', avatar: 'https://picsum.photos/seed/chat2/100' },
-    { id: 3, name: 'Arielle Shekel', lastMsg: 'Wait, is that real? • 30m', avatar: 'https://picsum.photos/seed/chat3/100' },
-    { id: 4, name: 'Nikos De Jager', lastMsg: 'Sounds good! Let\'s do it • 45m', avatar: 'https://picsum.photos/seed/chat4/100' }
-];
-
-// ข้อมูลจำลองประวัติการเล่นเกม
-const gameActivityData = [
-    { id: 1, game: 'VALORANT', playTime: '2 ชั่วโมง 45 นาที', date: '1 พฤศจิกายน 2026', icon: 'fa-crosshairs' },
-    { id: 2, game: 'Genshin Impact', playTime: '1 ชั่วโมง 30 นาที', date: '31 ตุลาคม 2026', icon: 'fa-wand-magic-sparkles' },
-    { id: 3, game: 'Grand Theft Auto V', playTime: '45 นาที', date: '28 ตุลาคม 2026', icon: 'fa-car' },
-    { id: 4, game: 'Minecraft', playTime: '4 ชั่วโมง 10 นาที', date: '25 ตุลาคม 2026', icon: 'fa-cube' }
-];
-
-// ==========================================
-// 2. ฟังก์ชันเรนเดอร์เนื้อหาหลัก & เล่นวิดีโอ
-// ==========================================
-
-function renderStories() {
-    const storiesContainer = document.getElementById('stories-container');
-    if (!storiesContainer) return;
-    storiesContainer.innerHTML = storiesData.map(story => `
-        <div class="story-card" onclick="openStory(${story.id})">
-            <div class="story-ring">
-                <img src="${story.avatar}" class="story-thumb" alt="${story.name}">
-            </div>
-            <span>${story.name}</span>
-        </div>
-    `).join('');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-// สร้างการ์ดวิดีโอ พร้อมผูกคำสั่งเปิดเล่นวิดีโอเมื่อคลิก (onclick)
-function createVideoHTML(video) {
-    return `
-        <div class="video-card" onclick="openVideoPlayer('${video.title}', '${video.channel}', '${video.views}', '${video.videoUrl}')" style="cursor: pointer;">
-            <img src="${video.thumb}" class="video-thumbnail" alt="thumbnail">
-            <div class="video-info-container">
-                <div class="channel-icon"></div>
-                <div class="video-details">
-                    <h3>${video.title}</h3>
-                    <p>${video.channel}</p>
-                    <p>${video.views} • ${video.time}</p>
-                </div>
-            </div>
-        </div>
-    `;
+body {
+    background-color: #0f0f0f;
+    color: #f1f1f1;
 }
 
-// ระบบเรนเดอร์และกรองวิดีโอจากคำค้นหา (Real-Time Search)
-function renderVideos(filterText = '') {
-    const videoGrid = document.getElementById('video-grid');
-    
-    const filteredVideos = videosData.filter(v => 
-        v.title.toLowerCase().includes(filterText.toLowerCase()) ||
-        v.channel.toLowerCase().includes(filterText.toLowerCase())
-    );
+/* Navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background-color: #212121;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 100;
+}
 
-    if (videoGrid) {
-        if (filteredVideos.length === 0) {
-            videoGrid.innerHTML = '<p style="color:#aaa; grid-column: 1/-1; text-align:center; padding: 40px 0;">ไม่พบวิดีโอที่คุณค้นหา 🔍</p>';
-        } else {
-            videoGrid.innerHTML = filteredVideos.map(createVideoHTML).join('');
-        }
+.nav-left, .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.logo {
+    font-size: 1.2rem;
+    color: #ff0000;
+    cursor: pointer;
+}
+
+.logo i {
+    color: #3ea6ff; /* ปรับสีไอคอนรูปโลกบน Navbar ให้เป็นสีฟ้า */
+}
+
+.menu-icon {
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.nav-center {
+    display: flex;
+    width: 40%;
+    max-width: 600px;
+}
+
+.nav-center input {
+    width: 100%;
+    padding: 8px 15px;
+    background: #121212;
+    border: 1px solid #303030;
+    border-radius: 20px 0 0 20px;
+    color: #fff;
+    outline: none;
+}
+
+.search-btn {
+    padding: 0 20px;
+    background: #303030;
+    border: 1px solid #303030;
+    border-radius: 0 20px 20px 0;
+    color: #fff;
+    cursor: pointer;
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    background: #555;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.user-avatar:hover {
+    opacity: 0.85;
+    transform: scale(1.05);
+}
+
+/* Layout */
+.main-container {
+    display: flex;
+    margin-top: 60px;
+}
+
+.sidebar {
+    width: 240px;
+    height: calc(100vh - 60px);
+    position: fixed;
+    background-color: #212121;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 10px 15px;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: 0.2s;
+}
+
+.sidebar-item:hover, .sidebar-item.active {
+    background-color: #3f3f3f;
+}
+
+.sidebar hr {
+    border: 0;
+    border-top: 1px solid #383838;
+    margin: 10px 0;
+}
+
+.content {
+    margin-left: 240px;
+    padding: 20px;
+    width: calc(100% - 240px);
+}
+
+/* Page Views Control */
+.page-view {
+    display: none;
+}
+
+.page-view.active-view {
+    display: block;
+}
+
+/* Channel Header Box */
+.channel-header-box {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+/* Shorts Container */
+.shorts-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.short-card {
+    height: 350px;
+    background: #1f1f1f;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    padding: 15px;
+    background-size: cover;
+    background-position: center;
+    cursor: pointer;
+}
+
+.short-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+}
+
+.short-info {
+    position: relative;
+    z-index: 2;
+}
+
+/* Stories Bar */
+.stories-wrapper {
+    overflow-x: auto;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    scrollbar-width: none;
+}
+.stories-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.stories-container {
+    display: flex;
+    gap: 15px;
+}
+
+.story-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.story-ring {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px;
+}
+
+.story-thumb {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #0f0f0f;
+}
+
+.story-card span {
+    font-size: 0.8rem;
+    margin-top: 5px;
+    color: #aaa;
+    max-width: 70px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Video Grid */
+.video-section h2, .page-view h2 {
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.video-card {
+    background: #1f1f1f;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.video-card:hover {
+    transform: scale(1.02);
+}
+
+.video-thumbnail {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: #333;
+    object-fit: cover;
+}
+
+.video-info-container {
+    padding: 12px;
+    display: flex;
+    gap: 12px;
+}
+
+.channel-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #777;
+    flex-shrink: 0;
+}
+
+.video-details h3 {
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.video-details p {
+    font-size: 0.8rem;
+    color: #aaa;
+}
+
+/* Modal General */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #212121;
+    padding: 30px;
+    border-radius: 12px;
+    width: 500px;
+    max-width: 90%;
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px; right: 20px;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+#upload-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.upload-dropzone {
+    border: 2px dashed #555;
+    padding: 30px;
+    text-align: center;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.upload-dropzone i {
+    font-size: 2.5rem;
+    color: #aaa;
+    margin-bottom: 10px;
+}
+
+#upload-form input[type="text"], #upload-form textarea {
+    padding: 10px;
+    background: #121212;
+    border: 1px solid #444;
+    border-radius: 6px;
+    color: #fff;
+    outline: none;
+}
+
+.primary-btn {
+    padding: 10px;
+    background: #3ea6ff;
+    color: #000;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* Settings Modal Styles */
+.settings-box, .support-box {
+    width: 450px;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+.settings-section {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #333;
+}
+
+.settings-section h3 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    color: #3ea6ff;
+}
+
+.preset-avatar-option {
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.preset-avatar-option:hover {
+    transform: scale(1.15);
+    border-color: #3ea6ff !important;
+}
+
+#edit-profile-form input[type="text"]:focus,
+#edit-profile-form textarea:focus {
+    border-color: #3ea6ff;
+}
+
+.current-account-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #1a1a1a;
+    padding: 10px 15px;
+    border-radius: 8px;
+}
+
+.accounts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.account-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #181818;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #333;
+}
+
+.account-item.active-account {
+    border-color: #3ea6ff;
+    background: #1e293b;
+}
+
+.switch-btn {
+    background: #3ea6ff;
+    color: #000;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+.add-account-group, .code-input-group {
+    display: flex;
+    gap: 10px;
+}
+
+.add-account-group input, .code-input-group input {
+    flex: 1;
+    padding: 8px 12px;
+    background: #121212;
+    border: 1px solid #444;
+    border-radius: 6px;
+    color: #fff;
+    outline: none;
+}
+
+.code-feedback {
+    font-size: 0.85rem;
+    margin-top: 6px;
+}
+
+.ticket-item {
+    background: #181818;
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    border-left: 3px solid #3ea6ff;
+}
+
+.ticket-item p {
+    margin-top: 4px;
+    color: #aaa;
+}
+
+/* Story Viewer Modal */
+.story-viewer {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.9);
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.story-box {
+    width: 380px;
+    height: 650px;
+    background: #111;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.story-progress-bar {
+    position: absolute;
+    top: 10px; left: 10px; right: 10px;
+    height: 3px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 2px;
+    z-index: 10;
+}
+
+#progress {
+    width: 0%;
+    height: 100%;
+    background: #fff;
+    transition: width linear;
+}
+
+.story-user-info {
+    position: absolute;
+    top: 25px; left: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+}
+
+.mini-avatar {
+    width: 30px; height: 30px; border-radius: 50%; background: #666;
+}
+
+.story-content-display {
+    width: 100%; height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.2rem;
+    text-align: center;
+    padding: 20px;
+}
+
+.close-story {
+    position: absolute;
+    top: 20px; right: 25px;
+    color: #fff; font-size: 2rem; cursor: pointer;
+    z-index: 3000;
+}
+
+/* Instagram Direct Message & Notes Modal Styles */
+.ig-dm-box {
+    width: 480px;
+    height: 650px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.ig-dm-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.ig-dm-search {
+    display: flex;
+    align-items: center;
+    background: #121212;
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 8px 12px;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.ig-dm-search input {
+    background: none;
+    border: none;
+    color: #fff;
+    outline: none;
+    width: 100%;
+}
+
+.ig-notes-section {
+    overflow-x: auto;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    scrollbar-width: none;
+}
+.ig-notes-section::-webkit-scrollbar { display: none; }
+
+.ig-notes-container {
+    display: flex;
+    gap: 15px;
+}
+
+.note-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    position: relative;
+    width: 75px;
+}
+
+.note-bubble {
+    background: #262626;
+    color: #fff;
+    font-size: 0.75rem;
+    padding: 6px 10px;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 6px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    max-width: 85px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border: 1px solid #333;
+    position: relative;
+}
+
+.note-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px 5px 0;
+    border-style: solid;
+    border-color: #262626 transparent;
+}
+
+.note-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e1306c;
+}
+
+.note-card span {
+    font-size: 0.75rem;
+    color: #aaa;
+    margin-top: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ig-messages-title {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.requests-link {
+    color: #3ea6ff;
+    cursor: pointer;
+}
+
+.ig-chat-list {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.chat-user-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.chat-user-item:hover {
+    background: #1f1f1f;
+}
+
+.chat-user-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.chat-user-details {
+    flex: 1;
+}
+
+.chat-user-details h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.chat-user-details p {
+    font-size: 0.8rem;
+    color: #aaa;
+}
+
+.ig-active-chat {
+    position: absolute;
+    inset: 0;
+    background: #212121;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.ig-active-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #333;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 12px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.chat-message {
+    padding: 8px 14px;
+    border-radius: 16px;
+    max-width: 75%;
+    font-size: 0.9rem;
+    word-break: break-word;
+    line-height: 1.4;
+}
+
+.chat-message.user {
+    align-self: flex-end;
+    background: #3ea6ff;
+    color: #000;
+    border-bottom-right-radius: 4px;
+}
+
+.chat-message.bot {
+    align-self: flex-start;
+    background: #262626;
+    color: #fff;
+    border-bottom-left-radius: 4px;
+    border: 1px solid #383838;
+}
+
+.chat-input-area {
+    display: flex;
+    gap: 10px;
+}
+
+.chat-input-area input {
+    flex: 1;
+    padding: 10px 15px;
+    background: #121212;
+    border: 1px solid #444;
+    border-radius: 20px;
+    color: #fff;
+    outline: none;
+}
+
+.note-viewer-box {
+    width: 360px;
+    background: #1c1c1c;
+    border-radius: 16px;
+    padding: 30px 20px 20px 20px;
+}
+
+.note-viewer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.note-big-bubble {
+    background: #262626;
+    color: #fff;
+    font-size: 1rem;
+    padding: 12px 20px;
+    border-radius: 18px;
+    margin-bottom: 15px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+    max-width: 90%;
+    word-break: break-word;
+    border: 1px solid #3d3d3d;
+    position: relative;
+    animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.note-big-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 8px 8px 0;
+    border-style: solid;
+    border-color: #262626 transparent;
+}
+
+.note-avatar-wrapper {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px;
+}
+
+.note-big-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #1c1c1c;
+}
+
+@keyframes popIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.theme-box {
+    width: 420px;
+}
+
+.theme-options-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.theme-card {
+    background: #181818;
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.theme-card:hover {
+    transform: translateY(-3px);
+    border-color: #3ea6ff;
+}
+
+.theme-preview {
+    width: 100%;
+    height: 50px;
+    border-radius: 6px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 6px;
+}
+
+.theme-preview span {
+    width: 30px;
+    height: 18px;
+    border-radius: 10px;
+}
+
+.theme-card span {
+    font-size: 0.8rem;
+    color: #ccc;
+}
+
+.theme-emoji-bar {
+    position: fixed;
+    background: #262626;
+    border: 1px solid #444;
+    border-radius: 30px;
+    padding: 6px 12px;
+    display: flex;
+    gap: 10px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+    z-index: 3000;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(10px) scale(0.9);
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.theme-emoji-bar.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+}
+
+.theme-emoji-item {
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-emoji-item:hover {
+    transform: scale(1.3);
+}
+
+/* --- ชุดธีมสีต่างๆ ของกล่องแชท --- */
+.chat-messages.theme-rainbow {
+    background: #0f0f0f !important;
+    border: 3px solid transparent !important;
+    border-image: linear-gradient(45deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0040ff, #8b00ff) 1 !important;
+}
+.chat-messages.theme-rainbow .chat-message.user {
+    background: linear-gradient(135deg, #ff0055, #ff5000, #ffcc00) !important;
+    color: #fff !important;
+    font-weight: 600;
+}
+.chat-messages.theme-rainbow .chat-message.bot {
+    background: linear-gradient(135deg, #00c6ff, #0072ff) !important;
+    color: #fff !important;
+}
+
+.chat-messages.theme-instagram {
+    background: linear-gradient(180deg, #180d24 0%, #0d0614 100%) !important;
+}
+.chat-messages.theme-instagram .chat-message.user {
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366) !important;
+    color: #fff !important;
+}
+
+.chat-messages.theme-cyberpunk {
+    background: #090d16 !important;
+    border-color: #ec4899 !important;
+}
+.chat-messages.theme-cyberpunk .chat-message.user {
+    background: #ec4899 !important;
+    color: #fff !important;
+}
+.chat-messages.theme-cyberpunk .chat-message.bot {
+    background: #1e1b4b !important;
+    color: #38bdf8 !important;
+}
+
+.chat-messages.theme-emerald {
+    background: #022c22 !important;
+}
+.chat-messages.theme-emerald .chat-message.user {
+    background: #10b981 !important;
+    color: #000 !important;
+}
+.chat-messages.theme-emerald .chat-message.bot {
+    background: #064e3b !important;
+    color: #ecfdf5 !important;
+}
+
+.chat-messages.theme-sunset {
+    background: #270f03 !important;
+}
+.chat-messages.theme-sunset .chat-message.user {
+    background: #f97316 !important;
+    color: #fff !important;
+}
+.chat-messages.theme-sunset .chat-message.bot {
+    background: #451a03 !important;
+    color: #ffedd5 !important;
+}
+
+/* --- ส่วนประวัติการเล่นเกม (Game Activity Log) --- */
+.game-activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.game-activity-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #181818;
+    border: 1px solid #333;
+    padding: 12px 18px;
+    border-radius: 10px;
+    transition: background 0.2s;
+}
+
+.game-activity-card:hover {
+    background: #222;
+}
+
+.game-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.game-icon {
+    width: 45px;
+    height: 45px;
+    background: #3ea6ff;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    color: #000;
+}
+
+.game-details h4 {
+    font-size: 1rem;
+    color: #fff;
+    margin-bottom: 4px;
+}
+
+.game-details p {
+    font-size: 0.8rem;
+    color: #aaa;
+}
+
+.game-time-badge {
+    background: #262626;
+    border: 1px solid #444;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: #10b981;
+    font-weight: 600;
+}
+
+/* --- Video Player Layout & Mini Player Styles --- */
+.video-player-box {
+    max-width: 1100px;
+    width: 95%;
+    padding: 20px;
+    background: #0f0f0f;
+    border-radius: 12px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.player-actions {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    z-index: 10;
+}
+
+.player-actions button {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.player-actions button:hover {
+    color: #3ea6ff;
+}
+
+.player-layout {
+    display: flex;
+    gap: 20px;
+    margin-top: 25px;
+}
+
+.video-main-section {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+}
+
+.video-container {
+    width: 100%;
+    height: 480px;
+    background: #000;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: height 0.3s ease;
+}
+
+.video-live-chat {
+    flex: 1;
+    background: #181818;
+    border: 1px solid #333;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    height: 550px;
+    transition: height 0.3s ease;
+}
+
+.chat-header {
+    padding: 12px 15px;
+    border-bottom: 1px solid #333;
+}
+
+.chat-header h3 {
+    font-size: 1rem;
+    color: #fff;
+    margin: 0;
+}
+
+.chat-box {
+    flex: 1;
+    padding: 12px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 0.85rem;
+}
+
+.chat-item {
+    background: #222;
+    padding: 8px 12px;
+    border-radius: 8px;
+    color: #ccc;
+    word-break: break-word;
+    line-height: 1.4;
+}
+
+.chat-item strong {
+    color: #3ea6ff;
+}
+
+.video-player-box.mini-mode {
+    max-width: 800px;
+}
+
+.video-player-box.mini-mode .video-container {
+    height: 300px;
+}
+
+.video-player-box.mini-mode .video-live-chat {
+    height: 380px;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 70px;
     }
-
-    const exploreGrid = document.getElementById('explore-grid');
-    if (exploreGrid) exploreGrid.innerHTML = [...videosData].reverse().map(createVideoHTML).join('');
-
-    const subGrid = document.getElementById('subscriptions-grid');
-    if (subGrid) subGrid.innerHTML = videosData.slice(0, 2).map(createVideoHTML).join('');
-
-    const historyGrid = document.getElementById('history-grid');
-    if (historyGrid) historyGrid.innerHTML = videosData.map(createVideoHTML).join('');
-
-    const myVideosGrid = document.getElementById('my-videos-grid');
-    if (myVideosGrid) {
-        const myVids = videosData.filter(v => v.channel === 'ช่องของคุณ' || v.channel === accounts[currentAccountIndex]?.name);
-        myVideosGrid.innerHTML = myVids.length ? myVids.map(createVideoHTML).join('') : '<p style="color:#666;">ยังไม่มีวิดีโอที่คุณอัปโหลด</p>';
+    .sidebar-item span {
+        display: none;
+    }
+    .content {
+        margin-left: 70px;
+        width: calc(100% - 70px);
+    }
+    .player-layout {
+        flex-direction: column;
+    }
+    .video-container {
+        height: 250px;
+    }
+    .video-live-chat {
+        height: 300px;
     }
 }
 
-// ผูกระบบค้นหากับ Input บน Header
-const mainSearchInput = document.getElementById('main-search-input') || document.querySelector('.nav-center input');
-const searchBtn = document.querySelector('.search-btn');
-
-if (mainSearchInput) {
-    mainSearchInput.addEventListener('input', (e) => {
-        renderVideos(e.target.value.trim());
-    });
-}
-if (searchBtn && mainSearchInput) {
-    searchBtn.addEventListener('click', () => {
-        renderVideos(mainSearchInput.value.trim());
-    });
-}
-
-// เรนเดอร์คลิปสั้น (Shorts) พร้อมคำสั่งคลิกเพื่อเปิดเล่นวิดีโอ
-function renderShorts() {
-    const shortsContainer = document.getElementById('shorts-container');
-    if (!shortsContainer) return;
-    shortsContainer.innerHTML = shortsData.map(s => `
-        <div class="short-card" onclick="openVideoPlayer('${s.title}', 'Shorts', 'ยอดชม ${s.views} ครั้ง', '${s.videoUrl}')" style="background-image: url('${s.bg}'); cursor: pointer;">
-            <div class="short-info">
-                <h4>${s.title}</h4>
-                <p style="font-size:0.8rem; color:#ccc;">ยอดชม ${s.views} ครั้ง</p>
-            </div>
-        </div>
-    `).join('');
+/* --- Splash Screen --- */
+#splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #0f0f0f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
 }
 
-// ==========================================
-// 3. ระบบเปิด-ปิด หน้าต่างเล่นวิดีโอ (Video Player Modal)
-// ==========================================
-
-const videoPlayerModal = document.getElementById('video-player-modal');
-const mainVideoPlayer = document.getElementById('main-video-player');
-const closeVideoPlayerBtn = document.getElementById('close-video-player');
-
-function openVideoPlayer(title, channel, views, videoUrl) {
-    if (!videoPlayerModal || !mainVideoPlayer) return;
-
-    document.getElementById('player-video-title').textContent = title;
-    document.getElementById('player-video-channel').textContent = channel;
-    document.getElementById('player-video-views').textContent = views;
-
-    mainVideoPlayer.src = videoUrl || SAMPLE_VIDEO_URL;
-    videoPlayerModal.style.display = 'flex';
-    mainVideoPlayer.play();
+#splash-screen.hide {
+    opacity: 0;
+    visibility: hidden;
 }
 
-function closeVideoPlayer() {
-    if (videoPlayerModal && mainVideoPlayer) {
-        mainVideoPlayer.pause();
-        mainVideoPlayer.src = '';
-        videoPlayerModal.style.display = 'none';
-    }
+.splash-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
 }
 
-if (closeVideoPlayerBtn) {
-    closeVideoPlayerBtn.addEventListener('click', closeVideoPlayer);
+.splash-logo {
+    width: 90px;
+    height: 90px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 4rem;
+    color: #3ea6ff; /* ปรับสีไอคอนรูปโลกให้เป็นสีฟ้าสดใส */
+    animation: pulse 1.5s infinite alternate;
 }
 
-// ปิด Modal เมื่อคลิกพื้นหลังภายนอก
-window.addEventListener('click', (e) => {
-    if (e.target === videoPlayerModal) {
-        closeVideoPlayer();
-    }
-});
-
-// ==========================================
-// 4. ระบบ Story & Upload Modal
-// ==========================================
-
-const storyViewer = document.getElementById('story-viewer');
-const storyDisplay = document.getElementById('story-display');
-const storyUsername = document.getElementById('story-username');
-const progress = document.getElementById('progress');
-let storyTimer;
-
-function openStory(id) {
-    const story = storiesData.find(s => s.id === id);
-    if (!story) return;
-
-    storyUsername.textContent = story.name;
-    storyDisplay.style.backgroundColor = story.contentBg;
-    storyDisplay.innerHTML = `<h2>${story.text}</h2>`;
-    storyViewer.style.display = 'flex';
-
-    progress.style.transition = 'none';
-    progress.style.width = '0%';
-    setTimeout(() => {
-        progress.style.transition = 'width 5s linear';
-        progress.style.width = '100%';
-    }, 50);
-
-    clearTimeout(storyTimer);
-    storyTimer = setTimeout(closeStoryViewer, 5000);
+#splash-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 10px rgba(62, 166, 255, 0.5)); /* เงาเรืองแสงสำหรับรูปภาพ */
 }
 
-function closeStoryViewer() {
-    if (storyViewer) storyViewer.style.display = 'none';
-    clearTimeout(storyTimer);
+.splash-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #fff;
+    letter-spacing: 1px;
 }
 
-const closeStoryBtn = document.getElementById('close-story');
-if (closeStoryBtn) closeStoryBtn.addEventListener('click', closeStoryViewer);
-
-const uploadModal = document.getElementById('upload-modal');
-const uploadTrigger = document.getElementById('upload-trigger');
-const closeModal = document.getElementById('close-modal');
-const uploadForm = document.getElementById('upload-form');
-const dropzone = document.getElementById('dropzone');
-const fileInput = document.getElementById('video-file-input');
-
-if (uploadTrigger) uploadTrigger.addEventListener('click', () => uploadModal.style.display = 'flex');
-if (closeModal) closeModal.addEventListener('click', () => uploadModal.style.display = 'none');
-if (dropzone) dropzone.addEventListener('click', () => fileInput.click());
-
-if (uploadForm) {
-    uploadForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const title = document.getElementById('video-title').value;
-        if (!title) return alert('กรุณากรอกชื่อวิดีโอ');
-
-        const activeAcc = accounts[currentAccountIndex] || accounts[0];
-        const newVideo = {
-            id: videosData.length + 1,
-            title: title,
-            channel: activeAcc.name,
-            views: '0 ครั้ง',
-            time: 'เมื่อสักครู่นี้',
-            thumb: 'https://picsum.photos/seed/' + Math.random() + '/400/225',
-            videoUrl: SAMPLE_VIDEO_URL
-        };
-
-        videosData.unshift(newVideo);
-        renderVideos();
-        uploadForm.reset();
-        uploadModal.style.display = 'none';
-        alert('อัปโหลดวิดีโอสำเร็จ!');
-    });
+.splash-loader {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    border-top-color: #3ea6ff;
+    animation: spin 0.8s linear infinite;
 }
 
-// ==========================================
-// 5. ระบบจัดการบัญชี & Shared Code
-// ==========================================
-
-let accounts = JSON.parse(localStorage.getItem('streamgram_accounts')) || [
-    { id: 1, name: 'Dev Channel (หลัก)', avatar: 'https://picsum.photos/seed/acc1/100' },
-    { id: 2, name: 'Gamer Pro', avatar: 'https://picsum.photos/seed/acc2/100' }
-];
-
-let currentAccountIndex = parseInt(localStorage.getItem('streamgram_current_acc')) || 0;
-
-const VALID_SHARED_CODES = {
-    "STREAM2026": "ยินดีด้วย! คุณได้รับสิทธิ์สมาชิก VIP ฟรี 30 วัน 🎉",
-    "YOUTUBEINSTA": "ปลดล็อกฟีเจอร์พิเศษ: โค้ดนี้ใช้ร่วมกันได้ทุกบัญชีสำเร็จ! ✅",
-    "VIPCODE": "โค้ดลับใช้งานสำเร็จ ได้รับแต้มพิเศษ 500 พอยท์ 🌟"
-};
-
-const settingsModal = document.getElementById('settings-modal');
-const settingsTrigger = document.getElementById('settings-trigger');
-const closeSettings = document.getElementById('close-settings');
-const accountsList = document.getElementById('accounts-list');
-const settingsUsername = document.getElementById('settings-username');
-const currentUserAvatar = document.getElementById('current-user-avatar');
-const settingsAvatar = document.getElementById('settings-avatar');
-const addAccountBtn = document.getElementById('add-account-btn');
-const newAccountNameInput = document.getElementById('new-account-name');
-
-if (settingsTrigger) {
-    settingsTrigger.addEventListener('click', () => {
-        updateSettingsUI();
-        settingsModal.style.display = 'flex';
-    });
-}
-if (closeSettings) closeSettings.addEventListener('click', () => settingsModal.style.display = 'none');
-
-function updateSettingsUI() {
-    const activeAcc = accounts[currentAccountIndex] || accounts[0];
-    if (settingsUsername) settingsUsername.textContent = activeAcc.name;
-    
-    const channelNameDisp = document.getElementById('channel-page-name');
-    if (channelNameDisp) channelNameDisp.textContent = activeAcc.name;
-
-    if (currentUserAvatar) {
-        currentUserAvatar.style.backgroundImage = `url(${activeAcc.avatar})`;
-        currentUserAvatar.style.backgroundSize = 'cover';
-    }
-    if (settingsAvatar) {
-        settingsAvatar.style.backgroundImage = `url(${activeAcc.avatar})`;
-        settingsAvatar.style.backgroundSize = 'cover';
-    }
-
-    if (accountsList) {
-        accountsList.innerHTML = accounts.map((acc, index) => `
-            <div class="account-item ${index === currentAccountIndex ? 'active-account' : ''}">
-                <span style="font-size: 0.9rem;">${acc.name} ${index === currentAccountIndex ? '(ใช้งานอยู่)' : ''}</span>
-                ${index !== currentAccountIndex ? `<button class="switch-btn" onclick="switchAccount(${index})">สลับ</button>` : '<span style="color:#3ea6ff; font-size:0.8rem;">ใช้งานอยู่</span>'}
-            </div>
-        `).join('');
-    }
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
 
-window.switchAccount = function(index) {
-    currentAccountIndex = index;
-    localStorage.setItem('streamgram_current_acc', currentAccountIndex);
-    updateSettingsUI();
-    renderVideos();
-    alert(`สลับไปยังบัญชี "${accounts[currentAccountIndex].name}" เรียบร้อยแล้ว!`);
-};
-
-if (addAccountBtn) {
-    addAccountBtn.addEventListener('click', () => {
-        const name = newAccountNameInput.value.trim();
-        if (!name) return alert('กรุณากรอกชื่อบัญชี');
-
-        const newAcc = {
-            id: accounts.length + 1,
-            name: name,
-            avatar: `https://picsum.photos/seed/${name}/100`
-        };
-
-        accounts.push(newAcc);
-        localStorage.setItem('streamgram_accounts', JSON.stringify(accounts));
-        newAccountNameInput.value = '';
-        updateSettingsUI();
-        alert('เพิ่มบัญชีใหม่สำเร็จ!');
-    });
+@keyframes pulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.1); }
+}
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
 
-const sharedCodeInput = document.getElementById('shared-code-input');
-const submitCodeBtn = document.getElementById('submit-code-btn');
-const codeFeedback = document.getElementById('code-feedback');
-
-if (submitCodeBtn) {
-    submitCodeBtn.addEventListener('click', () => {
-        const code = sharedCodeInput.value.trim().toUpperCase();
-        if (!code) {
-            codeFeedback.style.color = '#ff4e45';
-            codeFeedback.textContent = 'กรุณากรอกโค้ดก่อนกดใช้งาน';
-            return;
-        }
-
-        if (VALID_SHARED_CODES[code]) {
-            codeFeedback.style.color = '#10b981';
-            codeFeedback.textContent = VALID_SHARED_CODES[code];
-        } else {
-            codeFeedback.style.color = '#ff4e45';
-            codeFeedback.textContent = '❌ โค้ดไม่ถูกต้องหรือหมดอายุแล้ว';
-        }
-    });
+@keyframes pulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.1); }
 }
-
-// ==========================================
-// 6. ระบบติดต่อเจ้าหน้าที่
-// ==========================================
-
-let supportTickets = JSON.parse(localStorage.getItem('streamgram_tickets')) || [];
-const supportModal = document.getElementById('support-modal');
-const supportTrigger = document.getElementById('support-trigger');
-const closeSupport = document.getElementById('close-support');
-const supportForm = document.getElementById('support-form');
-const supportUserDisplay = document.getElementById('support-user-display');
-const ticketsList = document.getElementById('tickets-list');
-
-if (supportTrigger) {
-    supportTrigger.addEventListener('click', (e) => {
-        e.preventDefault();
-        const activeAcc = accounts[currentAccountIndex] || accounts[0];
-        if (supportUserDisplay) supportUserDisplay.value = activeAcc.name;
-        renderSupportTickets();
-        supportModal.style.display = 'flex';
-    });
-}
-
-if (closeSupport) closeSupport.addEventListener('click', () => supportModal.style.display = 'none');
-
-function renderSupportTickets() {
-    if (!ticketsList) return;
-    if (supportTickets.length === 0) {
-        ticketsList.innerHTML = '<p style="color: #666;">ยังไม่มีประวัติการติดต่อ</p>';
-        return;
-    }
-
-    ticketsList.innerHTML = supportTickets.map(ticket => `
-        <div class="ticket-item">
-            <strong>[${ticket.topic}] จาก: ${ticket.sender}</strong>
-            <p>${ticket.message}</p>
-            <span style="font-size:0.7rem; color:#666;">ส่งเมื่อ: ${ticket.time} | สถานะ: รอดำเนินการ</span>
-        </div>
-    `).join('');
-}
-
-if (supportForm) {
-    supportForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const activeAcc = accounts[currentAccountIndex] || accounts[0];
-        const topicSelect = document.getElementById('support-topic');
-        const topicText = topicSelect.options[topicSelect.selectedIndex].text;
-        const message = document.getElementById('support-message').value.trim();
-
-        if (!message) return alert('กรุณากรอกรายละเอียดข้อความ');
-
-        const newTicket = {
-            id: Date.now(),
-            sender: activeAcc.name,
-            topic: topicText,
-            message: message,
-            time: new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })
-        };
-
-        supportTickets.unshift(newTicket);
-        localStorage.setItem('streamgram_tickets', JSON.stringify(supportTickets));
-
-        renderSupportTickets();
-        supportForm.reset();
-        alert('ส่งข้อความถึงเจ้าหน้าที่เรียบร้อยแล้ว!');
-    });
-}
-
-// ==========================================
-// 7. ระบบสลับหน้า Sidebar (SPA)
-// ==========================================
-
-const sidebarItems = document.querySelectorAll('.sidebar-item[data-page]');
-const pageViews = document.querySelectorAll('.page-view');
-
-sidebarItems.forEach(item => {
-    item.addEventListener('click', (e) => {
-        e.preventDefault();
-        const targetPage = item.getAttribute('data-page');
-
-        sidebarItems.forEach(i => i.classList.remove('active'));
-        item.classList.add('active');
-
-        pageViews.forEach(view => {
-            if (view.id === `view-${targetPage}`) {
-                view.classList.add('active-view');
-            } else {
-                view.classList.remove('active-view');
-            }
-        });
-    });
-});
-
-// ==========================================
-// 8. ระบบแชท Direct Messages & Notes & ระบบค้นหาเพื่อน
-// ==========================================
-
-const menuIcon = document.querySelector('.menu-icon');
-const chatModal = document.getElementById('chat-modal');
-const closeChat = document.getElementById('close-chat');
-const chatForm = document.getElementById('chat-form');
-const chatInput = document.getElementById('chat-input');
-const chatMessages = document.getElementById('chat-messages');
-
-function renderNotes() {
-    const notesContainer = document.getElementById('ig-notes-container');
-    if (!notesContainer) return;
-    notesContainer.innerHTML = notesData.map(n => `
-        <div class="note-card" onclick="openNoteViewer(${n.id})">
-            <div class="note-bubble">${n.note}</div>
-            <img src="${n.avatar}" class="note-avatar" alt="${n.name}">
-            <span>${n.name}</span>
-        </div>
-    `).join('');
-}
-
-// เรนเดอร์แชทเพื่อนและกรองคำค้นหา
-function renderChatList(filterText = '') {
-    const chatList = document.getElementById('ig-chat-list');
-    if (!chatList) return;
-
-    const filteredUsers = chatUsersData.filter(user => 
-        user.name.toLowerCase().includes(filterText.toLowerCase()) ||
-        user.lastMsg.toLowerCase().includes(filterText.toLowerCase())
-    );
-
-    if (filteredUsers.length === 0) {
-        chatList.innerHTML = '<p style="color: #888; text-align: center; margin-top: 20px; font-size: 0.9rem;">ไม่พบชื่อเพื่อนที่ค้นหา</p>';
-        return;
-    }
-
-    chatList.innerHTML = filteredUsers.map(u => `
-        <div class="chat-user-item" onclick="openDirectChat(${u.id})">
-            <img src="${u.avatar}" class="chat-user-avatar" alt="${u.name}">
-            <div class="chat-user-details">
-                <h4>${u.name}</h4>
-                <p>${u.lastMsg}</p>
-            </div>
-            <i class="fa-regular fa-camera" style="color: #888;"></i>
-        </div>
-    `).join('');
-}
-
-// ผูกระบบค้นหาเพื่อนในแชท
-const dmSearchInput = document.getElementById('dm-search-input');
-if (dmSearchInput) {
-    dmSearchInput.addEventListener('input', (e) => {
-        renderChatList(e.target.value.trim());
-    });
-}
-
-const activeChatWindow = document.getElementById('ig-active-chat');
-const activeUserName = document.getElementById('active-user-name');
-const activeUserAvatar = document.getElementById('active-user-avatar');
-const backToListBtn = document.getElementById('back-to-list');
-
-function openDirectChat(userId) {
-    const user = chatUsersData.find(u => u.id === userId);
-    if (!user || !activeChatWindow) return;
-
-    activeUserName.textContent = user.name;
-    activeUserAvatar.style.backgroundImage = `url(${user.avatar})`;
-    activeUserAvatar.style.backgroundSize = 'cover';
-    activeUserAvatar.innerHTML = '';
-    activeChatWindow.style.display = 'flex';
-}
-
-if (backToListBtn) {
-    backToListBtn.addEventListener('click', () => {
-        activeChatWindow.style.display = 'none';
-    });
-}
-
-if (menuIcon) {
-    menuIcon.style.cursor = 'pointer';
-    menuIcon.addEventListener('click', () => {
-        renderNotes();
-        renderChatList();
-        if (dmSearchInput) dmSearchInput.value = '';
-        if (activeChatWindow) activeChatWindow.style.display = 'none';
-        chatModal.style.display = 'flex';
-    });
-}
-
-if (closeChat) {
-    closeChat.addEventListener('click', () => {
-        chatModal.style.display = 'none';
-    });
-}
-
-if (chatForm) {
-    chatForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const text = chatInput.value.trim();
-        if (!text) return;
-
-        const activeAcc = accounts[currentAccountIndex] || accounts[0];
-        const userMsg = document.createElement('div');
-        userMsg.className = 'chat-message user';
-        userMsg.innerHTML = `<strong>${activeAcc.name}:</strong> ${text}`;
-        chatMessages.appendChild(userMsg);
-
-        chatInput.value = '';
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-
-        setTimeout(() => {
-            const botMsg = document.createElement('div');
-            botMsg.className = 'chat-message bot';
-            botMsg.innerHTML = `<strong>แอดมิน:</strong> ได้รับข้อความ "${text}" แล้วครับ`;
-            chatMessages.appendChild(botMsg);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }, 1000);
-    });
-}
-
-// ==========================================
-// 9. ระบบประวัติการเล่นเกม (Game Activity) & แชทกลุ่มเกมเมอร์
-// ==========================================
-
-function renderGameActivity() {
-    const activityContainer = document.getElementById('game-activity-list');
-    if (!activityContainer) return;
-
-    activityContainer.innerHTML = gameActivityData.map(item => `
-        <div class="game-activity-card">
-            <div class="game-info">
-                <div class="game-icon">
-                    <i class="fa-solid ${item.icon}"></i>
-                </div>
-                <div class="game-details">
-                    <h4>${item.game}</h4>
-                    <p><i class="fa-regular fa-calendar"></i> เล่นเมื่อ: ${item.date}</p>
-                </div>
-            </div>
-            <div class="game-time-badge">
-                <i class="fa-regular fa-clock"></i> ${item.playTime}
-            </div>
-        </div>
-    `).join('');
-}
-
-// ผูกปุ่ม "แชทกลุ่มเกมเมอร์"
-document.addEventListener('click', (e) => {
-    const gamerChatBtn = e.target.closest('#gamer-chat-trigger');
-    if (gamerChatBtn) {
-        if (chatModal && activeChatWindow) {
-            activeUserName.textContent = '🎮 ห้องแชทรวมเกมเมอร์ (Gamer Hub)';
-            activeUserAvatar.style.backgroundImage = 'none';
-            activeUserAvatar.style.backgroundColor = '#e1306c';
-            activeUserAvatar.innerHTML = '<i class="fa-solid fa-gamepad" style="color:#fff; line-height:30px; text-align:center; display:block;"></i>';
-            
-            chatModal.style.display = 'flex';
-            activeChatWindow.style.display = 'flex';
-        }
-    }
-});
-
-// ==========================================
-// 10. ระบบเปิดดู Note ขยายใหญ่
-// ==========================================
-
-const noteViewerModal = document.getElementById('note-viewer-modal');
-const closeNoteViewer = document.getElementById('close-note-viewer');
-const noteViewText = document.getElementById('note-view-text');
-const noteViewAvatar = document.getElementById('note-view-avatar');
-const noteViewUsername = document.getElementById('note-view-username');
-const noteReplyForm = document.getElementById('note-reply-form');
-const noteReplyInput = document.getElementById('note-reply-input');
-
-function openNoteViewer(noteId) {
-    const note = notesData.find(n => n.id === noteId);
-    if (!note || !noteViewerModal) return;
-
-    noteViewText.textContent = note.note;
-    noteViewAvatar.src = note.avatar;
-    noteViewUsername.textContent = note.name;
-    noteViewerModal.style.display = 'flex';
-}
-
-if (closeNoteViewer) {
-    closeNoteViewer.addEventListener('click', () => {
-        noteViewerModal.style.display = 'none';
-    });
-}
-
-if (noteReplyForm) {
-    noteReplyForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const reply = noteReplyInput.value.trim();
-        if (!reply) return;
-
-        alert(`ส่งข้อความตอบกลับ "${reply}" ไปยัง ${noteViewUsername.textContent} เรียบร้อยแล้ว!`);
-        noteReplyInput.value = '';
-        noteViewerModal.style.display = 'none';
-    });
-}
-
-// ==========================================
-// 11. ระบบกดค้างแสดงแถบอิโมจิเลือกธีมสี (Emoji Theme Bar)
-// ==========================================
-
-const themeEmojiBarHTML = `
-    <div id="theme-emoji-bar" class="theme-emoji-bar">
-        <span class="theme-emoji-item" onclick="changeChatTheme('default')" title="มืดคลาสสิก">⬛</span>
-        <span class="theme-emoji-item" onclick="changeChatTheme('instagram')" title="อินสตาแกรม">🟣</span>
-        <span class="theme-emoji-item" onclick="changeChatTheme('cyberpunk')" title="ไซเบอร์พังก์">🌸</span>
-        <span class="theme-emoji-item" onclick="changeChatTheme('emerald')" title="เอเมอรัลด์">🟢</span>
-        <span class="theme-emoji-item" onclick="changeChatTheme('sunset')" title="ซันเซ็ต">🟠</span>
-        <span class="theme-emoji-item" onclick="changeChatTheme('ocean')" title="โอเชี่ยน">🔵</span>
-    </div>
-`;
-document.body.insertAdjacentHTML('beforeend', themeEmojiBarHTML);
-
-const themeEmojiBar = document.getElementById('theme-emoji-bar');
-const closeThemeModalBtn = document.getElementById('close-theme-modal');
-const themeModal = document.getElementById('chat-theme-modal');
-
-let longPressTimer;
-const LONG_PRESS_DURATION = 400;
-
-if (chatMessages) {
-    function showEmojiThemeBar(x, y) {
-        themeEmojiBar.style.left = `${x}px`;
-        themeEmojiBar.style.top = `${y - 50}px`;
-        themeEmojiBar.classList.add('show');
-    }
-
-    document.addEventListener('click', (e) => {
-        if (themeEmojiBar && !themeEmojiBar.contains(e.target)) {
-            themeEmojiBar.classList.remove('show');
-        }
-    });
-
-    chatMessages.addEventListener('mousedown', (e) => {
-        longPressTimer = setTimeout(() => {
-            showEmojiThemeBar(e.clientX, e.clientY);
-        }, LONG_PRESS_DURATION);
-    });
-
-    chatMessages.addEventListener('mouseup', () => clearTimeout(longPressTimer));
-    chatMessages.addEventListener('mouseleave', () => clearTimeout(longPressTimer));
-
-    chatMessages.addEventListener('touchstart', (e) => {
-        const touch = e.touches[0];
-        longPressTimer = setTimeout(() => {
-            showEmojiThemeBar(touch.clientX, touch.clientY);
-        }, LONG_PRESS_DURATION);
-    });
-
-    chatMessages.addEventListener('touchend', () => clearTimeout(longPressTimer));
-    chatMessages.addEventListener('touchmove', () => clearTimeout(longPressTimer));
-}
-
-if (closeThemeModalBtn && themeModal) {
-    closeThemeModalBtn.addEventListener('click', () => {
-        themeModal.style.display = 'none';
-    });
-}
-
-window.changeChatTheme = function(themeName) {
-    if (!chatMessages) return;
-    chatMessages.className = 'chat-messages';
-    
-    if (themeName !== 'default') {
-        chatMessages.classList.add(`theme-${themeName}`);
-    }
-
-    localStorage.setItem('streamgram_chat_theme', themeName);
-    if (themeEmojiBar) themeEmojiBar.classList.remove('show');
-    if (themeModal) themeModal.style.display = 'none';
-};
-
-// ==========================================
-// 12. โหลดข้อมูลเมื่อเปิดเว็บ
-// ==========================================
-
-window.addEventListener('DOMContentLoaded', () => {
-    renderStories();
-    renderVideos();
-    renderShorts();
-    renderGameActivity();
-    updateSettingsUI();
-
-    const savedTheme = localStorage.getItem('streamgram_chat_theme');
-    if (savedTheme && chatMessages) {
-        changeChatTheme(savedTheme);
-    }
-});
