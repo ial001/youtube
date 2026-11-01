@@ -9,23 +9,17 @@
 </head>
 <body>
 
-    <!-- Splash Screen (หน้าเปิดแอป + กรอบชื่อ StreamGram เท่ๆ & เช็กอินเทอร์เน็ต) -->
+    <!-- Splash Screen -->
     <div id="splash-screen">
         <div class="splash-content">
             <div class="splash-logo">
                 <i class="fa-solid fa-earth-americas"></i>
             </div>
-            
-            <!-- กรอบนีออนเรืองแสงรอบชื่อ StreamGram -->
             <div class="splash-title-box">
                 <h1 class="splash-title">StreamGram</h1>
             </div>
-
-            <!-- ตัวโหลด และ ข้อความแจ้งเตือนเน็ต -->
             <div class="splash-loader" id="splash-loader"></div>
             <p class="net-status-text" id="net-status-text">กำลังตรวจสอบการเชื่อมต่ออินเทอร์เน็ต...</p>
-            
-            <!-- ปุ่มลองเชื่อมต่ออีกครั้ง (จะแสดงเมื่อไม่ได้ต่ออินเทอร์เน็ต) -->
             <button id="retry-net-btn" class="retry-btn" style="display: none;">
                 <i class="fa-solid fa-rotate-right"></i> ลองเชื่อมต่ออีกครั้ง
             </button>
@@ -36,7 +30,9 @@
     <header class="navbar">
         <div class="nav-left">
             <i class="fa-solid fa-bars menu-icon"></i>
-            <h1 class="logo"><i class="fa-solid fa-earth-americas"></i> StreamGram</h1>
+            <h1 class="logo" id="geo-location-btn" style="cursor: pointer;" title="คลิกเพื่อขยายดูตำแหน่งปัจจุบันของคุณ">
+                <i class="fa-solid fa-earth-americas" id="globe-icon"></i> StreamGram
+            </h1>
         </div>
         <div class="nav-center">
             <input type="text" id="main-search-input" placeholder="ค้นหาวิดีโอ, สตอรี่...">
@@ -45,7 +41,7 @@
         <div class="nav-right">
             <button class="icon-btn" id="upload-trigger" title="อัปโหลดวิดีโอ"><i class="fa-solid fa-video"></i></button>
             <button class="icon-btn" id="settings-trigger" title="ตั้งค่าระบบ"><i class="fa-solid fa-gear"></i></button>
-            <div class="user-avatar" id="current-user-avatar" title="จัดการโปรไฟล์ & บัญชี"></div>
+            <div class="user-avatar" id="current-user-avatar" title="ดูและจัดการโปรไฟล์"></div>
         </div>
     </header>
 
@@ -65,37 +61,31 @@
 
         <!-- Main Content Area -->
         <main class="content" id="main-content">
-            <!-- View: หน้าแรก (Home) -->
             <div id="view-home" class="page-view active-view">
                 <section class="stories-wrapper">
                     <div class="stories-container" id="stories-container"></div>
                 </section>
-
                 <section class="video-section">
                     <h2>วิดีโอแนะนำสำหรับคุณ</h2>
                     <div class="video-grid" id="video-grid"></div>
                 </section>
             </div>
 
-            <!-- View: สำรวจ (Explore) -->
             <div id="view-explore" class="page-view">
                 <h2><i class="fa-solid fa-compass"></i> สำรวจเทรนด์ยอดฮิต</h2>
                 <div class="video-grid" id="explore-grid"></div>
             </div>
 
-            <!-- View: คลิปสั้น (Shorts) -->
             <div id="view-shorts" class="page-view">
                 <h2><i class="fa-solid fa-clapperboard"></i> คลิปสั้น (Shorts)</h2>
                 <div class="shorts-container" id="shorts-container"></div>
             </div>
 
-            <!-- View: การติดตาม (Subscriptions) -->
             <div id="view-subscriptions" class="page-view">
                 <h2><i class="fa-solid fa-bolt"></i> การติดตามของคุณ</h2>
                 <div class="video-grid" id="subscriptions-grid"></div>
             </div>
 
-            <!-- View: ช่องของคุณ (Channel) -->
             <div id="view-channel" class="page-view">
                 <h2><i class="fa-solid fa-user-shield"></i> ช่องของคุณ</h2>
                 <div class="channel-header-box">
@@ -116,17 +106,39 @@
                             <i class="fa-solid fa-comments"></i> แชทกลุ่มเกมเมอร์
                         </button>
                     </div>
-
                     <div class="game-activity-list" id="game-activity-list"></div>
                 </div>
             </div>
 
-            <!-- View: ประวัติการเข้าชม (History) -->
             <div id="view-history" class="page-view">
                 <h2><i class="fa-solid fa-clock-rotate-left"></i> ประวัติการเข้าชม</h2>
                 <div class="video-grid" id="history-grid"></div>
             </div>
         </main>
+    </div>
+
+    <!-- Location Modal -->
+    <div class="modal" id="location-modal">
+        <div class="modal-content" style="max-width: 400px; text-align: center; padding: 25px;">
+            <span class="close-modal" id="close-location">&times;</span>
+            <div style="font-size: 4rem; color: #3ea6ff; margin-bottom: 15px;" id="big-globe">
+                <i class="fa-solid fa-earth-americas"></i>
+            </div>
+            <h2><i class="fa-solid fa-location-dot" style="color: #ff4e45;"></i> ตำแหน่งปัจจุบันของคุณ</h2>
+            <p style="color: #aaa; font-size: 0.85rem; margin-top: 5px;">ตำแหน่งจริงจากอุปกรณ์ของคุณ</p>
+            <div style="background: #181818; padding: 15px; border-radius: 12px; border: 1px solid #333; margin-top: 15px; text-align: left;">
+                <p style="margin: 6px 0; color: #fff;"><strong>ประเทศ:</strong> <span id="country-val" style="color: #3ea6ff;">กำลังค้นหา...</span></p>
+                <p style="margin: 6px 0; color: #fff;"><strong>จังหวัด:</strong> <span id="province-val" style="color: #3ea6ff;">กำลังค้นหา...</span></p>
+                <p style="margin: 6px 0; color: #fff;"><strong>ตำบล / แขวง:</strong> <span id="subdistrict-val" style="color: #3ea6ff;">กำลังค้นหา...</span></p>
+                <hr style="border: 0; border-top: 1px solid #333; margin: 10px 0;">
+                <p style="margin: 4px 0; color: #888; font-size: 0.8rem;"><strong>ละติจูด (Lat):</strong> <span id="lat-val">-</span></p>
+                <p style="margin: 4px 0; color: #888; font-size: 0.8rem;"><strong>ลองจิจูด (Lng):</strong> <span id="lng-val">-</span></p>
+                <p style="margin: 4px 0; color: #888; font-size: 0.8rem;"><strong>ความแม่นยำ:</strong> <span id="acc-val">-</span> เมตร</p>
+            </div>
+            <button class="primary-btn" id="refresh-geo-btn" style="width: 100%; margin-top: 15px; padding: 10px; border-radius: 8px;">
+                <i class="fa-solid fa-rotate-right"></i> อัปเดตตำแหน่งอีกครั้ง
+            </button>
+        </div>
     </div>
 
     <!-- Upload Modal -->
@@ -147,69 +159,129 @@
         </div>
     </div>
 
-    <!-- Profile Management Modal -->
+    <!-- Modal: หน้าโปรไฟล์สาธารณะสไตล์โซเชียลฉบับใหม่ (แทนที่ตัวเก่าทั้งหมด) -->
     <div class="modal" id="profile-modal">
-        <div class="modal-content settings-box">
+        <div class="modal-content profile-view-card">
             <span class="close-modal" id="close-profile">&times;</span>
-            <h2><i class="fa-solid fa-user-gear" style="color: #3ea6ff;"></i> จัดการโปรไฟล์ & บัญชีผู้ใช้</h2>
             
-            <div class="settings-section">
-                <h3>✏️ แก้ไขโปรไฟล์บัญชีปัจจุบัน</h3>
-                <form id="edit-profile-form" style="display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <div class="mini-avatar" id="edit-avatar-preview" style="width: 65px; height: 65px; border-radius: 50%; background-size: cover; background-position: center; border: 2px solid #3ea6ff;"></div>
-                        <div style="flex: 1;">
-                            <label style="font-size: 0.8rem; color: #aaa; display: block; margin-bottom: 5px;">เปลี่ยนรูปโปรไฟล์</label>
-                            <input type="file" id="profile-upload-input" accept="image/*" style="display: none;">
-                            <button type="button" class="primary-btn" id="trigger-avatar-upload" style="font-size: 0.8rem; padding: 6px 12px; background: #333; color: #fff; border: 1px solid #555;">
-                                <i class="fa-solid fa-image"></i> เลือกรูปจากเครื่อง
-                            </button>
-                        </div>
-                    </div>
-
-                    <div style="margin-top: 5px;">
-                        <label style="font-size: 0.8rem; color: #aaa; display: block; margin-bottom: 5px;">หรือเลือกจากรูปตัวอย่าง</label>
-                        <div class="preset-avatars" style="display: flex; gap: 8px;">
-                            <img src="https://picsum.photos/seed/user1/100" class="preset-avatar-option" style="width: 35px; height: 35px; border-radius: 50%; cursor: pointer; border: 1px solid #444;" onclick="selectPresetAvatar(this.src)">
-                            <img src="https://picsum.photos/seed/user2/100" class="preset-avatar-option" style="width: 35px; height: 35px; border-radius: 50%; cursor: pointer; border: 1px solid #444;" onclick="selectPresetAvatar(this.src)">
-                            <img src="https://picsum.photos/seed/user3/100" class="preset-avatar-option" style="width: 35px; height: 35px; border-radius: 50%; cursor: pointer; border: 1px solid #444;" onclick="selectPresetAvatar(this.src)">
-                            <img src="https://picsum.photos/seed/user4/100" class="preset-avatar-option" style="width: 35px; height: 35px; border-radius: 50%; cursor: pointer; border: 1px solid #444;" onclick="selectPresetAvatar(this.src)">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label style="font-size: 0.85rem; display: block; margin-bottom: 4px;">ชื่อโปรไฟล์ / ชื่อช่อง</label>
-                        <input type="text" id="edit-profile-name" placeholder="ชื่อผู้ใช้..." required style="width: 100%; padding: 8px; background: #121212; border: 1px solid #444; border-radius: 6px; color: #fff; outline: none;">
-                    </div>
-
-                    <div>
-                        <label style="font-size: 0.85rem; display: block; margin-bottom: 4px;">คำอธิบายช่อง (Bio)</label>
-                        <textarea id="edit-profile-bio" rows="2" placeholder="เขียนอธิบายเกี่ยวกับตัวคุณ..." style="width: 100%; padding: 8px; background: #121212; border: 1px solid #444; border-radius: 6px; color: #fff; outline: none;"></textarea>
-                    </div>
-
-                    <button type="submit" class="primary-btn" style="margin-top: 5px;">บันทึกการเปลี่ยนแปลงโปรไฟล์</button>
-                </form>
-            </div>
-
-            <div class="settings-section">
-                <h3>👤 บัญชีปัจจุบัน</h3>
-                <div class="current-account-card">
-                    <div class="mini-avatar" id="settings-avatar"></div>
-                    <div>
-                        <strong id="settings-username">User_1</strong>
-                        <p style="font-size: 0.8rem; color: #aaa;">สถานะ: ออนไลน์</p>
-                    </div>
+            <!-- Banner โปรไฟล์ -->
+            <div class="profile-banner" id="user-profile-banner"></div>
+            
+            <!-- ข้อมูลส่วนหัวโปรไฟล์ -->
+            <div class="profile-header-details">
+                <div class="profile-avatar-wrapper" style="position: relative; cursor: pointer;" title="คลิกเพื่อเปลี่ยนรูปโปรไฟล์">
+                    <div class="profile-main-avatar" id="user-profile-avatar"></div>
+                    <input type="file" id="profile-avatar-file-input" accept="image/*" style="display: none;">
+                </div>
+                <div class="profile-actions-btns">
+                    <button class="primary-btn edit-btn" id="edit-profile-btn" style="background: #333; border: 1px solid #555; border-radius: 20px;">
+                        <i class="fa-solid fa-pen-to-square"></i> แก้ไขโปรไฟล์
+                    </button>
+                    <button class="primary-btn vip-buy-btn" id="open-vip-modal-btn" style="background: linear-gradient(135deg, #ffd700, #ffa500); color: #000; font-weight: bold; border-radius: 20px;">
+                        <i class="fa-solid fa-crown"></i> ซื้อ VIP
+                    </button>
                 </div>
             </div>
 
-            <div class="settings-section">
-                <h3>🔄 สลับบัญชี / เพิ่มบัญชีใหม่</h3>
-                <div id="accounts-list" class="accounts-list"></div>
-                <div class="add-account-group">
-                    <input type="text" id="new-account-name" placeholder="ชื่อบัญชีใหม่...">
-                    <button type="button" class="primary-btn" id="add-account-btn">เพิ่มบัญชี</button>
+            <div class="profile-info-body">
+                <h2 id="user-profile-name">Dev Channel (หลัก)</h2>
+                <p class="profile-tag" id="user-profile-tag">@dev_channel</p>
+                <p class="profile-bio-text" id="user-profile-bio">นักพัฒนาเว็บสายการสร้างโซเชียลมีเดีย</p>
+                
+                <!-- ตรา Badges -->
+                <div class="profile-badges">
+                    <span class="badge badge-vip" id="vip-status-badge" style="display: none;"><i class="fa-solid fa-crown"></i> VIP Member</span>
+                    <span class="badge badge-creator"><i class="fa-solid fa-circle-check"></i> Creator</span>
+                </div>
+
+                <!-- สถิติยอดต่างๆ -->
+                <div class="profile-stats-bar">
+                    <div class="stat-item">
+                        <strong id="stat-followers-count">1,240</strong>
+                        <span>ผู้ติดตาม</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>158</strong>
+                        <span>กำลังติดตาม</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>45.8K</strong>
+                        <span>ยอดไลก์รวม</span>
+                    </div>
+                </div>
+
+                <!-- สิทธิพิเศษเฉพาะสมาชิก VIP -->
+                <div class="vip-exclusive-box" id="vip-exclusive-box" style="display: none; background: #121212; border: 1px dashed #ffd700; border-radius: 12px; padding: 12px; margin-bottom: 15px;">
+                    <h3 style="font-size: 0.95rem; color: #ffd700; margin: 0 0 8px 0;"><i class="fa-solid fa-gem"></i> สิทธิพิเศษสมาชิก VIP</h3>
+                    
+                    <div>
+                        <label style="font-size: 0.85rem; color: #ccc;">🎨 เปลี่ยนสีธีม Banner โปรไฟล์ของคุณ:</label>
+                        <div class="theme-color-picker" style="display: flex; gap: 8px; margin-top: 5px;">
+                            <span class="color-dot" style="width:26px; height:26px; border-radius:50%; cursor:pointer; background: linear-gradient(135deg, #1e3d59, #17b978);" onclick="changeProfileTheme('#1e3d59', '#17b978')"></span>
+                            <span class="color-dot" style="width:26px; height:26px; border-radius:50%; cursor:pointer; background: linear-gradient(135deg, #ff007f, #7f00ff);" onclick="changeProfileTheme('#ff007f', '#7f00ff')"></span>
+                            <span class="color-dot" style="width:26px; height:26px; border-radius:50%; cursor:pointer; background: linear-gradient(135deg, #f97316, #eab308);" onclick="changeProfileTheme('#f97316', '#eab308')"></span>
+                            <span class="color-dot" style="width:26px; height:26px; border-radius:50%; cursor:pointer; background: linear-gradient(135deg, #06b6d4, #3b82f6);" onclick="changeProfileTheme('#06b6d4', '#3b82f6')"></span>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 10px; border-top: 1px solid #2a2a2a; padding-top: 8px;">
+                        <label style="font-size: 0.85rem; color: #ccc;">🎁 สร้างโค้ดส่วนลด 20% แบ่งปันให้เพื่อน:</label>
+                        <div style="display: flex; gap: 8px; margin-top: 5px;">
+                            <input type="text" id="generated-vip-code" readonly placeholder="กดปุ่มเพื่อสร้างโค้ด" style="flex: 1; padding: 6px 10px; background: #000; border: 1px solid #444; color: #ffd700; border-radius: 6px; font-size: 0.85rem; font-weight: bold;">
+                            <button class="primary-btn" id="generate-code-btn" style="padding: 6px 12px; font-size: 0.8rem; background: #ffd700; color: #000; border: none; font-weight: bold; cursor: pointer;">สร้างโค้ด</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- แท็บเลือกดูผลงาน -->
+                <div class="profile-tab-menu">
+                    <button class="profile-tab-btn active" data-tab="tab-videos"><i class="fa-solid fa-video"></i> วิดีโอ</button>
+                    <button class="profile-tab-btn" data-tab="tab-shorts"><i class="fa-solid fa-clapperboard"></i> คลิปสั้น</button>
+                </div>
+
+                <div class="profile-tab-content active-tab-content" id="tab-videos">
+                    <div class="profile-video-grid" id="profile-user-videos"></div>
+                </div>
+                <div class="profile-tab-content" id="tab-shorts">
+                    <div class="profile-video-grid" id="profile-user-shorts"></div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal: ระบบซื้อ VIP ด้วยเงินจริง (จำลองการชำระเงิน) -->
+    <div class="modal" id="vip-buy-modal">
+        <div class="modal-content" style="max-width: 400px; text-align: center; padding: 25px;">
+            <span class="close-modal" id="close-vip-modal">&times;</span>
+            
+            <div style="font-size: 3.5rem; color: #ffd700; margin-bottom: 10px;">
+                <i class="fa-solid fa-crown"></i>
+            </div>
+            <h2>สมัครสมาชิก StreamGram VIP</h2>
+            <p style="color: #aaa; font-size: 0.85rem; margin-top: 4px;">ปลดล็อกสิทธิพิเศษ ปรับแต่งสีโปรไฟล์ และแจกโค้ดส่วนลดให้เพื่อนได้ไม่จำกัด!</p>
+            
+            <div style="background: #121212; border: 1px solid #ffd700; border-radius: 12px; padding: 15px; margin: 15px 0; text-align: left;">
+                <p style="margin: 5px 0; color: #fff;">✨ <strong>สิทธิประโยชน์ VIP:</strong></p>
+                <ul style="color: #ccc; font-size: 0.85rem; padding-left: 20px; margin: 5px 0;">
+                    <li>ปลดล็อกการเปลี่ยนสีธีม Banner โปรไฟล์</li>
+                    <li>ตราสัญลักษณ์ VIP Member สุดเท่</li>
+                    <li>สิทธิสร้างโค้ดส่วนลด 20% ส่งต่อให้เพื่อนในแอป</li>
+                </ul>
+                <h3 style="color: #ffd700; margin-top: 10px; text-align: right;" id="vip-price-display">ราคาเพียง 99 บาท / เดือน</h3>
+            </div>
+
+            <div style="margin-bottom: 15px; text-align: left;">
+                <label style="font-size: 0.8rem; color: #aaa;">มีโค้ดส่วนลดจากเพื่อนหรือไม่?</label>
+                <div style="display: flex; gap: 8px; margin-top: 4px;">
+                    <input type="text" id="vip-discount-input" placeholder="ใส่โค้ดส่วนลด เช่น VIPGIFT..." style="flex:1; padding: 8px; background: #181818; border: 1px solid #444; color: #fff; border-radius: 6px; outline: none;">
+                    <button class="primary-btn" id="apply-discount-btn" style="background: #333; font-size: 0.8rem;">ใช้โค้ด</button>
+                </div>
+                <p id="discount-msg" style="font-size: 0.75rem; margin-top: 4px;"></p>
+            </div>
+
+            <button class="primary-btn" id="confirm-pay-vip-btn" style="width: 100%; background: linear-gradient(135deg, #ffd700, #ffa500); color: #000; font-weight: bold; padding: 12px; border-radius: 8px; font-size: 1rem; border: none; cursor: pointer;">
+                💳 ชำระเงิน 99 บาท (เปิดใช้งาน VIP ทันที)
+            </button>
         </div>
     </div>
 
@@ -244,9 +316,7 @@
         <div class="modal-content support-box">
             <span class="close-modal" id="close-support">&times;</span>
             <h2><i class="fa-solid fa-headset" style="color: #3ea6ff;"></i> ศูนย์ช่วยเหลือ & ติดต่อเจ้าหน้าที่</h2>
-            <p style="font-size: 0.85rem; color: #aaa; margin-bottom: 15px;">
-                ส่งข้อความหาทีมงานได้ทุกบัญชี ระบบจะบันทึกคำขอของคุณไว้ในระบบกลาง
-            </p>
+            <p style="font-size: 0.85rem; color: #aaa; margin-bottom: 15px;">ส่งข้อความหาทีมงานได้ทุกบัญชี ระบบจะบันทึกคำขอของคุณไว้ในระบบกลาง</p>
 
             <form id="support-form">
                 <div class="form-group" style="margin-bottom: 12px;">
@@ -293,27 +363,21 @@
     <div class="modal" id="chat-modal">
         <div class="modal-content ig-dm-box">
             <span class="close-modal" id="close-chat">&times;</span>
-            
             <div class="ig-dm-header">
                 <h2><i class="fa-solid fa-paper-plane" style="color: #e1306c;"></i> ข้อความแชท (Direct Messages)</h2>
             </div>
-
             <div class="ig-dm-search">
                 <i class="fa-solid fa-magnifying-glass"></i>
                 <input type="text" id="dm-search-input" placeholder="ค้นหาเพื่อน หรือข้อความ...">
             </div>
-
             <div class="ig-notes-section">
                 <div class="ig-notes-container" id="ig-notes-container"></div>
             </div>
-
             <div class="ig-messages-title">
                 <span>ข้อความ</span>
                 <span class="requests-link">คำขอ (1)</span>
             </div>
-
             <div class="ig-chat-list" id="ig-chat-list"></div>
-
             <div class="ig-active-chat" id="ig-active-chat" style="display: none;">
                 <div class="ig-active-header">
                     <button id="back-to-list" class="icon-btn"><i class="fa-solid fa-chevron-left"></i></button>
@@ -323,9 +387,7 @@
                         <i class="fa-solid fa-trash"></i>
                     </button>
                 </div>
-                
                 <div class="chat-messages" id="chat-messages"></div>
-
                 <form id="chat-form" class="chat-input-area">
                     <input type="text" id="chat-input" placeholder="ส่งข้อความ..." required autocomplete="off">
                     <button type="submit" class="primary-btn"><i class="fa-solid fa-paper-plane"></i></button>
@@ -338,17 +400,13 @@
     <div class="modal" id="note-viewer-modal">
         <div class="modal-content note-viewer-box">
             <span class="close-modal" id="close-note-viewer">&times;</span>
-            
             <div class="note-viewer-content">
-                <div class="note-big-bubble" id="note-view-text">
-                    Hanging with friends!
-                </div>
+                <div class="note-big-bubble" id="note-view-text">Hanging with friends!</div>
                 <div class="note-avatar-wrapper">
                     <img src="" id="note-view-avatar" class="note-big-avatar" alt="User Avatar">
                 </div>
                 <h3 id="note-view-username" style="margin-top: 12px; font-size: 1.1rem;">Username</h3>
                 <p style="color: #888; font-size: 0.8rem; margin-top: 4px;">Shared with followers you follow back</p>
-
                 <form id="note-reply-form" style="margin-top: 20px; width: 100%; display: flex; gap: 8px;">
                     <input type="text" id="note-reply-input" placeholder="ส่งข้อความตอบกลับ..." style="flex: 1; padding: 10px 14px; background: #121212; border: 1px solid #444; border-radius: 20px; color: #fff; outline: none;">
                     <button type="submit" class="primary-btn" style="border-radius: 20px; padding: 0 16px;">ส่ง</button>
@@ -357,64 +415,14 @@
         </div>
     </div>
 
-    <!-- Chat Theme Selector Modal -->
-    <div class="modal" id="chat-theme-modal">
-        <div class="modal-content theme-box">
-            <span class="close-modal" id="close-theme-modal">&times;</span>
-            <h2><i class="fa-solid fa-palette" style="color: #3ea6ff;"></i> เลือกธีมสีแชท</h2>
-            <p style="font-size: 0.85rem; color: #aaa; margin-bottom: 15px;">เลือกโทนสีที่คุณต้องการใช้งานสำหรับห้องแชทนี้</p>
-            
-            <div class="theme-options-grid">
-                <div class="theme-card" onclick="changeChatTheme('default')">
-                    <div class="theme-preview" style="background: #121212; border: 1px solid #333;">
-                        <span style="background: #3ea6ff;"></span>
-                    </div>
-                    <span>มืดคลาสสิก (ดั้งเดิม)</span>
-                </div>
-                <div class="theme-card" onclick="changeChatTheme('rainbow')">
-                    <div class="theme-preview" style="background: linear-gradient(135deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #8b00ff);">
-                        <span style="background: #ffffff;"></span>
-                    </div>
-                    <span>สายรุ้ง (Rainbow 🌈)</span>
-                </div>
-                <div class="theme-card" onclick="changeChatTheme('instagram')">
-                    <div class="theme-preview" style="background: linear-gradient(135deg, #405de6, #833ab4, #c13584);">
-                        <span style="background: #fd1d1d;"></span>
-                    </div>
-                    <span>อินสตาแกรม กราเดียนต์</span>
-                </div>
-                <div class="theme-card" onclick="changeChatTheme('cyberpunk')">
-                    <div class="theme-preview" style="background: #0f172a;">
-                        <span style="background: #ec4899;"></span>
-                    </div>
-                    <span>ไซเบอร์พังก์ พิงค์</span>
-                </div>
-                <div class="theme-card" onclick="changeChatTheme('emerald')">
-                    <div class="theme-preview" style="background: #064e3b;">
-                        <span style="background: #10b981;"></span>
-                    </div>
-                    <span>เอเมอรัลด์ กรีน</span>
-                </div>
-                <div class="theme-card" onclick="changeChatTheme('sunset')">
-                    <div class="theme-preview" style="background: #451a03;">
-                        <span style="background: #f97316;"></span>
-                    </div>
-                    <span>ซันเซ็ต ออเรนจ์</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Video Player Modal -->
     <div class="modal" id="video-player-modal">
         <div class="modal-content video-player-box" id="video-player-box">
             <div class="player-actions">
-                <button id="toggle-size-btn" title="ย่อหน้าจอเพื่อแชท">
-                    <i class="fa-solid fa-compress" id="size-icon"></i>
-                </button>
+                <button id="pip-btn" title="แยกจอเล่นวิดีโอ (Picture-in-Picture)"><i class="fa-solid fa-clone"></i></button>
+                <button id="toggle-size-btn" title="ย่อหน้าจอเพื่อแชท"><i class="fa-solid fa-compress" id="size-icon"></i></button>
                 <span class="close-modal" id="close-video-player">&times;</span>
             </div>
-            
             <div class="player-layout">
                 <div class="video-main-section">
                     <div class="video-container">
@@ -423,24 +431,31 @@
                             เบราว์เซอร์ของคุณไม่รองรับการเล่นวิดีโอ
                         </video>
                     </div>
-
                     <div class="video-play-details" style="margin-top: 15px;">
                         <h2 id="player-video-title" style="font-size: 1.2rem; color: #fff;">ชื่อวิดีโอ</h2>
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px; color: #aaa; font-size: 0.9rem;">
-                            <span id="player-video-channel">ชื่อช่อง</span>
-                            <span id="player-video-views">ยอดชม</span>
+                        <div class="video-action-bar" style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; flex-wrap: wrap; gap: 10px;">
+                            <div class="channel-info-group" style="display: flex; align-items: center; gap: 12px;">
+                                <div class="channel-icon" style="width: 40px; height: 40px; border-radius: 50%; background: #555;"></div>
+                                <div>
+                                    <strong id="player-video-channel" style="color: #fff; font-size: 1rem; display: block;">ชื่อช่อง</strong>
+                                    <span id="player-video-views" style="color: #aaa; font-size: 0.8rem;">ยอดชม</span>
+                                </div>
+                                <button id="subscribe-btn" class="sub-btn" style="margin-left: 10px;">ติดตาม</button>
+                            </div>
+                            <div class="like-dislike-group" style="display: flex; background: #222; border-radius: 20px; overflow: hidden; border: 1px solid #333;">
+                                <button id="like-btn" class="action-btn"><i class="fa-regular fa-thumbs-up"></i> <span id="like-count">1.2K</span></button>
+                                <div style="width: 1px; background: #444; margin: 6px 0;"></div>
+                                <button id="dislike-btn" class="action-btn"><i class="fa-regular fa-thumbs-down"></i></button>
+                            </div>
                         </div>
                     </div>
                 </div>
-
                 <div class="video-live-chat" id="video-live-chat">
                     <div class="chat-header">
                         <h3><i class="fa-solid fa-comments" style="color: #3ea6ff;"></i> แชทสด</h3>
                     </div>
                     <div class="chat-box" id="live-chat-messages">
-                        <div class="chat-item bot">
-                            <strong>ระบบ:</strong> ยินดีต้อนรับเข้าสู่แชทสด! พูดคุยระหว่างรับชมคลิปได้เลย
-                        </div>
+                        <div class="chat-item bot"><strong>ระบบ:</strong> ยินดีต้อนรับเข้าสู่แชทสด! พูดคุยระหว่างรับชมคลิปได้เลย</div>
                     </div>
                     <form id="live-chat-form" class="chat-input-area" style="padding: 10px; display: flex; gap: 8px;">
                         <input type="text" id="live-chat-input" placeholder="พิมพ์ข้อความ..." required autocomplete="off" style="flex: 1; padding: 8px 12px; background: #121212; border: 1px solid #444; border-radius: 20px; color: #fff; outline: none;">
@@ -451,7 +466,16 @@
         </div>
     </div>
 
-    <!-- Script File -->
+    <!-- Floating Theme Picker Bar -->
+    <div id="theme-picker-bar" class="theme-picker-bar" style="display: none;">
+        <div class="theme-option active" data-theme="default" title="มืดคลาสสิก"><div class="theme-icon default-icon"></div></div>
+        <div class="theme-option" data-theme="rainbow" title="สายรุ้ง"><i class="fa-solid fa-rainbow" style="color: #ff4500;"></i></div>
+        <div class="theme-option" data-theme="instagram" title="อินสตาแกรม"><div class="theme-icon purple-icon"></div></div>
+        <div class="theme-option" data-theme="cyberpunk" title="ไซเบอร์พังก์"><i class="fa-solid fa-flower-tulip" style="color: #ff69b4;"></i></div>
+        <div class="theme-option" data-theme="emerald" title="เอเมอรัลด์"><div class="theme-icon green-icon"></div></div>
+        <div class="theme-option" data-theme="sunset" title="ซันเซ็ต"><div class="theme-icon orange-icon"></div></div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
