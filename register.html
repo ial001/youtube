@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StreamGram - สมัครสมาชิก</title>
+    <link rel="stylesheet" href="register.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- ภาพพื้นหลังและเอฟเฟกต์แสง -->
+    <div class="globe-bg"></div>
+    <div class="overlay"></div>
+
+    <!-- กล่องฟอร์มสมัครสมาชิก -->
+    <div class="register-card">
+        <div class="logo-box">
+            <i class="fa-solid fa-earth-americas globe-icon"></i>
+            <h2>StreamGram</h2>
+        </div>
+        <p class="subtitle">สร้างบัญชีใหม่เพื่อเข้าสู่โลกโซเชียลของคุณ</p>
+
+        <form id="register-form" action="#" method="POST">
+            <!-- ชื่อช่อง / โปรไฟล์ -->
+            <div class="input-group">
+                <i class="fa-solid fa-user"></i>
+                <input type="text" id="reg-username" placeholder="ชื่อช่อง / ชื่อผู้ใช้" required>
+            </div>
+
+            <!-- อีเมล -->
+            <div class="input-group">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="email" id="reg-email" placeholder="อีเมลของคุณ" required>
+            </div>
+
+            <!-- รหัสผ่าน -->
+            <div class="input-group">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" id="reg-password" placeholder="รหัสผ่าน" required>
+            </div>
+
+            <!-- ยืนยันรหัสผ่าน -->
+            <div class="input-group">
+                <i class="fa-solid fa-shield-halved"></i>
+                <input type="password" id="reg-confirm-password" placeholder="ยืนยันรหัสผ่าน" required>
+            </div>
+
+            <!-- ตัวเลือกสมัคร VIP ทันที (เสริม) -->
+            <div class="vip-option-box">
+                <label>
+                    <input type="checkbox" id="reg-vip">
+                    <span><i class="fa-solid fa-crown" style="color: #ffd700;"></i> สมัครสมาชิก VIP ทันที (สิทธิพิเศษ 120+ แบบ)</span>
+                </label>
+            </div>
+
+            <!-- ปุ่มกดสมัคร -->
+            <button type="submit" class="submit-btn">
+                <span>สมัครสมาชิก</span> <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </form>
+
+        <div class="form-footer">
+            <p>มีบัญชีผู้ใช้แล้วใช่ไหม? <a href="index.html">เข้าสู่ระบบ</a></p>
+        </div>
+    </div>
+
+</body>
+</html>
