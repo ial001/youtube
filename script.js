@@ -1,4 +1,12 @@
-// ข้อมูลจำลอง (Mock Data) สำหรับสตอรี่
+// ==========================================
+// 1. ข้อมูลจำลอง (Mock Data)
+// ==========================================
+
+// ตัวอย่างลิงก์วิดีโอสำหรับเปิดเล่นจริง
+const SAMPLE_VIDEO_URL = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
+const SAMPLE_SHORT_URL = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4';
+
+// ข้อมูลสตอรี่
 const storiesData = [
     { id: 1, name: 'TechDaily', avatar: 'https://picsum.photos/seed/user1/100', contentBg: '#1e3d59', text: '🚀 เปิดตัวเทคโนโลยีใหม่ล่าสุดประจำปี!' },
     { id: 2, name: 'TravelVibe', avatar: 'https://picsum.photos/seed/user2/100', contentBg: '#17b978', text: '🌴 บรรยากาศทะเลวันนี้สดใสมากกก' },
@@ -7,17 +15,52 @@ const storiesData = [
     { id: 5, name: 'MusicStation', avatar: 'https://picsum.photos/seed/user5/100', contentBg: '#db2777', text: '🎵 เพลงใหม่ปล่อยแล้ว ไปฟังกันเลย' }
 ];
 
-// ข้อมูลจำลองสำหรับวิดีโอ
+// ข้อมูลวิดีโอหลัก (ใส่ลิงก์สำหรับเล่นวิดีโอ)
 let videosData = [
-    { id: 1, title: 'สร้างเว็บด้วย HTML CSS แบบจัดเต็มใน 1 ชั่วโมง', channel: 'Dev Code', views: '1.2ล้าน ครั้ง', time: '2 วันที่แล้ว', thumb: 'https://picsum.photos/seed/vid1/400/225' },
-    { id: 2, title: 'ตะลุยสตรีทฟู้ดกรุงเทพ กินแหลก 10 ร้านดัง!', channel: 'Foodie Guide', views: '450K ครั้ง', time: '1 สัปดาห์ที่แล้ว', thumb: 'https://picsum.photos/seed/vid2/400/225' },
-    { id: 3, title: 'รีวิวห้องนอนมินิมอล งบหลักพัน แต่งออกมาสวยมาก', channel: 'Home Studio', views: '89K ครั้ง', time: '3 วันที่แล้ว', thumb: 'https://picsum.photos/seed/vid3/400/225' },
-    { id: 4, title: 'รวมเพลงฟังสบายๆ ตอนทำงาน โฟกัสยาวๆ', channel: 'Lofi Vibes', views: '3.4ล้าน ครั้ง', time: '1 เดือนที่แล้ว', thumb: 'https://picsum.photos/seed/vid4/400/225' }
+    { id: 1, title: 'สร้างเว็บด้วย HTML CSS แบบจัดเต็มใน 1 ชั่วโมง', channel: 'Dev Code', views: '1.2ล้าน ครั้ง', time: '2 วันที่แล้ว', thumb: 'https://picsum.photos/seed/vid1/400/225', videoUrl: SAMPLE_VIDEO_URL },
+    { id: 2, title: 'ตะลุยสตรีทฟู้ดกรุงเทพ กินแหลก 10 ร้านดัง!', channel: 'Foodie Guide', views: '450K ครั้ง', time: '1 สัปดาห์ที่แล้ว', thumb: 'https://picsum.photos/seed/vid2/400/225', videoUrl: SAMPLE_VIDEO_URL },
+    { id: 3, title: 'รีวิวห้องนอนมินิมอล งบหลักพัน แต่งออกมาสวยมาก', channel: 'Home Studio', views: '89K ครั้ง', time: '3 วันที่แล้ว', thumb: 'https://picsum.photos/seed/vid3/400/225', videoUrl: SAMPLE_VIDEO_URL },
+    { id: 4, title: 'รวมเพลงฟังสบายๆ ตอนทำงาน โฟกัสยาวๆ', channel: 'Lofi Vibes', views: '3.4ล้าน ครั้ง', time: '1 เดือนที่แล้ว', thumb: 'https://picsum.photos/seed/vid4/400/225', videoUrl: SAMPLE_VIDEO_URL }
 ];
 
-// เรนเดอร์สตอรี่
-const storiesContainer = document.getElementById('stories-container');
+// ข้อมูลคลิปสั้น (Shorts)
+const shortsData = [
+    { id: 101, title: 'เทคนิคเขียน CSS แบบโปร! 🔥', views: '50K', bg: 'https://picsum.photos/seed/short1/300/500', videoUrl: SAMPLE_SHORT_URL },
+    { id: 102, title: 'พาสุนัขไปเที่ยวสวนสาธารณะ 🐶', views: '120K', bg: 'https://picsum.photos/seed/short2/300/500', videoUrl: SAMPLE_SHORT_URL },
+    { id: 103, title: 'สูตรกาแฟทำง่ายที่บ้าน ☕', views: '85K', bg: 'https://picsum.photos/seed/short3/300/500', videoUrl: SAMPLE_SHORT_URL }
+];
+
+// ข้อมูล Instagram Notes
+const notesData = [
+    { id: 1, name: 'ของฉัน', avatar: 'https://picsum.photos/seed/user1/100', note: 'Hanging with friends!' },
+    { id: 2, name: 'Lucas Kato', avatar: 'https://picsum.photos/seed/user2/100', note: 'Who is free today? 🔥' },
+    { id: 3, name: 'Maya Ortiz', avatar: 'https://picsum.photos/seed/user3/100', note: 'Is this thing on?' },
+    { id: 4, name: 'Miley Cyrus', avatar: 'https://picsum.photos/seed/user5/100', note: 'New Song! 🎵' }
+];
+
+// ข้อมูลรายการแชทผู้ใช้
+const chatUsersData = [
+    { id: 1, name: 'Lalisa Wongsuwan', lastMsg: 'lol not today • 2m', avatar: 'https://picsum.photos/seed/chat1/100' },
+    { id: 2, name: 'Marissa Richmond', lastMsg: 'Did you leave yet? • 4m', avatar: 'https://picsum.photos/seed/chat2/100' },
+    { id: 3, name: 'Arielle Shekel', lastMsg: 'Wait, is that real? • 30m', avatar: 'https://picsum.photos/seed/chat3/100' },
+    { id: 4, name: 'Nikos De Jager', lastMsg: 'Sounds good! Let\'s do it • 45m', avatar: 'https://picsum.photos/seed/chat4/100' }
+];
+
+// ข้อมูลจำลองประวัติการเล่นเกม
+const gameActivityData = [
+    { id: 1, game: 'VALORANT', playTime: '2 ชั่วโมง 45 นาที', date: '1 พฤศจิกายน 2026', icon: 'fa-crosshairs' },
+    { id: 2, game: 'Genshin Impact', playTime: '1 ชั่วโมง 30 นาที', date: '31 ตุลาคม 2026', icon: 'fa-wand-magic-sparkles' },
+    { id: 3, game: 'Grand Theft Auto V', playTime: '45 นาที', date: '28 ตุลาคม 2026', icon: 'fa-car' },
+    { id: 4, game: 'Minecraft', playTime: '4 ชั่วโมง 10 นาที', date: '25 ตุลาคม 2026', icon: 'fa-cube' }
+];
+
+// ==========================================
+// 2. ฟังก์ชันเรนเดอร์เนื้อหาหลัก & เล่นวิดีโอ
+// ==========================================
+
 function renderStories() {
+    const storiesContainer = document.getElementById('stories-container');
+    if (!storiesContainer) return;
     storiesContainer.innerHTML = storiesData.map(story => `
         <div class="story-card" onclick="openStory(${story.id})">
             <div class="story-ring">
@@ -28,11 +71,10 @@ function renderStories() {
     `).join('');
 }
 
-// เรนเดอร์วิดีโอ
-const videoGrid = document.getElementById('video-grid');
-function renderVideos() {
-    videoGrid.innerHTML = videosData.map(video => `
-        <div class="video-card">
+// สร้างการ์ดวิดีโอ พร้อมผูกคำสั่งเปิดเล่นวิดีโอเมื่อคลิก (onclick)
+function createVideoHTML(video) {
+    return `
+        <div class="video-card" onclick="openVideoPlayer('${video.title}', '${video.channel}', '${video.views}', '${video.videoUrl}')" style="cursor: pointer;">
             <img src="${video.thumb}" class="video-thumbnail" alt="thumbnail">
             <div class="video-info-container">
                 <div class="channel-icon"></div>
@@ -43,10 +85,114 @@ function renderVideos() {
                 </div>
             </div>
         </div>
+    `;
+}
+
+// ระบบเรนเดอร์และกรองวิดีโอจากคำค้นหา (Real-Time Search)
+function renderVideos(filterText = '') {
+    const videoGrid = document.getElementById('video-grid');
+    
+    const filteredVideos = videosData.filter(v => 
+        v.title.toLowerCase().includes(filterText.toLowerCase()) ||
+        v.channel.toLowerCase().includes(filterText.toLowerCase())
+    );
+
+    if (videoGrid) {
+        if (filteredVideos.length === 0) {
+            videoGrid.innerHTML = '<p style="color:#aaa; grid-column: 1/-1; text-align:center; padding: 40px 0;">ไม่พบวิดีโอที่คุณค้นหา 🔍</p>';
+        } else {
+            videoGrid.innerHTML = filteredVideos.map(createVideoHTML).join('');
+        }
+    }
+
+    const exploreGrid = document.getElementById('explore-grid');
+    if (exploreGrid) exploreGrid.innerHTML = [...videosData].reverse().map(createVideoHTML).join('');
+
+    const subGrid = document.getElementById('subscriptions-grid');
+    if (subGrid) subGrid.innerHTML = videosData.slice(0, 2).map(createVideoHTML).join('');
+
+    const historyGrid = document.getElementById('history-grid');
+    if (historyGrid) historyGrid.innerHTML = videosData.map(createVideoHTML).join('');
+
+    const myVideosGrid = document.getElementById('my-videos-grid');
+    if (myVideosGrid) {
+        const myVids = videosData.filter(v => v.channel === 'ช่องของคุณ' || v.channel === accounts[currentAccountIndex]?.name);
+        myVideosGrid.innerHTML = myVids.length ? myVids.map(createVideoHTML).join('') : '<p style="color:#666;">ยังไม่มีวิดีโอที่คุณอัปโหลด</p>';
+    }
+}
+
+// ผูกระบบค้นหากับ Input บน Header
+const mainSearchInput = document.getElementById('main-search-input') || document.querySelector('.nav-center input');
+const searchBtn = document.querySelector('.search-btn');
+
+if (mainSearchInput) {
+    mainSearchInput.addEventListener('input', (e) => {
+        renderVideos(e.target.value.trim());
+    });
+}
+if (searchBtn && mainSearchInput) {
+    searchBtn.addEventListener('click', () => {
+        renderVideos(mainSearchInput.value.trim());
+    });
+}
+
+// เรนเดอร์คลิปสั้น (Shorts) พร้อมคำสั่งคลิกเพื่อเปิดเล่นวิดีโอ
+function renderShorts() {
+    const shortsContainer = document.getElementById('shorts-container');
+    if (!shortsContainer) return;
+    shortsContainer.innerHTML = shortsData.map(s => `
+        <div class="short-card" onclick="openVideoPlayer('${s.title}', 'Shorts', 'ยอดชม ${s.views} ครั้ง', '${s.videoUrl}')" style="background-image: url('${s.bg}'); cursor: pointer;">
+            <div class="short-info">
+                <h4>${s.title}</h4>
+                <p style="font-size:0.8rem; color:#ccc;">ยอดชม ${s.views} ครั้ง</p>
+            </div>
+        </div>
     `).join('');
 }
 
-// ระบบเปิดดูสตอรี่ (Instagram Story Viewer)
+// ==========================================
+// 3. ระบบเปิด-ปิด หน้าต่างเล่นวิดีโอ (Video Player Modal)
+// ==========================================
+
+const videoPlayerModal = document.getElementById('video-player-modal');
+const mainVideoPlayer = document.getElementById('main-video-player');
+const closeVideoPlayerBtn = document.getElementById('close-video-player');
+
+function openVideoPlayer(title, channel, views, videoUrl) {
+    if (!videoPlayerModal || !mainVideoPlayer) return;
+
+    document.getElementById('player-video-title').textContent = title;
+    document.getElementById('player-video-channel').textContent = channel;
+    document.getElementById('player-video-views').textContent = views;
+
+    mainVideoPlayer.src = videoUrl || SAMPLE_VIDEO_URL;
+    videoPlayerModal.style.display = 'flex';
+    mainVideoPlayer.play();
+}
+
+function closeVideoPlayer() {
+    if (videoPlayerModal && mainVideoPlayer) {
+        mainVideoPlayer.pause();
+        mainVideoPlayer.src = '';
+        videoPlayerModal.style.display = 'none';
+    }
+}
+
+if (closeVideoPlayerBtn) {
+    closeVideoPlayerBtn.addEventListener('click', closeVideoPlayer);
+}
+
+// ปิด Modal เมื่อคลิกพื้นหลังภายนอก
+window.addEventListener('click', (e) => {
+    if (e.target === videoPlayerModal) {
+        closeVideoPlayer();
+    }
+});
+
+// ==========================================
+// 4. ระบบ Story & Upload Modal
+// ==========================================
+
 const storyViewer = document.getElementById('story-viewer');
 const storyDisplay = document.getElementById('story-display');
 const storyUsername = document.getElementById('story-username');
@@ -60,10 +206,8 @@ function openStory(id) {
     storyUsername.textContent = story.name;
     storyDisplay.style.backgroundColor = story.contentBg;
     storyDisplay.innerHTML = `<h2>${story.text}</h2>`;
-    
     storyViewer.style.display = 'flex';
-    
-    // แอนิเมชันหลอดเวลาสตอรี่ (5 วินาที)
+
     progress.style.transition = 'none';
     progress.style.width = '0%';
     setTimeout(() => {
@@ -72,19 +216,17 @@ function openStory(id) {
     }, 50);
 
     clearTimeout(storyTimer);
-    storyTimer = setTimeout(() => {
-        closeStoryViewer();
-    }, 5000);
+    storyTimer = setTimeout(closeStoryViewer, 5000);
 }
 
 function closeStoryViewer() {
-    storyViewer.style.display = 'none';
+    if (storyViewer) storyViewer.style.display = 'none';
     clearTimeout(storyTimer);
 }
 
-document.getElementById('close-story').addEventListener('click', closeStoryViewer);
+const closeStoryBtn = document.getElementById('close-story');
+if (closeStoryBtn) closeStoryBtn.addEventListener('click', closeStoryViewer);
 
-// ระบบ Modal อัพโหลดวิดีโอ (YouTube Upload Feature)
 const uploadModal = document.getElementById('upload-modal');
 const uploadTrigger = document.getElementById('upload-trigger');
 const closeModal = document.getElementById('close-modal');
@@ -92,45 +234,39 @@ const uploadForm = document.getElementById('upload-form');
 const dropzone = document.getElementById('dropzone');
 const fileInput = document.getElementById('video-file-input');
 
-uploadTrigger.addEventListener('click', () => uploadModal.style.display = 'flex');
-closeModal.addEventListener('click', () => uploadModal.style.display = 'none');
-dropzone.addEventListener('click', () => fileInput.click());
+if (uploadTrigger) uploadTrigger.addEventListener('click', () => uploadModal.style.display = 'flex');
+if (closeModal) closeModal.addEventListener('click', () => uploadModal.style.display = 'none');
+if (dropzone) dropzone.addEventListener('click', () => fileInput.click());
 
-// จำลองการอัพโหลดวิดีโอใหม่เข้าสู่ระบบ
-uploadForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const title = document.getElementById('video-title').value;
-    const desc = document.getElementById('video-desc').value;
+if (uploadForm) {
+    uploadForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const title = document.getElementById('video-title').value;
+        if (!title) return alert('กรุณากรอกชื่อวิดีโอ');
 
-    if (!title) return alert('กรุณากรอกชื่อวิดีโอ');
+        const activeAcc = accounts[currentAccountIndex] || accounts[0];
+        const newVideo = {
+            id: videosData.length + 1,
+            title: title,
+            channel: activeAcc.name,
+            views: '0 ครั้ง',
+            time: 'เมื่อสักครู่นี้',
+            thumb: 'https://picsum.photos/seed/' + Math.random() + '/400/225',
+            videoUrl: SAMPLE_VIDEO_URL
+        };
 
-    // สร้างข้อมูลวิดีโอใหม่จำลอง
-    const newVideo = {
-        id: videosData.length + 1,
-        title: title,
-        channel: 'ช่องของคุณ',
-        views: '0 ครั้ง',
-        time: 'เมื่อสักครู่นี้',
-        thumb: 'https://picsum.photos/seed/' + Math.random() + '/400/225'
-    };
+        videosData.unshift(newVideo);
+        renderVideos();
+        uploadForm.reset();
+        uploadModal.style.display = 'none';
+        alert('อัปโหลดวิดีโอสำเร็จ!');
+    });
+}
 
-    videosData.unshift(newVideo); // เพิ่มไว้บนสุด
-    renderVideos();
+// ==========================================
+// 5. ระบบจัดการบัญชี & Shared Code
+// ==========================================
 
-    // Reset ฟอร์มและปิด Modal
-    uploadForm.reset();
-    uploadModal.style.display = 'none';
-    alert('อัพโหลดวิดีโอสำเร็จ!');
-});
-
-// โหลดข้อมูลเริ่มต้นเมื่อเปิดเว็บ
-window.addEventListener('DOMContentLoaded', () => {
-    renderStories();
-    renderVideos();
-});
-// --- ระบบจัดการบัญชีและการตั้งค่า (Multi-Account & Shared Code) ---
-
-// ข้อมูลจำลองระบบบัญชี (เก็บใน LocalStorage จำลองเพื่อให้จำค่าได้)
 let accounts = JSON.parse(localStorage.getItem('streamgram_accounts')) || [
     { id: 1, name: 'Dev Channel (หลัก)', avatar: 'https://picsum.photos/seed/acc1/100' },
     { id: 2, name: 'Gamer Pro', avatar: 'https://picsum.photos/seed/acc2/100' }
@@ -138,14 +274,12 @@ let accounts = JSON.parse(localStorage.getItem('streamgram_accounts')) || [
 
 let currentAccountIndex = parseInt(localStorage.getItem('streamgram_current_acc')) || 0;
 
-// โค้ดกลางที่ใช้ร่วมกันได้ทุกบัญชี (กำหนดไว้ล่วงหน้า)
 const VALID_SHARED_CODES = {
     "STREAM2026": "ยินดีด้วย! คุณได้รับสิทธิ์สมาชิก VIP ฟรี 30 วัน 🎉",
     "YOUTUBEINSTA": "ปลดล็อกฟีเจอร์พิเศษ: โค้ดนี้ใช้ร่วมกันได้ทุกบัญชีสำเร็จ! ✅",
     "VIPCODE": "โค้ดลับใช้งานสำเร็จ ได้รับแต้มพิเศษ 500 พอยท์ 🌟"
 };
 
-// Element Selectors
 const settingsModal = document.getElementById('settings-modal');
 const settingsTrigger = document.getElementById('settings-trigger');
 const closeSettings = document.getElementById('close-settings');
@@ -156,217 +290,474 @@ const settingsAvatar = document.getElementById('settings-avatar');
 const addAccountBtn = document.getElementById('add-account-btn');
 const newAccountNameInput = document.getElementById('new-account-name');
 
-// เปิด-ปิด Modal ตั้งค่า
-settingsTrigger.addEventListener('click', () => {
-    updateSettingsUI();
-    settingsModal.style.display = 'flex';
-});
-closeSettings.addEventListener('click', () => settingsModal.style.display = 'none');
+if (settingsTrigger) {
+    settingsTrigger.addEventListener('click', () => {
+        updateSettingsUI();
+        settingsModal.style.display = 'flex';
+    });
+}
+if (closeSettings) closeSettings.addEventListener('click', () => settingsModal.style.display = 'none');
 
-// อัปเดต UI หน้าตั้งค่าและบัญชีปัจจุบัน
 function updateSettingsUI() {
     const activeAcc = accounts[currentAccountIndex] || accounts[0];
-    settingsUsername.textContent = activeAcc.name;
-    currentUserAvatar.style.backgroundImage = `url(${activeAcc.avatar})`;
-    currentUserAvatar.style.backgroundSize = 'cover';
-    settingsAvatar.style.backgroundImage = `url(${activeAcc.avatar})`;
-    settingsAvatar.style.backgroundSize = 'cover';
+    if (settingsUsername) settingsUsername.textContent = activeAcc.name;
+    
+    const channelNameDisp = document.getElementById('channel-page-name');
+    if (channelNameDisp) channelNameDisp.textContent = activeAcc.name;
 
-    // เรนเดอร์รายชื่อบัญชีทั้งหมด
-    accountsList.innerHTML = accounts.map((acc, index) => `
-        <div class="account-item ${index === currentAccountIndex ? 'active-account' : ''}">
-            <span style="font-size: 0.9rem;">${acc.name} ${index === currentAccountIndex ? '(ใช้งานอยู่)' : ''}</span>
-            ${index !== currentAccountIndex ? `<button class="switch-btn" onclick="switchAccount(${index})">สลับ</button>` : '<span style="color:#3ea6ff; font-size:0.8rem;">ใช้งานอยู่</span>'}
-        </div>
-    `).join('');
+    if (currentUserAvatar) {
+        currentUserAvatar.style.backgroundImage = `url(${activeAcc.avatar})`;
+        currentUserAvatar.style.backgroundSize = 'cover';
+    }
+    if (settingsAvatar) {
+        settingsAvatar.style.backgroundImage = `url(${activeAcc.avatar})`;
+        settingsAvatar.style.backgroundSize = 'cover';
+    }
+
+    if (accountsList) {
+        accountsList.innerHTML = accounts.map((acc, index) => `
+            <div class="account-item ${index === currentAccountIndex ? 'active-account' : ''}">
+                <span style="font-size: 0.9rem;">${acc.name} ${index === currentAccountIndex ? '(ใช้งานอยู่)' : ''}</span>
+                ${index !== currentAccountIndex ? `<button class="switch-btn" onclick="switchAccount(${index})">สลับ</button>` : '<span style="color:#3ea6ff; font-size:0.8rem;">ใช้งานอยู่</span>'}
+            </div>
+        `).join('');
+    }
 }
 
-// ฟังก์ชันสลับบัญชี
 window.switchAccount = function(index) {
     currentAccountIndex = index;
     localStorage.setItem('streamgram_current_acc', currentAccountIndex);
     updateSettingsUI();
+    renderVideos();
     alert(`สลับไปยังบัญชี "${accounts[currentAccountIndex].name}" เรียบร้อยแล้ว!`);
 };
 
-// ฟังก์ชันเพิ่มบัญชีใหม่
-addAccountBtn.addEventListener('click', () => {
-    const name = newAccountNameInput.value.trim();
-    if (!name) return alert('กรุณากรอกชื่อบัญชี');
+if (addAccountBtn) {
+    addAccountBtn.addEventListener('click', () => {
+        const name = newAccountNameInput.value.trim();
+        if (!name) return alert('กรุณากรอกชื่อบัญชี');
 
-    const newAcc = {
-        id: accounts.length + 1,
-        name: name,
-        avatar: `https://picsum.photos/seed/${name}/100`
-    };
+        const newAcc = {
+            id: accounts.length + 1,
+            name: name,
+            avatar: `https://picsum.photos/seed/${name}/100`
+        };
 
-    accounts.push(newAcc);
-    localStorage.setItem('streamgram_accounts', JSON.stringify(accounts));
-    newAccountNameInput.value = '';
-    updateSettingsUI();
-    alert('เพิ่มบัญชีใหม่สำเร็จ!');
-});
+        accounts.push(newAcc);
+        localStorage.setItem('streamgram_accounts', JSON.stringify(accounts));
+        newAccountNameInput.value = '';
+        updateSettingsUI();
+        alert('เพิ่มบัญชีใหม่สำเร็จ!');
+    });
+}
 
-// ระบบใส่โค้ดเดียวกัน (Shared Code System)
 const sharedCodeInput = document.getElementById('shared-code-input');
 const submitCodeBtn = document.getElementById('submit-code-btn');
 const codeFeedback = document.getElementById('code-feedback');
 
-submitCodeBtn.addEventListener('click', () => {
-    const code = sharedCodeInput.value.trim().toUpperCase();
-    if (!code) {
-        codeFeedback.style.color = '#ff4e45';
-        codeFeedback.textContent = 'กรุณากรอกโค้ดก่อนกดใช้งาน';
-        return;
-    }
+if (submitCodeBtn) {
+    submitCodeBtn.addEventListener('click', () => {
+        const code = sharedCodeInput.value.trim().toUpperCase();
+        if (!code) {
+            codeFeedback.style.color = '#ff4e45';
+            codeFeedback.textContent = 'กรุณากรอกโค้ดก่อนกดใช้งาน';
+            return;
+        }
 
-    // ตรวจสอบว่าโค้ดถูกต้องหรือไม่ (โค้ดชุดเดียวกัน ไม่ว่าจะบัญชีไหนกรอกก็ใช้ได้เหมือนกัน)
-    if (VALID_SHARED_CODES[code]) {
-        codeFeedback.style.color = '#10b981'; // สีเขียว
-        codeFeedback.textContent = VALID_SHARED_CODES[code];
-        
-        // บันทึกสถานะว่าบัญชีนี้ใช้โค้ดนี้แล้ว (หรือจะให้ใช้ซ้ำได้อิสระ)
-        console.log(`บัญชี ${accounts[currentAccountIndex].name} ใช้โค้ด: ${code} สำเร็จ`);
-    } else {
-        codeFeedback.style.color = '#ff4e45'; // สีแดง
-        codeFeedback.textContent = '❌ โค้ดไม่ถูกต้องหรือหมดอายุแล้ว';
-    }
-});
+        if (VALID_SHARED_CODES[code]) {
+            codeFeedback.style.color = '#10b981';
+            codeFeedback.textContent = VALID_SHARED_CODES[code];
+        } else {
+            codeFeedback.style.color = '#ff4e45';
+            codeFeedback.textContent = '❌ โค้ดไม่ถูกต้องหรือหมดอายุแล้ว';
+        }
+    });
+}
 
-// โหลดการตั้งค่าบัญชีตั้งแต่เริ่มต้นเปิดเว็บ
-window.addEventListener('DOMContentLoaded', () => {
-    const activeAcc = accounts[currentAccountIndex] || accounts[0];
-    if(currentUserAvatar) {
-        currentUserAvatar.style.backgroundImage = `url(${activeAcc.avatar})`;
-        currentUserAvatar.style.backgroundSize = 'cover';
-    }
-});
-// --- ระบบติดต่อเจ้าหน้าที่ (Contact Support System) ---
+// ==========================================
+// 6. ระบบติดต่อเจ้าหน้าที่
+// ==========================================
 
+let supportTickets = JSON.parse(localStorage.getItem('streamgram_tickets')) || [];
 const supportModal = document.getElementById('support-modal');
 const supportTrigger = document.getElementById('support-trigger');
 const closeSupport = document.getElementById('close-support');
 const supportForm = document.getElementById('support-form');
-const supportFeedback = document.getElementById('support-feedback');
+const supportUserDisplay = document.getElementById('support-user-display');
+const ticketsList = document.getElementById('tickets-list');
 
-// เปิด-ปิด Modal ติดต่อเจ้าหน้าที่
-supportTrigger.addEventListener('click', (e) => {
-    e.preventDefault();
-    supportFeedback.textContent = '';
-    supportForm.reset();
-    supportModal.style.display = 'flex';
-});
-
-closeSupport.addEventListener('click', () => {
-    supportModal.style.display = 'none';
-});
-
-// ส่งข้อความหาเจ้าหน้าที่
-supportForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const topic = document.getElementById('support-topic').value;
-    const message = document.getElementById('support-message').value.trim();
-    
-    if (!message) return;
-
-    // ดึงชื่อบัญชีปัจจุบันที่กำลังใช้งานอยู่มาแนบไปกับเรื่องที่แจ้ง
-    const activeAcc = accounts[currentAccountIndex] || { name: 'Unknown User' };
-
-    // จำลองการส่งข้อมูลไปยังเซิร์ฟเวอร์ (สามารถนำไปต่อยอดใช้ EmailJS หรือ Backend จริงได้)
-    console.log(`[Support Ticket Sent] จากบัญชี: ${activeAcc.name} | หัวข้อ: ${topic} | ข้อความ: ${message}`);
-
-    supportFeedback.style.color = '#10b981'; // สีเขียว
-    supportFeedback.textContent = '✅ ส่งข้อความหาเจ้าหน้าที่สำเร็จ! เจ้าหน้าที่กำลังตรวจสอบและจะติดต่อกลับเร็วๆ นี้';
-
-    // ปิด Modal อัตโนมัติหลังจาก 2 วินาที
-    setTimeout(() => {
-        supportModal.style.display = 'none';
-    }, 2000);
-});
-// --- ระบบกดติดตาม และติดตามกลับ (Follow & Follow Back System) ---
-
-// เก็บสถานะการติดตามของแต่ละบัญชี (Key: ชื่อบัญชี, Value: Array ของชื่อช่องที่ติดตาม)
-let userFollows = JSON.parse(localStorage.getItem('streamgram_user_follows')) || {};
-
-// เก็บสถานะว่าช่องไหนติดตามบัญชีเรากลับบ้าง (จำลอง)
-let isFollowingBack = JSON.parse(localStorage.getItem('streamgram_follow_back')) || {
-    'Dev Code': true,       // ช่องนี้ติดตามกลับแล้ว
-    'Foodie Guide': false,  // ยังไม่ได้ติดตามกลับ
-    'Home Studio': true,
-    'Lofi Vibes': false
-};
-
-// ฟังก์ชันตรวจสอบว่าบัญชีปัจจุบันติดตามช่องนี้หรือยัง
-function checkIfFollowing(channelName) {
-    const activeAccName = accounts[currentAccountIndex].name;
-    if (!userFollows[activeAccName]) {
-        userFollows[activeAccName] = [];
-    }
-    return userFollows[activeAccName].includes(channelName);
+if (supportTrigger) {
+    supportTrigger.addEventListener('click', (e) => {
+        e.preventDefault();
+        const activeAcc = accounts[currentAccountIndex] || accounts[0];
+        if (supportUserDisplay) supportUserDisplay.value = activeAcc.name;
+        renderSupportTickets();
+        supportModal.style.display = 'flex';
+    });
 }
 
-// ฟังก์ชันกดติดตาม / เลิกติดตาม
-window.toggleFollow = function(channelName) {
-    const activeAccName = accounts[currentAccountIndex].name;
-    if (!userFollows[activeAccName]) {
-        userFollows[activeAccName] = [];
+if (closeSupport) closeSupport.addEventListener('click', () => supportModal.style.display = 'none');
+
+function renderSupportTickets() {
+    if (!ticketsList) return;
+    if (supportTickets.length === 0) {
+        ticketsList.innerHTML = '<p style="color: #666;">ยังไม่มีประวัติการติดต่อ</p>';
+        return;
     }
 
-    const index = userFollows[activeAccName].indexOf(channelName);
-    if (index > -1) {
-        // ถ้าติดตามอยู่แล้ว ให้ยกเลิกการติดตาม (Unfollow)
-        userFollows[activeAccName].splice(index, 1);
-        alert(`คุณเลิกติดตามช่อง ${channelName} แล้ว`);
-    } else {
-        // ถ้ายังไม่ได้ติดตาม ให้กดติดตาม (Follow)
-        userFollows[activeAccName].push(channelName);
-        
-        // เช็คว่าช่องนั้นติดตามกลับเราด้วยไหม
-        const followsBack = isFollowingBack[channelName] || false;
-        if (followsBack) {
-            alert(`🎉 คุณติดตามช่อง ${channelName} แล้ว และช่องนี้ "ติดตามคุณกลับแล้ว" ด้วย!`);
-        } else {
-            alert(`✅ ติดตามช่อง ${channelName} สำเร็จ!`);
-        }
+    ticketsList.innerHTML = supportTickets.map(ticket => `
+        <div class="ticket-item">
+            <strong>[${ticket.topic}] จาก: ${ticket.sender}</strong>
+            <p>${ticket.message}</p>
+            <span style="font-size:0.7rem; color:#666;">ส่งเมื่อ: ${ticket.time} | สถานะ: รอดำเนินการ</span>
+        </div>
+    `).join('');
+}
+
+if (supportForm) {
+    supportForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const activeAcc = accounts[currentAccountIndex] || accounts[0];
+        const topicSelect = document.getElementById('support-topic');
+        const topicText = topicSelect.options[topicSelect.selectedIndex].text;
+        const message = document.getElementById('support-message').value.trim();
+
+        if (!message) return alert('กรุณากรอกรายละเอียดข้อความ');
+
+        const newTicket = {
+            id: Date.now(),
+            sender: activeAcc.name,
+            topic: topicText,
+            message: message,
+            time: new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })
+        };
+
+        supportTickets.unshift(newTicket);
+        localStorage.setItem('streamgram_tickets', JSON.stringify(supportTickets));
+
+        renderSupportTickets();
+        supportForm.reset();
+        alert('ส่งข้อความถึงเจ้าหน้าที่เรียบร้อยแล้ว!');
+    });
+}
+
+// ==========================================
+// 7. ระบบสลับหน้า Sidebar (SPA)
+// ==========================================
+
+const sidebarItems = document.querySelectorAll('.sidebar-item[data-page]');
+const pageViews = document.querySelectorAll('.page-view');
+
+sidebarItems.forEach(item => {
+    item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetPage = item.getAttribute('data-page');
+
+        sidebarItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+
+        pageViews.forEach(view => {
+            if (view.id === `view-${targetPage}`) {
+                view.classList.add('active-view');
+            } else {
+                view.classList.remove('active-view');
+            }
+        });
+    });
+});
+
+// ==========================================
+// 8. ระบบแชท Direct Messages & Notes & ระบบค้นหาเพื่อน
+// ==========================================
+
+const menuIcon = document.querySelector('.menu-icon');
+const chatModal = document.getElementById('chat-modal');
+const closeChat = document.getElementById('close-chat');
+const chatForm = document.getElementById('chat-form');
+const chatInput = document.getElementById('chat-input');
+const chatMessages = document.getElementById('chat-messages');
+
+function renderNotes() {
+    const notesContainer = document.getElementById('ig-notes-container');
+    if (!notesContainer) return;
+    notesContainer.innerHTML = notesData.map(n => `
+        <div class="note-card" onclick="openNoteViewer(${n.id})">
+            <div class="note-bubble">${n.note}</div>
+            <img src="${n.avatar}" class="note-avatar" alt="${n.name}">
+            <span>${n.name}</span>
+        </div>
+    `).join('');
+}
+
+// เรนเดอร์แชทเพื่อนและกรองคำค้นหา
+function renderChatList(filterText = '') {
+    const chatList = document.getElementById('ig-chat-list');
+    if (!chatList) return;
+
+    const filteredUsers = chatUsersData.filter(user => 
+        user.name.toLowerCase().includes(filterText.toLowerCase()) ||
+        user.lastMsg.toLowerCase().includes(filterText.toLowerCase())
+    );
+
+    if (filteredUsers.length === 0) {
+        chatList.innerHTML = '<p style="color: #888; text-align: center; margin-top: 20px; font-size: 0.9rem;">ไม่พบชื่อเพื่อนที่ค้นหา</p>';
+        return;
     }
 
-    // บันทึกลง LocalStorage และรีเฟรชหน้าจอวิดีโอ
-    localStorage.setItem('streamgram_user_follows', JSON.stringify(userFollows));
-    renderVideos();
-};
+    chatList.innerHTML = filteredUsers.map(u => `
+        <div class="chat-user-item" onclick="openDirectChat(${u.id})">
+            <img src="${u.avatar}" class="chat-user-avatar" alt="${u.name}">
+            <div class="chat-user-details">
+                <h4>${u.name}</h4>
+                <p>${u.lastMsg}</p>
+            </div>
+            <i class="fa-regular fa-camera" style="color: #888;"></i>
+        </div>
+    `).join('');
+}
 
-// ปรับปรุงฟังก์ชัน renderVideos ให้มีปุ่มติดตามและป้ายติดตามกลับ
-const originalRenderVideos = renderVideos;
-renderVideos = function() {
-    const activeAccName = accounts[currentAccountIndex].name;
-    const followingList = userFollows[activeAccName] || [];
+// ผูกระบบค้นหาเพื่อนในแชท
+const dmSearchInput = document.getElementById('dm-search-input');
+if (dmSearchInput) {
+    dmSearchInput.addEventListener('input', (e) => {
+        renderChatList(e.target.value.trim());
+    });
+}
 
-    videoGrid.innerHTML = videosData.map(video => {
-        const isFollowing = followingList.includes(video.channel);
-        const followsBack = isFollowingBack[video.channel] || false;
+const activeChatWindow = document.getElementById('ig-active-chat');
+const activeUserName = document.getElementById('active-user-name');
+const activeUserAvatar = document.getElementById('active-user-avatar');
+const backToListBtn = document.getElementById('back-to-list');
 
-        return `
-            <div class="video-card">
-                <img src="${video.thumb}" class="video-thumbnail" alt="thumbnail">
-                <div class="video-info-container">
-                    <div class="channel-icon"></div>
-                    <div class="video-details" style="width: 100%;">
-                        <h3>${video.title}</h3>
-                        <p>${video.channel} ${followsBack ? '<span class="follow-back-badge">ติดตามคุณกลับแล้ว</span>' : ''}</p>
-                        <p>${video.views} • ${video.time}</p>
-                        <div class="follow-action-container">
-                            <button class="follow-btn ${isFollowing ? 'following' : ''}" onclick="toggleFollow('${video.channel}')">
-                                ${isFollowing ? '✓ กำลังติดตาม' : '+ ติดตาม'}
-                            </button>
-                        </div>
-                    </div>
+function openDirectChat(userId) {
+    const user = chatUsersData.find(u => u.id === userId);
+    if (!user || !activeChatWindow) return;
+
+    activeUserName.textContent = user.name;
+    activeUserAvatar.style.backgroundImage = `url(${user.avatar})`;
+    activeUserAvatar.style.backgroundSize = 'cover';
+    activeUserAvatar.innerHTML = '';
+    activeChatWindow.style.display = 'flex';
+}
+
+if (backToListBtn) {
+    backToListBtn.addEventListener('click', () => {
+        activeChatWindow.style.display = 'none';
+    });
+}
+
+if (menuIcon) {
+    menuIcon.style.cursor = 'pointer';
+    menuIcon.addEventListener('click', () => {
+        renderNotes();
+        renderChatList();
+        if (dmSearchInput) dmSearchInput.value = '';
+        if (activeChatWindow) activeChatWindow.style.display = 'none';
+        chatModal.style.display = 'flex';
+    });
+}
+
+if (closeChat) {
+    closeChat.addEventListener('click', () => {
+        chatModal.style.display = 'none';
+    });
+}
+
+if (chatForm) {
+    chatForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const text = chatInput.value.trim();
+        if (!text) return;
+
+        const activeAcc = accounts[currentAccountIndex] || accounts[0];
+        const userMsg = document.createElement('div');
+        userMsg.className = 'chat-message user';
+        userMsg.innerHTML = `<strong>${activeAcc.name}:</strong> ${text}`;
+        chatMessages.appendChild(userMsg);
+
+        chatInput.value = '';
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        setTimeout(() => {
+            const botMsg = document.createElement('div');
+            botMsg.className = 'chat-message bot';
+            botMsg.innerHTML = `<strong>แอดมิน:</strong> ได้รับข้อความ "${text}" แล้วครับ`;
+            chatMessages.appendChild(botMsg);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }, 1000);
+    });
+}
+
+// ==========================================
+// 9. ระบบประวัติการเล่นเกม (Game Activity) & แชทกลุ่มเกมเมอร์
+// ==========================================
+
+function renderGameActivity() {
+    const activityContainer = document.getElementById('game-activity-list');
+    if (!activityContainer) return;
+
+    activityContainer.innerHTML = gameActivityData.map(item => `
+        <div class="game-activity-card">
+            <div class="game-info">
+                <div class="game-icon">
+                    <i class="fa-solid ${item.icon}"></i>
+                </div>
+                <div class="game-details">
+                    <h4>${item.game}</h4>
+                    <p><i class="fa-regular fa-calendar"></i> เล่นเมื่อ: ${item.date}</p>
                 </div>
             </div>
-        `;
-    }).join('');
+            <div class="game-time-badge">
+                <i class="fa-regular fa-clock"></i> ${item.playTime}
+            </div>
+        </div>
+    `).join('');
 }
 
-// โหลดการแสดงผลวิดีโอใหม่พร้อมปุ่มติดตามเมื่อเปิดเว็บ
+// ผูกปุ่ม "แชทกลุ่มเกมเมอร์"
+document.addEventListener('click', (e) => {
+    const gamerChatBtn = e.target.closest('#gamer-chat-trigger');
+    if (gamerChatBtn) {
+        if (chatModal && activeChatWindow) {
+            activeUserName.textContent = '🎮 ห้องแชทรวมเกมเมอร์ (Gamer Hub)';
+            activeUserAvatar.style.backgroundImage = 'none';
+            activeUserAvatar.style.backgroundColor = '#e1306c';
+            activeUserAvatar.innerHTML = '<i class="fa-solid fa-gamepad" style="color:#fff; line-height:30px; text-align:center; display:block;"></i>';
+            
+            chatModal.style.display = 'flex';
+            activeChatWindow.style.display = 'flex';
+        }
+    }
+});
+
+// ==========================================
+// 10. ระบบเปิดดู Note ขยายใหญ่
+// ==========================================
+
+const noteViewerModal = document.getElementById('note-viewer-modal');
+const closeNoteViewer = document.getElementById('close-note-viewer');
+const noteViewText = document.getElementById('note-view-text');
+const noteViewAvatar = document.getElementById('note-view-avatar');
+const noteViewUsername = document.getElementById('note-view-username');
+const noteReplyForm = document.getElementById('note-reply-form');
+const noteReplyInput = document.getElementById('note-reply-input');
+
+function openNoteViewer(noteId) {
+    const note = notesData.find(n => n.id === noteId);
+    if (!note || !noteViewerModal) return;
+
+    noteViewText.textContent = note.note;
+    noteViewAvatar.src = note.avatar;
+    noteViewUsername.textContent = note.name;
+    noteViewerModal.style.display = 'flex';
+}
+
+if (closeNoteViewer) {
+    closeNoteViewer.addEventListener('click', () => {
+        noteViewerModal.style.display = 'none';
+    });
+}
+
+if (noteReplyForm) {
+    noteReplyForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const reply = noteReplyInput.value.trim();
+        if (!reply) return;
+
+        alert(`ส่งข้อความตอบกลับ "${reply}" ไปยัง ${noteViewUsername.textContent} เรียบร้อยแล้ว!`);
+        noteReplyInput.value = '';
+        noteViewerModal.style.display = 'none';
+    });
+}
+
+// ==========================================
+// 11. ระบบกดค้างแสดงแถบอิโมจิเลือกธีมสี (Emoji Theme Bar)
+// ==========================================
+
+const themeEmojiBarHTML = `
+    <div id="theme-emoji-bar" class="theme-emoji-bar">
+        <span class="theme-emoji-item" onclick="changeChatTheme('default')" title="มืดคลาสสิก">⬛</span>
+        <span class="theme-emoji-item" onclick="changeChatTheme('instagram')" title="อินสตาแกรม">🟣</span>
+        <span class="theme-emoji-item" onclick="changeChatTheme('cyberpunk')" title="ไซเบอร์พังก์">🌸</span>
+        <span class="theme-emoji-item" onclick="changeChatTheme('emerald')" title="เอเมอรัลด์">🟢</span>
+        <span class="theme-emoji-item" onclick="changeChatTheme('sunset')" title="ซันเซ็ต">🟠</span>
+        <span class="theme-emoji-item" onclick="changeChatTheme('ocean')" title="โอเชี่ยน">🔵</span>
+    </div>
+`;
+document.body.insertAdjacentHTML('beforeend', themeEmojiBarHTML);
+
+const themeEmojiBar = document.getElementById('theme-emoji-bar');
+const closeThemeModalBtn = document.getElementById('close-theme-modal');
+const themeModal = document.getElementById('chat-theme-modal');
+
+let longPressTimer;
+const LONG_PRESS_DURATION = 400;
+
+if (chatMessages) {
+    function showEmojiThemeBar(x, y) {
+        themeEmojiBar.style.left = `${x}px`;
+        themeEmojiBar.style.top = `${y - 50}px`;
+        themeEmojiBar.classList.add('show');
+    }
+
+    document.addEventListener('click', (e) => {
+        if (themeEmojiBar && !themeEmojiBar.contains(e.target)) {
+            themeEmojiBar.classList.remove('show');
+        }
+    });
+
+    chatMessages.addEventListener('mousedown', (e) => {
+        longPressTimer = setTimeout(() => {
+            showEmojiThemeBar(e.clientX, e.clientY);
+        }, LONG_PRESS_DURATION);
+    });
+
+    chatMessages.addEventListener('mouseup', () => clearTimeout(longPressTimer));
+    chatMessages.addEventListener('mouseleave', () => clearTimeout(longPressTimer));
+
+    chatMessages.addEventListener('touchstart', (e) => {
+        const touch = e.touches[0];
+        longPressTimer = setTimeout(() => {
+            showEmojiThemeBar(touch.clientX, touch.clientY);
+        }, LONG_PRESS_DURATION);
+    });
+
+    chatMessages.addEventListener('touchend', () => clearTimeout(longPressTimer));
+    chatMessages.addEventListener('touchmove', () => clearTimeout(longPressTimer));
+}
+
+if (closeThemeModalBtn && themeModal) {
+    closeThemeModalBtn.addEventListener('click', () => {
+        themeModal.style.display = 'none';
+    });
+}
+
+window.changeChatTheme = function(themeName) {
+    if (!chatMessages) return;
+    chatMessages.className = 'chat-messages';
+    
+    if (themeName !== 'default') {
+        chatMessages.classList.add(`theme-${themeName}`);
+    }
+
+    localStorage.setItem('streamgram_chat_theme', themeName);
+    if (themeEmojiBar) themeEmojiBar.classList.remove('show');
+    if (themeModal) themeModal.style.display = 'none';
+};
+
+// ==========================================
+// 12. โหลดข้อมูลเมื่อเปิดเว็บ
+// ==========================================
+
 window.addEventListener('DOMContentLoaded', () => {
+    renderStories();
     renderVideos();
+    renderShorts();
+    renderGameActivity();
+    updateSettingsUI();
+
+    const savedTheme = localStorage.getItem('streamgram_chat_theme');
+    if (savedTheme && chatMessages) {
+        changeChatTheme(savedTheme);
+    }
 });
