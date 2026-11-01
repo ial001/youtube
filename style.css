@@ -37,6 +37,10 @@ body {
     cursor: pointer;
 }
 
+.logo i {
+    color: #3ea6ff; /* ปรับสีไอคอนรูปโลกบน Navbar ให้เป็นสีฟ้า */
+}
+
 .menu-icon {
     font-size: 1.2rem;
     cursor: pointer;
@@ -81,6 +85,12 @@ body {
     background: #555;
     border-radius: 50%;
     cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.user-avatar:hover {
+    opacity: 0.85;
+    transform: scale(1.05);
 }
 
 /* Layout */
@@ -377,6 +387,20 @@ body {
     color: #3ea6ff;
 }
 
+.preset-avatar-option {
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.preset-avatar-option:hover {
+    transform: scale(1.15);
+    border-color: #3ea6ff !important;
+}
+
+#edit-profile-form input[type="text"]:focus,
+#edit-profile-form textarea:focus {
+    border-color: #3ea6ff;
+}
+
 .current-account-card {
     display: flex;
     align-items: center;
@@ -524,62 +548,6 @@ body {
     z-index: 3000;
 }
 
-/* Chat Modal Styles */
-.chat-box {
-    width: 450px;
-    height: 550px;
-    display: flex;
-    flex-direction: column;
-}
-
-.chat-messages {
-    flex: 1;
-    background: #121212;
-    border: 1px solid #333;
-    border-radius: 8px;
-    padding: 15px;
-    margin: 15px 0;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.chat-message {
-    padding: 8px 12px;
-    border-radius: 8px;
-    max-width: 80%;
-    font-size: 0.9rem;
-    line-height: 1.4;
-}
-
-.chat-message.user {
-    align-self: flex-end;
-    background: #3ea6ff;
-    color: #000;
-}
-
-.chat-message.bot {
-    align-self: flex-start;
-    background: #252525;
-    color: #fff;
-}
-
-.chat-input-area {
-    display: flex;
-    gap: 10px;
-}
-
-.chat-input-area input {
-    flex: 1;
-    padding: 10px 15px;
-    background: #121212;
-    border: 1px solid #444;
-    border-radius: 6px;
-    color: #fff;
-    outline: none;
-}
-
 /* Instagram Direct Message & Notes Modal Styles */
 .ig-dm-box {
     width: 480px;
@@ -617,7 +585,6 @@ body {
     width: 100%;
 }
 
-/* Notes Section Styles */
 .ig-notes-section {
     overflow-x: auto;
     padding-bottom: 10px;
@@ -686,7 +653,6 @@ body {
     white-space: nowrap;
 }
 
-/* Chat List Styles */
 .ig-messages-title {
     display: flex;
     justify-content: space-between;
@@ -743,7 +709,6 @@ body {
     color: #aaa;
 }
 
-/* Active Chat Interface */
 .ig-active-chat {
     position: absolute;
     inset: 0;
@@ -762,7 +727,58 @@ body {
     border-bottom: 1px solid #333;
 }
 
-/* Note Viewer Modal Styles */
+.chat-messages {
+    flex: 1;
+    padding: 12px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.chat-message {
+    padding: 8px 14px;
+    border-radius: 16px;
+    max-width: 75%;
+    font-size: 0.9rem;
+    word-break: break-word;
+    line-height: 1.4;
+}
+
+.chat-message.user {
+    align-self: flex-end;
+    background: #3ea6ff;
+    color: #000;
+    border-bottom-right-radius: 4px;
+}
+
+.chat-message.bot {
+    align-self: flex-start;
+    background: #262626;
+    color: #fff;
+    border-bottom-left-radius: 4px;
+    border: 1px solid #383838;
+}
+
+.chat-input-area {
+    display: flex;
+    gap: 10px;
+}
+
+.chat-input-area input {
+    flex: 1;
+    padding: 10px 15px;
+    background: #121212;
+    border: 1px solid #444;
+    border-radius: 20px;
+    color: #fff;
+    outline: none;
+}
+
 .note-viewer-box {
     width: 360px;
     background: #1c1c1c;
@@ -827,7 +843,6 @@ body {
     to { opacity: 1; transform: scale(1); }
 }
 
-/* Modal เลือกธีม */
 .theme-box {
     width: 420px;
 }
@@ -878,7 +893,6 @@ body {
     color: #ccc;
 }
 
-/* แถบอิโมจิเลือกธีมสีแบบกดค้าง (Emoji Theme Bar) */
 .theme-emoji-bar {
     position: fixed;
     background: #262626;
@@ -916,7 +930,21 @@ body {
 }
 
 /* --- ชุดธีมสีต่างๆ ของกล่องแชท --- */
-/* ธีม Instagram (🟣) */
+.chat-messages.theme-rainbow {
+    background: #0f0f0f !important;
+    border: 3px solid transparent !important;
+    border-image: linear-gradient(45deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0040ff, #8b00ff) 1 !important;
+}
+.chat-messages.theme-rainbow .chat-message.user {
+    background: linear-gradient(135deg, #ff0055, #ff5000, #ffcc00) !important;
+    color: #fff !important;
+    font-weight: 600;
+}
+.chat-messages.theme-rainbow .chat-message.bot {
+    background: linear-gradient(135deg, #00c6ff, #0072ff) !important;
+    color: #fff !important;
+}
+
 .chat-messages.theme-instagram {
     background: linear-gradient(180deg, #180d24 0%, #0d0614 100%) !important;
 }
@@ -925,7 +953,6 @@ body {
     color: #fff !important;
 }
 
-/* ธีม Cyberpunk Pink (🌸) */
 .chat-messages.theme-cyberpunk {
     background: #090d16 !important;
     border-color: #ec4899 !important;
@@ -939,7 +966,6 @@ body {
     color: #38bdf8 !important;
 }
 
-/* ธีม Emerald Green (🟢) */
 .chat-messages.theme-emerald {
     background: #022c22 !important;
 }
@@ -952,7 +978,6 @@ body {
     color: #ecfdf5 !important;
 }
 
-/* ธีม Sunset Orange (🟠) */
 .chat-messages.theme-sunset {
     background: #270f03 !important;
 }
@@ -965,14 +990,6 @@ body {
     color: #ffedd5 !important;
 }
 
-/* ธีม Ocean Blue (🔵) */
-.chat-messages.theme-ocean {
-    background: #0c4a6e !important;
-}
-.chat-messages.theme-ocean .chat-message.user {
-    background: #0284c7 !important;
-    color: #fff !important;
-}
 /* --- ส่วนประวัติการเล่นเกม (Game Activity Log) --- */
 .game-activity-list {
     display: flex;
@@ -1032,4 +1049,217 @@ body {
     font-size: 0.85rem;
     color: #10b981;
     font-weight: 600;
+}
+
+/* --- Video Player Layout & Mini Player Styles --- */
+.video-player-box {
+    max-width: 1100px;
+    width: 95%;
+    padding: 20px;
+    background: #0f0f0f;
+    border-radius: 12px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.player-actions {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    z-index: 10;
+}
+
+.player-actions button {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.player-actions button:hover {
+    color: #3ea6ff;
+}
+
+.player-layout {
+    display: flex;
+    gap: 20px;
+    margin-top: 25px;
+}
+
+.video-main-section {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+}
+
+.video-container {
+    width: 100%;
+    height: 480px;
+    background: #000;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: height 0.3s ease;
+}
+
+.video-live-chat {
+    flex: 1;
+    background: #181818;
+    border: 1px solid #333;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    height: 550px;
+    transition: height 0.3s ease;
+}
+
+.chat-header {
+    padding: 12px 15px;
+    border-bottom: 1px solid #333;
+}
+
+.chat-header h3 {
+    font-size: 1rem;
+    color: #fff;
+    margin: 0;
+}
+
+.chat-box {
+    flex: 1;
+    padding: 12px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 0.85rem;
+}
+
+.chat-item {
+    background: #222;
+    padding: 8px 12px;
+    border-radius: 8px;
+    color: #ccc;
+    word-break: break-word;
+    line-height: 1.4;
+}
+
+.chat-item strong {
+    color: #3ea6ff;
+}
+
+.video-player-box.mini-mode {
+    max-width: 800px;
+}
+
+.video-player-box.mini-mode .video-container {
+    height: 300px;
+}
+
+.video-player-box.mini-mode .video-live-chat {
+    height: 380px;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 70px;
+    }
+    .sidebar-item span {
+        display: none;
+    }
+    .content {
+        margin-left: 70px;
+        width: calc(100% - 70px);
+    }
+    .player-layout {
+        flex-direction: column;
+    }
+    .video-container {
+        height: 250px;
+    }
+    .video-live-chat {
+        height: 300px;
+    }
+}
+
+/* --- Splash Screen --- */
+#splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #0f0f0f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+#splash-screen.hide {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.splash-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.splash-logo {
+    width: 90px;
+    height: 90px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 4rem;
+    color: #3ea6ff; /* ปรับสีไอคอนรูปโลกให้เป็นสีฟ้าสดใส */
+    animation: pulse 1.5s infinite alternate;
+}
+
+#splash-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 10px rgba(62, 166, 255, 0.5)); /* เงาเรืองแสงสำหรับรูปภาพ */
+}
+
+.splash-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #fff;
+    letter-spacing: 1px;
+}
+
+.splash-loader {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    border-top-color: #3ea6ff;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.1); }
+}
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.1); }
 }
