@@ -946,3 +946,44 @@ window.addEventListener('load', () => {
         }, 1500);
     }
 });
+// ตรวจสอบอินเทอร์เน็ตก่อนเข้าแอปพลิเคชัน
+function checkInternetConnection() {
+    const splash = document.getElementById('splash-screen');
+    const loader = document.getElementById('splash-loader');
+    const statusText = document.getElementById('net-status-text');
+    const retryBtn = document.getElementById('retry-net-btn');
+
+    if (!splash) return;
+
+    if (navigator.onLine) {
+        if (loader) loader.style.display = 'block';
+        if (retryBtn) retryBtn.style.display = 'none';
+        if (statusText) {
+            statusText.style.color = '#10b981';
+            statusText.textContent = 'เชื่อมต่ออินเทอร์เน็ตสำเร็จ!';
+        }
+        setTimeout(() => {
+            splash.classList.add('hide');
+        }, 1500);
+    } else {
+        if (loader) loader.style.display = 'none';
+        if (retryBtn) retryBtn.style.display = 'inline-block';
+        if (statusText) {
+            statusText.style.color = '#ff4e45';
+            statusText.textContent = '❌ กรุณาเชื่อมต่ออินเทอร์เน็ตเพื่อเข้าใช้งานแอปพลิเคชัน';
+        }
+    }
+}
+
+window.addEventListener('load', checkInternetConnection);
+window.addEventListener('online', checkInternetConnection);
+window.addEventListener('offline', checkInternetConnection);
+
+const retryBtn = document.getElementById('retry-net-btn');
+if (retryBtn) {
+    retryBtn.addEventListener('click', () => {
+        const statusText = document.getElementById('net-status-text');
+        if (statusText) statusText.textContent = 'กำลังตรวจสอบการเชื่อมต่อ...';
+        setTimeout(checkInternetConnection, 1000);
+    });
+}
