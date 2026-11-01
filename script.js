@@ -149,16 +149,9 @@ function renderVideos(filterText = '') {
 
     const historyGrid = document.getElementById('history-grid');
     if (historyGrid) historyGrid.innerHTML = videosData.map(createVideoHTML).join('');
-
-    const myVideosGrid = document.getElementById('my-videos-grid');
-    if (myVideosGrid) {
-        const activeAccName = accounts[currentAccountIndex]?.name || 'ช่องของคุณ';
-        const myVids = videosData.filter(v => v.channel === 'ช่องของคุณ' || v.channel === activeAccName || v.channel === 'Dev Code');
-        myVideosGrid.innerHTML = myVids.length ? myVids.map(createVideoHTML).join('') : '<p style="color:#666;">ยังไม่มีวิดีโอที่คุณอัปโหลด</p>';
-    }
 }
 
-const mainSearchInput = document.getElementById('main-search-input') || document.querySelector('.nav-center input');
+const mainSearchInput = document.getElementById('main-search-input');
 const searchBtn = document.querySelector('.search-btn');
 
 if (mainSearchInput) {
@@ -187,7 +180,449 @@ function renderShorts() {
 
 
 // ==========================================
-// 4. ระบบ Video Player & ไลก์/ดิสไลก์/ติดตาม/แยกจอ
+// 4. Dynamic VIP Items Generator (120 Themes & 120 Frames)
+// ==========================================
+
+function generate120Themes() {
+    const themes = [];
+    for (let i = 0; i < 120; i++) {
+        const hue1 = (i * 3) % 360;
+        const hue2 = (hue1 + 45) % 360;
+        themes.push({
+            id: i + 1,
+            color1: `hsl(${hue1}, 80%, 45%)`,
+            color2: `hsl(${hue2}, 85%, 35%)`,
+            gradient: `linear-gradient(135deg, hsl(${hue1}, 80%, 45%), hsl(${hue2}, 85%, 35%))`
+        });
+    }
+    return themes;
+}
+
+function generate120Frames() {
+    const frames = [];
+    const effectTypes = ['glow', 'double', 'dashed', 'neon', 'shadow'];
+    
+    for (let i = 0; i < 120; i++) {
+        const hue = (i * 3) % 360;
+        const type = effectTypes[i % effectTypes.length];
+        
+        let cssStyle = '';
+        if (type === 'glow') {
+            cssStyle = `border: 4px solid hsl(${hue}, 90%, 50%); box-shadow: 0 0 12px hsl(${hue}, 90%, 50%);`;
+        } else if (type === 'double') {
+            cssStyle = `border: 4px double hsl(${hue}, 90%, 60%); box-shadow: 0 0 8px hsl(${hue}, 90%, 60%);`;
+        } else if (type === 'dashed') {
+            cssStyle = `border: 4px dashed hsl(${hue}, 100%, 50%);`;
+        } else if (type === 'neon') {
+            cssStyle = `border: 4px solid #fff; box-shadow: 0 0 10px hsl(${hue}, 100%, 50%), inset 0 0 10px hsl(${hue}, 100%, 50%);`;
+        } else {
+            cssStyle = `border: 4px solid hsl(${hue}, 80%, 50%); filter: drop-shadow(0 0 6px hsl(${hue}, 80%, 50%));`;
+        }
+
+        frames.push({
+            id: i + 1,
+            style: cssStyle,
+            name: `Frame ${i + 1}`
+        });
+    }
+    return frames;
+}
+
+const vipThemesList = generate120Themes();
+const vipFramesList = generate120Frames();
+
+function renderVipThemeSelector() {
+    const container = document.getElementById('banner-theme-selector');
+    if (!container) return;
+
+    const currentThemeId = localStorage.getItem('streamgram_selected_theme_id') || 1;
+
+    container.innerHTML = vipThemesList.map(t => `
+        <div class="vip-theme-dot ${t.id == currentThemeId ? 'selected' : ''}" 
+             style="background: ${t.gradient};" 
+             title="ธีมแบบที่ ${t.id}"
+             onclick="selectVipBannerTheme(${t.id})">
+        </div>
+    `).join('');
+}
+
+function renderVipFrameSelector() {
+    const container = document.getElementById('avatar-frame-selector');
+    if (!container) return;
+
+    const currentFrameId = localStorage.getItem('streamgram_selected_frame_id') || 0;
+
+    container.innerHTML = `
+        <div class="vip-frame-option ${currentFrameId == 0 ? 'selected' : ''}" title="ไม่ใส่กรอบ" onclick="selectVipAvatarFrame(0)">
+            <div class="vip-frame-preview-mini"></div>
+        </div>
+    ` + vipFramesList.map(f => `
+        <div class="vip-frame-option ${f.id == currentFrameId ? 'selected' : ''}" 
+             style="${f.style}" 
+             title="${f.name}" 
+             onclick="selectVipAvatarFrame(${f.id})">
+            <div class="vip-frame-preview-mini"></div>
+        </div>
+    `).join('');
+}
+
+window.selectVipBannerTheme = function(themeId) {
+    if (!isUserVIP) {
+        alert('สิทธิ์ปรับแต่งธีมแบนเนอร์สำหรับสมาชิก VIP เท่านั้น!');
+        return;
+    }
+    const theme = vipThemesList.find(t => t.id === themeId);
+    if (!theme) return;
+
+    const banner = document.getElementById('user-profile-banner');
+    if (banner) banner.style.background = theme.gradient;
+
+    localStorage.setItem('streamgram_selected_theme_id', themeId);
+    localStorage.setItem('streamgram_profile_theme', JSON.stringify({ color1: theme.color1, color2: theme.color2 }));
+    
+    renderVipThemeSelector();
+};
+
+window.selectVipAvatarFrame = function(frameId) {
+    if (!isUserVIP) {
+        alert('สิทธิ์ปรับแต่งกรอบรูปเอฟเฟกต์สำหรับสมาชิก VIP เท่านั้น!');
+        return;
+    }
+
+    const avatarBox = document.getElementById('avatar-click-zone');
+    if (!avatarBox) return;
+
+    if (frameId === 0) {
+        avatarBox.style.cssText = '';
+        localStorage.removeItem('streamgram_selected_frame_id');
+    } else {
+        const frame = vipFramesList.find(f => f.id === frameId);
+        if (frame) {
+            avatarBox.style.cssText = frame.style;
+            localStorage.setItem('streamgram_selected_frame_id', frameId);
+        }
+    }
+    renderVipFrameSelector();
+};
+
+
+// ==========================================
+// 5. ระบบ Profile & Account Management
+// ==========================================
+
+let accounts = JSON.parse(localStorage.getItem('streamgram_accounts')) || [
+    { id: 1, name: 'Dev Channel (หลัก)', avatar: 'https://picsum.photos/seed/acc1/100', bio: 'นักพัฒนาเว็บสายการสร้างโซเชียลมีเดีย' },
+    { id: 2, name: 'Gamer Pro', avatar: 'https://picsum.photos/seed/acc2/100', bio: 'สตรีมเมอร์เกมเมอร์สายฮาร์ดคอร์' }
+];
+
+let currentAccountIndex = parseInt(localStorage.getItem('streamgram_current_acc')) || 0;
+let isUserVIP = localStorage.getItem('streamgram_is_vip') === 'true';
+let currentVipPrice = 99;
+
+const VALID_SHARED_CODES = {
+    "STREAM2026": "ยินดีด้วย! คุณได้รับสิทธิ์สมาชิก VIP ฟรี 30 วัน 🎉",
+    "VIPFRIEND20": "ส่วนลด 20% จากเพื่อน VIP! 🎉"
+};
+
+const currentUserAvatar = document.getElementById('current-user-avatar');
+const toggleEditModeBtn = document.getElementById('toggle-edit-mode-btn');
+const profileEditBox = document.getElementById('profile-edit-box');
+const editProfileForm = document.getElementById('edit-profile-form');
+const editProfileName = document.getElementById('edit-profile-name');
+const editProfileBio = document.getElementById('edit-profile-bio');
+
+const avatarClickZone = document.getElementById('avatar-click-zone');
+const profileAvatarFileInput = document.getElementById('profile-avatar-file-input');
+
+const logoutBtn = document.getElementById('logout-btn');
+const accountsList = document.getElementById('accounts-list');
+const addAccountBtn = document.getElementById('add-account-btn');
+const newAccountNameInput = document.getElementById('new-account-name');
+
+const vipBuyModal = document.getElementById('vip-buy-modal');
+const openVipModalBtn = document.getElementById('open-vip-modal-btn');
+const closeVipModalBtn = document.getElementById('close-vip-modal');
+const confirmPayVipBtn = document.getElementById('confirm-pay-vip-btn');
+const generateCodeBtn = document.getElementById('generate-code-btn');
+const generatedVipCodeInput = document.getElementById('generated-vip-code');
+const applyDiscountBtn = document.getElementById('apply-discount-btn');
+const vipDiscountInput = document.getElementById('vip-discount-input');
+const discountMsg = document.getElementById('discount-msg');
+
+let tempAvatarSrc = '';
+
+function navigateToProfilePage() {
+    sidebarItems.forEach(i => i.classList.remove('active'));
+    const channelSidebarItem = document.querySelector('.sidebar-item[data-page="channel"]');
+    if (channelSidebarItem) channelSidebarItem.classList.add('active');
+
+    pageViews.forEach(view => {
+        if (view.id === 'view-channel') {
+            view.classList.add('active-view');
+        } else {
+            view.classList.remove('active-view');
+        }
+    });
+
+    updateProfileUI();
+}
+
+if (currentUserAvatar) {
+    currentUserAvatar.addEventListener('click', navigateToProfilePage);
+}
+
+function updateProfileUI() {
+    if (currentAccountIndex >= accounts.length) currentAccountIndex = 0;
+    const activeAcc = accounts[currentAccountIndex] || accounts[0];
+    
+    const nameEl = document.getElementById('user-profile-name');
+    const tagEl = document.getElementById('user-profile-tag');
+    const bioEl = document.getElementById('user-profile-bio');
+
+    if (nameEl) nameEl.textContent = activeAcc.name;
+    if (tagEl) tagEl.textContent = `@${activeAcc.name.toLowerCase().replace(/\s+/g, '_')}`;
+    if (bioEl) bioEl.textContent = activeAcc.bio || 'ไม่มีคำอธิบาย';
+
+    if (editProfileName) editProfileName.value = activeAcc.name;
+    if (editProfileBio) editProfileBio.value = activeAcc.bio || '';
+    tempAvatarSrc = activeAcc.avatar;
+
+    const mainAvatarEl = document.getElementById('user-profile-avatar');
+    if (mainAvatarEl) mainAvatarEl.style.backgroundImage = `url(${activeAcc.avatar})`;
+
+    if (currentUserAvatar) {
+        currentUserAvatar.style.backgroundImage = `url(${activeAcc.avatar})`;
+        currentUserAvatar.style.backgroundSize = 'cover';
+    }
+
+    if (accountsList) {
+        accountsList.innerHTML = accounts.map((acc, index) => `
+            <div class="account-item-card ${index === currentAccountIndex ? 'active' : ''}">
+                <div class="acc-info-mini">
+                    <img src="${acc.avatar}" class="acc-avatar-mini" alt="${acc.name}">
+                    <div>
+                        <strong style="font-size: 0.85rem; color: #fff; display: block;">${acc.name}</strong>
+                        <span style="font-size: 0.75rem; color: ${index === currentAccountIndex ? '#3ea6ff' : '#888'};">
+                            ${index === currentAccountIndex ? '● ใช้งานอยู่' : 'สลับบัญชี'}
+                        </span>
+                    </div>
+                </div>
+                ${index !== currentAccountIndex ? `
+                    <button class="primary-btn" onclick="switchAccount(${index})" style="padding: 4px 10px; font-size: 0.75rem; background: #282828; border: 1px solid #444;">
+                        สลับ
+                    </button>
+                ` : '<span style="color:#3ea6ff; font-size:0.75rem;"><i class="fa-solid fa-check"></i> ใช้งานอยู่</span>'}
+            </div>
+        `).join('');
+    }
+
+    const activeAccCountEl = document.getElementById('active-acc-count');
+    if (activeAccCountEl) activeAccCountEl.textContent = `${accounts.length} บัญชีในระบบ`;
+
+    const vipBadge = document.getElementById('vip-status-badge');
+    const vipBox = document.getElementById('vip-exclusive-box');
+    
+    if (isUserVIP) {
+        if (vipBadge) vipBadge.style.display = 'inline-block';
+        if (vipBox) vipBox.style.display = 'block';
+        if (openVipModalBtn) openVipModalBtn.querySelector('span').textContent = '🌟 VIP แล้ว';
+
+        renderVipThemeSelector();
+        renderVipFrameSelector();
+
+        const savedThemeId = localStorage.getItem('streamgram_selected_theme_id');
+        if (savedThemeId) {
+            const theme = vipThemesList.find(t => t.id == savedThemeId);
+            const banner = document.getElementById('user-profile-banner');
+            if (theme && banner) banner.style.background = theme.gradient;
+        }
+
+        const savedFrameId = localStorage.getItem('streamgram_selected_frame_id');
+        if (savedFrameId && savedFrameId != 0) {
+            const frame = vipFramesList.find(f => f.id == savedFrameId);
+            const avatarBox = document.getElementById('avatar-click-zone');
+            if (frame && avatarBox) avatarBox.style.cssText = frame.style;
+        }
+
+    } else {
+        if (vipBadge) vipBadge.style.display = 'none';
+        if (vipBox) vipBox.style.display = 'none';
+        if (openVipModalBtn) openVipModalBtn.querySelector('span').textContent = 'สมัคร VIP';
+    }
+
+    const userVidsEl = document.getElementById('profile-user-videos');
+    if (userVidsEl) {
+        const myVids = videosData.filter(v => v.channel === activeAcc.name || v.channel === 'Dev Code');
+        userVidsEl.innerHTML = myVids.length ? myVids.map(createVideoHTML).join('') : '<p style="color:#666; grid-column: 1/-1; text-align:center;">ยังไม่มีวิดีโอ</p>';
+    }
+}
+
+if (toggleEditModeBtn && profileEditBox) {
+    toggleEditModeBtn.addEventListener('click', () => {
+        profileEditBox.style.display = (profileEditBox.style.display === 'none' || profileEditBox.style.display === '') ? 'block' : 'none';
+    });
+}
+
+window.selectPresetAvatar = function(srcUrl) {
+    tempAvatarSrc = srcUrl;
+    accounts[currentAccountIndex].avatar = tempAvatarSrc;
+    localStorage.setItem('streamgram_accounts', JSON.stringify(accounts));
+    updateProfileUI();
+};
+
+if (avatarClickZone && profileAvatarFileInput) {
+    avatarClickZone.addEventListener('click', () => profileAvatarFileInput.click());
+    
+    profileAvatarFileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                tempAvatarSrc = evt.target.result;
+                accounts[currentAccountIndex].avatar = tempAvatarSrc;
+                localStorage.setItem('streamgram_accounts', JSON.stringify(accounts));
+                updateProfileUI();
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+}
+
+if (editProfileForm) {
+    editProfileForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const newName = editProfileName.value.trim();
+        const newBio = editProfileBio.value.trim();
+
+        if (!newName) return alert('กรุณากรอกชื่อโปรไฟล์');
+
+        accounts[currentAccountIndex].name = newName;
+        accounts[currentAccountIndex].bio = newBio;
+        
+        localStorage.setItem('streamgram_accounts', JSON.stringify(accounts));
+        updateProfileUI();
+        if (profileEditBox) profileEditBox.style.display = 'none';
+        alert('บันทึกข้อมูลโปรไฟล์เรียบร้อยแล้ว!');
+    });
+}
+
+window.switchAccount = function(index) {
+    currentAccountIndex = index;
+    localStorage.setItem('streamgram_current_acc', currentAccountIndex);
+    updateProfileUI();
+    renderVideos();
+    alert(`สลับไปยังบัญชี "${accounts[currentAccountIndex].name}" เรียบร้อยแล้ว!`);
+};
+
+if (addAccountBtn && newAccountNameInput) {
+    addAccountBtn.addEventListener('click', () => {
+        const name = newAccountNameInput.value.trim();
+        if (!name) return alert('กรุณากรอกชื่อบัญชีใหม่');
+
+        const newAcc = {
+            id: Date.now(),
+            name: name,
+            avatar: `https://picsum.photos/seed/${encodeURIComponent(name)}/100`,
+            bio: 'ผู้ใช้งานใหม่ StreamGram'
+        };
+
+        accounts.push(newAcc);
+        currentAccountIndex = accounts.length - 1;
+        localStorage.setItem('streamgram_accounts', JSON.stringify(accounts));
+        localStorage.setItem('streamgram_current_acc', currentAccountIndex);
+
+        newAccountNameInput.value = '';
+        updateProfileUI();
+        alert(`เพิ่มและสลับไปยังบัญชี "${name}" สำเร็จ!`);
+    });
+}
+
+if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+        if (accounts.length <= 1) {
+            if (confirm('คุณต้องการรีเซ็ตข้อมูลระบบและกลับไปเริ่มต้นใหม่ใช่หรือไม่?')) {
+                localStorage.clear();
+                location.reload();
+            }
+        } else {
+            if (confirm(`คุณต้องการออกจากบัญชี "${accounts[currentAccountIndex].name}" ใช่หรือไม่?`)) {
+                accounts.splice(currentAccountIndex, 1);
+                currentAccountIndex = 0;
+                localStorage.setItem('streamgram_accounts', JSON.stringify(accounts));
+                localStorage.setItem('streamgram_current_acc', currentAccountIndex);
+                updateProfileUI();
+                alert('ออกจากบัญชีเรียบร้อยแล้ว');
+            }
+        }
+    });
+}
+
+if (generateCodeBtn) {
+    generateCodeBtn.addEventListener('click', () => {
+        const randomCode = 'VIPGIFT' + Math.floor(1000 + Math.random() * 9000);
+        generatedVipCodeInput.value = randomCode;
+        VALID_SHARED_CODES[randomCode] = "ส่วนลด 20% จากเพื่อน VIP! 🎉";
+        alert(`สร้างโค้ดส่วนลด "${randomCode}" สำเร็จ! คัดลอกไปแจกเพื่อนได้เลย`);
+    });
+}
+
+if (applyDiscountBtn) {
+    applyDiscountBtn.addEventListener('click', () => {
+        const code = vipDiscountInput.value.trim().toUpperCase();
+        if (VALID_SHARED_CODES[code]) {
+            currentVipPrice = 79;
+            discountMsg.style.color = '#10b981';
+            discountMsg.textContent = '✅ ใช้โค้ดสำเร็จ! ได้รับส่วนลด 20% (เหลือ 79 บาท)';
+            confirmPayVipBtn.textContent = '💳 ชำระเงิน 79 บาท (เปิดใช้งาน VIP ทันที)';
+        } else {
+            discountMsg.style.color = '#ff4e45';
+            discountMsg.textContent = '❌ โค้ดส่วนลดไม่ถูกต้อง';
+        }
+    });
+}
+
+if (confirmPayVipBtn) {
+    confirmPayVipBtn.addEventListener('click', () => {
+        if (confirm(`ยืนยันการชำระเงินจำนวน ${currentVipPrice} บาท เพื่อสมัคร VIP หรือไม่?`)) {
+            isUserVIP = true;
+            localStorage.setItem('streamgram_is_vip', 'true');
+            updateProfileUI();
+            if (vipBuyModal) vipBuyModal.style.display = 'none';
+            alert('🎉 สมัครสมาชิก VIP สำเร็จแล้ว!');
+        }
+    });
+}
+
+if (openVipModalBtn) {
+    openVipModalBtn.addEventListener('click', () => {
+        if (isUserVIP) {
+            alert('คุณเป็นสมาชิก VIP อยู่แล้ว!');
+            return;
+        }
+        if (vipBuyModal) vipBuyModal.style.display = 'flex';
+    });
+}
+
+if (closeVipModalBtn) closeVipModalBtn.addEventListener('click', () => vipBuyModal.style.display = 'none');
+
+const profileTabBtns = document.querySelectorAll('.profile-tab-btn');
+profileTabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        profileTabBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const tabTarget = btn.getAttribute('data-tab');
+        document.querySelectorAll('.profile-tab-content').forEach(content => {
+            content.classList.remove('active-tab-content');
+        });
+        const activeContent = document.getElementById(tabTarget);
+        if (activeContent) activeContent.classList.add('active-tab-content');
+    });
+});
+
+
+// ==========================================
+// 6. Video Player & Chat Features
 // ==========================================
 
 const videoPlayerModal = document.getElementById('video-player-modal');
@@ -263,43 +698,21 @@ if (dislikeBtn) {
 if (subscribeBtn) {
     subscribeBtn.addEventListener('click', () => {
         isSubscribed = !isSubscribed;
-        if (isSubscribed) {
-            subscribeBtn.textContent = 'ติดตามแล้ว';
-            subscribeBtn.classList.add('subscribed');
-        } else {
-            subscribeBtn.textContent = 'ติดตาม';
-            subscribeBtn.classList.remove('subscribed');
-        }
+        subscribeBtn.textContent = isSubscribed ? 'ติดตามแล้ว' : 'ติดตาม';
+        subscribeBtn.classList.toggle('subscribed', isSubscribed);
     });
 }
 
 if (pipBtn && mainVideoPlayer) {
     pipBtn.addEventListener('click', async () => {
-        if (!document.pictureInPictureEnabled && !mainVideoPlayer.webkitSupportsPresentationMode) {
-            alert('เบราว์เซอร์ของคุณไม่รองรับฟีเจอร์แยกจอ (Picture-in-Picture)');
-            return;
-        }
-
         try {
             if (document.pictureInPictureElement) {
                 await document.exitPictureInPicture();
-                return;
-            }
-
-            if (mainVideoPlayer.readyState < 2) {
-                await new Promise((resolve) => {
-                    mainVideoPlayer.addEventListener('loadeddata', resolve, { once: true });
-                });
-            }
-
-            await mainVideoPlayer.requestPictureInPicture();
-        } catch (error) {
-            console.error('PiP Error:', error);
-            if (mainVideoPlayer.webkitSetPresentationMode) {
-                mainVideoPlayer.webkitSetPresentationMode('picture-in-picture');
             } else {
-                alert('กรุณารอให้วิดีโอเริ่มเล่นก่อนกดแยกจอ หรือตรวจสอบว่าเล่นบน Local Server/HTTPS');
+                await mainVideoPlayer.requestPictureInPicture();
             }
+        } catch (error) {
+            alert('กรุณารอให้วิดีโอเริ่มเล่นก่อนกดแยกจอ');
         }
     });
 }
@@ -310,19 +723,6 @@ function openVideoPlayer(title, channel, views, videoUrl) {
     document.getElementById('player-video-title').textContent = title;
     document.getElementById('player-video-channel').textContent = channel;
     document.getElementById('player-video-views').textContent = views;
-
-    isLiked = false;
-    isDisliked = false;
-    currentLikes = Math.floor(Math.random() * 5000) + 100;
-    if (likeCountSpan) likeCountSpan.textContent = currentLikes.toLocaleString();
-    if (likeBtn) {
-        likeBtn.classList.remove('active-like');
-        likeBtn.querySelector('i').className = 'fa-regular fa-thumbs-up';
-    }
-    if (dislikeBtn) {
-        dislikeBtn.classList.remove('active-dislike');
-        dislikeBtn.querySelector('i').className = 'fa-regular fa-thumbs-down';
-    }
 
     mainVideoPlayer.src = videoUrl || SAMPLE_VIDEO_URL;
     videoPlayerModal.style.display = 'flex';
@@ -343,23 +743,14 @@ function closeVideoPlayer() {
 if (closeVideoPlayerBtn) closeVideoPlayerBtn.addEventListener('click', closeVideoPlayer);
 
 window.addEventListener('click', (e) => {
-    if (e.target === videoPlayerModal) {
-        closeVideoPlayer();
-    }
+    if (e.target === videoPlayerModal) closeVideoPlayer();
 });
 
 if (toggleSizeBtn && videoPlayerBox) {
     toggleSizeBtn.addEventListener('click', () => {
         isMiniMode = !isMiniMode;
-        if (isMiniMode) {
-            videoPlayerBox.classList.add('mini-mode');
-            sizeIcon.className = 'fa-solid fa-expand';
-            toggleSizeBtn.title = 'ขยายหน้าจอ';
-        } else {
-            videoPlayerBox.classList.remove('mini-mode');
-            sizeIcon.className = 'fa-solid fa-compress';
-            toggleSizeBtn.title = 'ย่อหน้าจอ';
-        }
+        videoPlayerBox.classList.toggle('mini-mode', isMiniMode);
+        sizeIcon.className = isMiniMode ? 'fa-solid fa-expand' : 'fa-solid fa-compress';
     });
 }
 
@@ -378,28 +769,12 @@ if (liveChatForm && liveChatMessages) {
 
         liveChatInput.value = '';
         liveChatMessages.scrollTop = liveChatMessages.scrollHeight;
-
-        setTimeout(() => {
-            const replies = [
-                'สุดยอดเลยคลิปนี้! 🔥',
-                'เห็นด้วยมากๆ ครับ',
-                'น่าสนใจจัง!',
-                '5555555555',
-                'ขอบคุณสำหรับเทคนิคครับ'
-            ];
-            const randomReply = replies[Math.floor(Math.random() * replies.length)];
-            const botMsg = document.createElement('div');
-            botMsg.className = 'chat-item';
-            botMsg.innerHTML = `<strong>Gamer_Viewer:</strong> ${randomReply}`;
-            liveChatMessages.appendChild(botMsg);
-            liveChatMessages.scrollTop = liveChatMessages.scrollHeight;
-        }, 1200);
     });
 }
 
 
 // ==========================================
-// 5. ระบบ Story & Upload Modal
+// 7. Modals อื่นๆ (Story, Upload, Support, Settings, DM Chat)
 // ==========================================
 
 const storyViewer = document.getElementById('story-viewer');
@@ -472,319 +847,6 @@ if (uploadForm) {
     });
 }
 
-
-// ==========================================
-// 6. ระบบ Profile & VIP Management System
-// ==========================================
-
-let accounts = JSON.parse(localStorage.getItem('streamgram_accounts')) || [
-    { id: 1, name: 'Dev Channel (หลัก)', avatar: 'https://picsum.photos/seed/acc1/100', bio: 'นักพัฒนาเว็บสายการสร้างโซเชียลมีเดีย' }
-];
-
-let currentAccountIndex = 0;
-let isUserVIP = localStorage.getItem('streamgram_is_vip') === 'true';
-let currentVipPrice = 99;
-
-const VALID_SHARED_CODES = {
-    "STREAM2026": "ยินดีด้วย! คุณได้รับสิทธิ์สมาชิก VIP ฟรี 30 วัน 🎉",
-    "VIPFRIEND20": "ส่วนลด 20% จากเพื่อน VIP! 🎉"
-};
-
-const profileModal = document.getElementById('profile-modal');
-const closeProfileBtn = document.getElementById('close-profile');
-const currentUserAvatar = document.getElementById('current-user-avatar');
-const editProfileBtn = document.getElementById('edit-profile-btn');
-const profileAvatarFileInput = document.getElementById('profile-avatar-file-input');
-
-const vipBuyModal = document.getElementById('vip-buy-modal');
-const openVipModalBtn = document.getElementById('open-vip-modal-btn');
-const closeVipModalBtn = document.getElementById('close-vip-modal');
-const confirmPayVipBtn = document.getElementById('confirm-pay-vip-btn');
-const generateCodeBtn = document.getElementById('generate-code-btn');
-const generatedVipCodeInput = document.getElementById('generated-vip-code');
-const applyDiscountBtn = document.getElementById('apply-discount-btn');
-const vipDiscountInput = document.getElementById('vip-discount-input');
-const discountMsg = document.getElementById('discount-msg');
-
-function updateProfileUI() {
-    const activeAcc = accounts[currentAccountIndex] || accounts[0];
-    
-    document.getElementById('user-profile-name').textContent = activeAcc.name;
-    document.getElementById('user-profile-tag').textContent = `@${activeAcc.name.toLowerCase().replace(/\s+/g, '_')}`;
-    document.getElementById('user-profile-bio').textContent = activeAcc.bio || 'นักพัฒนาเว็บสายการสร้างโซเชียลมีเดีย';
-
-    const avatarEl = document.getElementById('user-profile-avatar');
-    if (avatarEl) avatarEl.style.backgroundImage = `url(${activeAcc.avatar})`;
-
-    if (currentUserAvatar) {
-        currentUserAvatar.style.backgroundImage = `url(${activeAcc.avatar})`;
-        currentUserAvatar.style.backgroundSize = 'cover';
-    }
-
-    const channelNameDisp = document.getElementById('channel-page-name');
-    if (channelNameDisp) channelNameDisp.textContent = activeAcc.name;
-
-    const vipBadge = document.getElementById('vip-status-badge');
-    const vipBox = document.getElementById('vip-exclusive-box');
-    
-    if (isUserVIP) {
-        if (vipBadge) vipBadge.style.display = 'inline-block';
-        if (vipBox) vipBox.style.display = 'block';
-        if (openVipModalBtn) openVipModalBtn.textContent = '🌟 คุณคือ VIP';
-    } else {
-        if (vipBadge) vipBadge.style.display = 'none';
-        if (vipBox) vipBox.style.display = 'none';
-        if (openVipModalBtn) openVipModalBtn.innerHTML = '<i class="fa-solid fa-crown"></i> ซื้อ VIP';
-    }
-
-    const savedTheme = JSON.parse(localStorage.getItem('streamgram_profile_theme'));
-    if (savedTheme && isUserVIP) {
-        const banner = document.getElementById('user-profile-banner');
-        if (banner) banner.style.background = `linear-gradient(135deg, ${savedTheme.color1}, ${savedTheme.color2})`;
-    }
-
-    const userVidsEl = document.getElementById('profile-user-videos');
-    if (userVidsEl) {
-        const myVids = videosData.filter(v => v.channel === activeAcc.name || v.channel === 'Dev Code');
-        userVidsEl.innerHTML = myVids.length ? myVids.map(createVideoHTML).join('') : '<p style="color:#666; grid-column: 1/-1; text-align:center;">ยังไม่มีวิดีโอ</p>';
-    }
-}
-
-// 1. เปลี่ยนสีธีม Banner โปรไฟล์ (สำหรับ VIP)
-window.changeProfileTheme = function(color1, color2) {
-    if (!isUserVIP) {
-        alert('ฟีเจอร์นี้สำหรับสมาชิก VIP เท่านั้น!');
-        return;
-    }
-    const banner = document.getElementById('user-profile-banner');
-    if (banner) {
-        banner.style.background = `linear-gradient(135deg, ${color1}, ${color2})`;
-        localStorage.setItem('streamgram_profile_theme', JSON.stringify({ color1, color2 }));
-    }
-};
-
-// 2. เปลี่ยนรูปโปรไฟล์โดยตรง
-const profileAvatarWrapper = document.querySelector('.profile-avatar-wrapper');
-if (profileAvatarWrapper && profileAvatarFileInput) {
-    profileAvatarWrapper.addEventListener('click', () => profileAvatarFileInput.click());
-    profileAvatarFileInput.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(evt) {
-                accounts[currentAccountIndex].avatar = evt.target.result;
-                localStorage.setItem('streamgram_accounts', JSON.stringify(accounts));
-                updateProfileUI();
-                renderVideos();
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-}
-
-// 3. ปุ่มแก้ไขชื่อโปรไฟล์ & Bio
-if (editProfileBtn) {
-    editProfileBtn.addEventListener('click', () => {
-        const activeAcc = accounts[currentAccountIndex];
-        const newName = prompt('แก้ไขชื่อโปรไฟล์:', activeAcc.name);
-        if (newName && newName.trim()) {
-            const newBio = prompt('แก้ไขคำอธิบาย (Bio):', activeAcc.bio || '');
-            activeAcc.name = newName.trim();
-            activeAcc.bio = newBio ? newBio.trim() : '';
-            localStorage.setItem('streamgram_accounts', JSON.stringify(accounts));
-            updateProfileUI();
-            renderVideos();
-        }
-    });
-}
-
-// 4. ระบบสร้างโค้ดส่วนลดแบ่งปันให้เพื่อน
-if (generateCodeBtn) {
-    generateCodeBtn.addEventListener('click', () => {
-        const randomCode = 'VIPGIFT' + Math.floor(1000 + Math.random() * 9000);
-        generatedVipCodeInput.value = randomCode;
-        VALID_SHARED_CODES[randomCode] = "ส่วนลด 20% จากเพื่อน VIP! 🎉";
-        alert(`สร้างโค้ดส่วนลด "${randomCode}" สำเร็จ! คัดลอกไปแจกเพื่อนได้เลย`);
-    });
-}
-
-// 5. ระบบใช้โค้ดส่วนลดตอนซื้อ VIP
-if (applyDiscountBtn) {
-    applyDiscountBtn.addEventListener('click', () => {
-        const code = vipDiscountInput.value.trim().toUpperCase();
-        if (VALID_SHARED_CODES[code]) {
-            currentVipPrice = 79;
-            discountMsg.style.color = '#10b981';
-            discountMsg.textContent = '✅ ใช้โค้ดสำเร็จ! ได้รับส่วนลด 20% (เหลือ 79 บาท)';
-            confirmPayVipBtn.textContent = '💳 ชำระเงิน 79 บาท (เปิดใช้งาน VIP ทันที)';
-        } else {
-            discountMsg.style.color = '#ff4e45';
-            discountMsg.textContent = '❌ โค้ดส่วนลดไม่ถูกต้อง';
-        }
-    });
-}
-
-// 6. ระบบซื้อ VIP ชำระเงิน
-if (confirmPayVipBtn) {
-    confirmPayVipBtn.addEventListener('click', () => {
-        if (confirm(`ยืนยันการชำระเงินจำนวน ${currentVipPrice} บาท เพื่อสมัคร VIP หรือไม่?`)) {
-            isUserVIP = true;
-            localStorage.setItem('streamgram_is_vip', 'true');
-            updateProfileUI();
-            if (vipBuyModal) vipBuyModal.style.display = 'none';
-            alert('🎉 สมัครสมาชิก VIP สำเร็จแล้ว! ปลดล็อกการเปลี่ยนสีธีมและแจกโค้ดให้เพื่อนได้เลย');
-        }
-    });
-}
-
-if (openVipModalBtn) {
-    openVipModalBtn.addEventListener('click', () => {
-        if (isUserVIP) {
-            alert('คุณเป็นสมาชิก VIP อยู่แล้ว!');
-            return;
-        }
-        if (vipBuyModal) vipBuyModal.style.display = 'flex';
-    });
-}
-
-if (closeVipModalBtn) closeVipModalBtn.addEventListener('click', () => vipBuyModal.style.display = 'none');
-if (closeProfileBtn) closeProfileBtn.addEventListener('click', () => profileModal.style.display = 'none');
-
-if (currentUserAvatar) {
-    currentUserAvatar.addEventListener('click', () => {
-        updateProfileUI();
-        if (profileModal) profileModal.style.display = 'flex';
-    });
-}
-
-// ระบบสลับแท็บผลงานในหน้าโปรไฟล์
-const profileTabBtns = document.querySelectorAll('.profile-tab-btn');
-profileTabBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        profileTabBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-
-        const tabTarget = btn.getAttribute('data-tab');
-        document.querySelectorAll('.profile-tab-content').forEach(content => {
-            content.classList.remove('active-tab-content');
-        });
-        const activeContent = document.getElementById(tabTarget);
-        if (activeContent) activeContent.classList.add('active-tab-content');
-    });
-});
-
-
-// ==========================================
-// 7. ระบบตั้งค่า & ติดต่อเจ้าหน้าที่
-// ==========================================
-
-const settingsModal = document.getElementById('settings-modal');
-const settingsTrigger = document.getElementById('settings-trigger');
-const closeSettings = document.getElementById('close-settings');
-const sharedCodeInput = document.getElementById('shared-code-input');
-const submitCodeBtn = document.getElementById('submit-code-btn');
-const codeFeedback = document.getElementById('code-feedback');
-
-if (settingsTrigger) settingsTrigger.addEventListener('click', () => settingsModal.style.display = 'flex');
-if (closeSettings) closeSettings.addEventListener('click', () => settingsModal.style.display = 'none');
-
-if (submitCodeBtn) {
-    submitCodeBtn.addEventListener('click', () => {
-        const code = sharedCodeInput.value.trim().toUpperCase();
-        if (!code) {
-            codeFeedback.style.color = '#ff4e45';
-            codeFeedback.textContent = 'กรุณากรอกโค้ดก่อนกดใช้งาน';
-            return;
-        }
-        if (VALID_SHARED_CODES[code]) {
-            codeFeedback.style.color = '#10b981';
-            codeFeedback.textContent = VALID_SHARED_CODES[code];
-        } else {
-            codeFeedback.style.color = '#ff4e45';
-            codeFeedback.textContent = '❌ โค้ดไม่ถูกต้องหรือหมดอายุแล้ว';
-        }
-    });
-}
-
-let supportTickets = JSON.parse(localStorage.getItem('streamgram_tickets')) || [];
-const supportModal = document.getElementById('support-modal');
-const supportTrigger = document.getElementById('support-trigger');
-const closeSupport = document.getElementById('close-support');
-const supportForm = document.getElementById('support-form');
-const supportUserDisplay = document.getElementById('support-user-display');
-const ticketsList = document.getElementById('tickets-list');
-
-if (supportTrigger) {
-    supportTrigger.addEventListener('click', (e) => {
-        e.preventDefault();
-        const activeAcc = accounts[currentAccountIndex] || accounts[0];
-        if (supportUserDisplay) supportUserDisplay.value = activeAcc.name;
-        renderSupportTickets();
-        supportModal.style.display = 'flex';
-    });
-}
-
-if (closeSupport) closeSupport.addEventListener('click', () => supportModal.style.display = 'none');
-
-const openSupportFromSettings = document.getElementById('open-support-from-settings');
-if (openSupportFromSettings) {
-    openSupportFromSettings.addEventListener('click', () => {
-        if (settingsModal) settingsModal.style.display = 'none';
-        const activeAcc = accounts[currentAccountIndex] || accounts[0];
-        if (supportUserDisplay) supportUserDisplay.value = activeAcc.name;
-        renderSupportTickets();
-        if (supportModal) supportModal.style.display = 'flex';
-    });
-}
-
-function renderSupportTickets() {
-    if (!ticketsList) return;
-    if (supportTickets.length === 0) {
-        ticketsList.innerHTML = '<p style="color: #666;">ยังไม่มีประวัติการติดต่อ</p>';
-        return;
-    }
-
-    ticketsList.innerHTML = supportTickets.map(ticket => `
-        <div class="ticket-item">
-            <strong>[${ticket.topic}] จาก: ${ticket.sender}</strong>
-            <p>${ticket.message}</p>
-            <span style="font-size:0.7rem; color:#666;">ส่งเมื่อ: ${ticket.time} | สถานะ: รอดำเนินการ</span>
-        </div>
-    `).join('');
-}
-
-if (supportForm) {
-    supportForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const activeAcc = accounts[currentAccountIndex] || accounts[0];
-        const topicSelect = document.getElementById('support-topic');
-        const topicText = topicSelect.options[topicSelect.selectedIndex].text;
-        const message = document.getElementById('support-message').value.trim();
-
-        if (!message) return alert('กรุณากรอกรายละเอียดข้อความ');
-
-        const newTicket = {
-            id: Date.now(),
-            sender: activeAcc.name,
-            topic: topicText,
-            message: message,
-            time: new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })
-        };
-
-        supportTickets.unshift(newTicket);
-        localStorage.setItem('streamgram_tickets', JSON.stringify(supportTickets));
-
-        renderSupportTickets();
-        supportForm.reset();
-        alert('ส่งข้อความถึงเจ้าหน้าที่เรียบร้อยแล้ว!');
-    });
-}
-
-
-// ==========================================
-// 8. ระบบสลับหน้า Sidebar (SPA)
-// ==========================================
-
 const sidebarItems = document.querySelectorAll('.sidebar-item[data-page]');
 const pageViews = document.querySelectorAll('.page-view');
 
@@ -797,303 +859,10 @@ sidebarItems.forEach(item => {
         item.classList.add('active');
 
         pageViews.forEach(view => {
-            if (view.id === `view-${targetPage}`) {
-                view.classList.add('active-view');
-            } else {
-                view.classList.remove('active-view');
-            }
+            view.classList.toggle('active-view', view.id === `view-${targetPage}`);
         });
     });
 });
-
-
-// ==========================================
-// 9. ระบบแชท Direct Messages & Notes
-// ==========================================
-
-let activeChatUserId = null;
-let chatHistories = JSON.parse(localStorage.getItem('streamgram_chat_histories')) || {};
-
-const menuIcon = document.querySelector('.menu-icon');
-const chatModal = document.getElementById('chat-modal');
-const closeChat = document.getElementById('close-chat');
-const chatForm = document.getElementById('chat-form');
-const chatInput = document.getElementById('chat-input');
-const chatMessages = document.getElementById('chat-messages');
-
-const noteViewerModal = document.getElementById('note-viewer-modal');
-const closeNoteViewerBtn = document.getElementById('close-note-viewer');
-const noteViewText = document.getElementById('note-view-text');
-const noteViewAvatar = document.getElementById('note-view-avatar');
-const noteViewUsername = document.getElementById('note-view-username');
-const noteReplyForm = document.getElementById('note-reply-form');
-
-window.openNoteViewer = function(noteId) {
-    const noteData = notesData.find(n => n.id === noteId);
-    if (!noteData || !noteViewerModal) return;
-
-    if (noteViewText) noteViewText.textContent = noteData.note;
-    if (noteViewAvatar) noteViewAvatar.src = noteData.avatar;
-    if (noteViewUsername) noteViewUsername.textContent = noteData.name;
-
-    noteViewerModal.style.display = 'flex';
-};
-
-if (closeNoteViewerBtn) closeNoteViewerBtn.addEventListener('click', () => noteViewerModal.style.display = 'none');
-
-if (noteReplyForm) {
-    noteReplyForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const replyInput = document.getElementById('note-reply-input');
-        if (replyInput && replyInput.value.trim()) {
-            alert(`ส่งข้อความตอบกลับ "${replyInput.value.trim()}" เรียบร้อยแล้ว!`);
-            replyInput.value = '';
-            if (noteViewerModal) noteViewerModal.style.display = 'none';
-        }
-    });
-}
-
-function renderNotes() {
-    const notesContainer = document.getElementById('ig-notes-container');
-    if (!notesContainer) return;
-    notesContainer.innerHTML = notesData.map(n => `
-        <div class="note-card" onclick="openNoteViewer(${n.id})">
-            <div class="note-bubble">${n.note}</div>
-            <img src="${n.avatar}" class="note-avatar" alt="${n.name}">
-            <span>${n.name}</span>
-        </div>
-    `).join('');
-}
-
-function renderChatList(filterText = '') {
-    const chatList = document.getElementById('ig-chat-list');
-    if (!chatList) return;
-
-    const filteredUsers = chatUsersData.filter(user => 
-        user.name.toLowerCase().includes(filterText.toLowerCase()) ||
-        user.lastMsg.toLowerCase().includes(filterText.toLowerCase())
-    );
-
-    if (filteredUsers.length === 0) {
-        chatList.innerHTML = '<p style="color: #888; text-align: center; margin-top: 20px; font-size: 0.9rem;">ไม่พบชื่อเพื่อนที่ค้นหา</p>';
-        return;
-    }
-
-    chatList.innerHTML = filteredUsers.map(u => `
-        <div class="chat-user-item" onclick="openDirectChat(${u.id})">
-            <img src="${u.avatar}" class="chat-user-avatar" alt="${u.name}">
-            <div class="chat-user-details">
-                <h4>${u.name}</h4>
-                <p>${u.lastMsg}</p>
-            </div>
-            <i class="fa-regular fa-camera" style="color: #888;"></i>
-        </div>
-    `).join('');
-}
-
-const dmSearchInput = document.getElementById('dm-search-input');
-if (dmSearchInput) {
-    dmSearchInput.addEventListener('input', (e) => {
-        renderChatList(e.target.value.trim());
-    });
-}
-
-const activeChatWindow = document.getElementById('ig-active-chat');
-const activeUserName = document.getElementById('active-user-name');
-const activeUserAvatar = document.getElementById('active-user-avatar');
-const backToListBtn = document.getElementById('back-to-list');
-const clearChatBtn = document.getElementById('clear-chat-btn');
-
-function openDirectChat(userId) {
-    const user = chatUsersData.find(u => u.id === userId);
-    if (!user || !activeChatWindow) return;
-
-    activeChatUserId = userId;
-    activeUserName.textContent = user.name;
-    activeUserAvatar.style.backgroundImage = `url(${user.avatar})`;
-    activeUserAvatar.style.backgroundSize = 'cover';
-    activeUserAvatar.innerHTML = '';
-
-    renderUserChatMessages(userId);
-    activeChatWindow.style.display = 'flex';
-}
-
-function renderUserChatMessages(userId) {
-    if (!chatMessages) return;
-
-    if (!chatHistories[userId]) {
-        chatHistories[userId] = [{ sender: 'ระบบ', text: 'เริ่มต้นการพูดคุย!', type: 'bot' }];
-        localStorage.setItem('streamgram_chat_histories', JSON.stringify(chatHistories));
-    }
-
-    const history = chatHistories[userId];
-    chatMessages.innerHTML = history.map(msg => `
-        <div class="chat-message ${msg.type}">
-            <strong>${msg.sender}:</strong> ${msg.text}
-        </div>
-    `).join('');
-    
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-
-if (clearChatBtn) {
-    clearChatBtn.addEventListener('click', () => {
-        if (!activeChatUserId) return;
-        if (confirm('คุณต้องการล้างประวัติการสนทนาของคนนี้ใช่หรือไม่?')) {
-            chatHistories[activeChatUserId] = [{ sender: 'ระบบ', text: 'เริ่มต้นการพูดคุย!', type: 'bot' }];
-            localStorage.setItem('streamgram_chat_histories', JSON.stringify(chatHistories));
-            renderUserChatMessages(activeChatUserId);
-        }
-    });
-}
-
-if (backToListBtn) {
-    backToListBtn.addEventListener('click', () => {
-        activeChatWindow.style.display = 'none';
-        activeChatUserId = null;
-    });
-}
-
-if (menuIcon) {
-    menuIcon.style.cursor = 'pointer';
-    menuIcon.addEventListener('click', () => {
-        renderNotes();
-        renderChatList();
-        if (dmSearchInput) dmSearchInput.value = '';
-        if (activeChatWindow) activeChatWindow.style.display = 'none';
-        chatModal.style.display = 'flex';
-    });
-}
-
-if (closeChat) closeChat.addEventListener('click', () => chatModal.style.display = 'none');
-
-if (chatForm) {
-    chatForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const text = chatInput.value.trim();
-        if (!text || !activeChatUserId) return;
-
-        const activeAcc = accounts[currentAccountIndex] || accounts[0];
-        
-        if (!chatHistories[activeChatUserId]) {
-            chatHistories[activeChatUserId] = [{ sender: 'ระบบ', text: 'เริ่มต้นการพูดคุย!', type: 'bot' }];
-        }
-
-        const userMsgObj = { sender: activeAcc.name, text: text, type: 'user' };
-        chatHistories[activeChatUserId].push(userMsgObj);
-        localStorage.setItem('streamgram_chat_histories', JSON.stringify(chatHistories));
-        
-        renderUserChatMessages(activeChatUserId);
-        chatInput.value = '';
-
-        setTimeout(() => {
-            const replies = [`ได้รับข้อความ "${text}" เรียบร้อยแล้วครับ!`, 'รับทราบครับผม 👍', 'ยินดีที่ได้คุยครับ 😊', 'ไว้คุยกันใหม่นะ!'];
-            const randomReply = replies[Math.floor(Math.random() * replies.length)];
-            const botMsgObj = { sender: 'แอดมิน', text: randomReply, type: 'bot' };
-            
-            if (chatHistories[activeChatUserId]) {
-                chatHistories[activeChatUserId].push(botMsgObj);
-                localStorage.setItem('streamgram_chat_histories', JSON.stringify(chatHistories));
-                if (activeChatWindow && activeChatWindow.style.display !== 'none') {
-                    renderUserChatMessages(activeChatUserId);
-                }
-            }
-        }, 1000);
-    });
-}
-
-
-// ==========================================
-// 10. ระบบกดค้าง แล้วลากเลือกธีมสี (Drag Theme Selector)
-// ==========================================
-
-const themePickerBar = document.getElementById('theme-picker-bar');
-const themeOptions = document.querySelectorAll('.theme-option');
-let longPressTimer = null;
-let isDraggingTheme = false;
-let currentHoveredTheme = null;
-
-function applyChatTheme(themeName) {
-    const chatMessagesEl = document.getElementById('chat-messages');
-    if (!chatMessagesEl) return;
-
-    chatMessagesEl.className = 'chat-messages';
-    chatMessagesEl.classList.add(`theme-${themeName}`);
-    localStorage.setItem('streamgram_chat_theme', themeName);
-}
-
-function handlePressStart(e) {
-    longPressTimer = setTimeout(() => {
-        isDraggingTheme = true;
-        if (themePickerBar) {
-            themePickerBar.style.display = 'flex';
-            setTimeout(() => themePickerBar.classList.add('show'), 10);
-        }
-        if (navigator.vibrate) navigator.vibrate(50);
-    }, 400);
-}
-
-function handleMove(e) {
-    if (!isDraggingTheme) {
-        clearTimeout(longPressTimer);
-        return;
-    }
-
-    if (e.cancelable) e.preventDefault();
-
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-
-    const elementUnder = document.elementFromPoint(clientX, clientY);
-    const hoveredOption = elementUnder ? elementUnder.closest('.theme-option') : null;
-
-    themeOptions.forEach(opt => opt.classList.remove('hovered'));
-
-    if (hoveredOption) {
-        hoveredOption.classList.add('hovered');
-        currentHoveredTheme = hoveredOption.getAttribute('data-theme');
-    } else {
-        currentHoveredTheme = null;
-    }
-}
-
-function handlePressEnd() {
-    clearTimeout(longPressTimer);
-
-    if (isDraggingTheme) {
-        isDraggingTheme = false;
-        
-        if (currentHoveredTheme) {
-            applyChatTheme(currentHoveredTheme);
-        }
-
-        if (themePickerBar) {
-            themePickerBar.classList.remove('show');
-            setTimeout(() => {
-                themePickerBar.style.display = 'none';
-            }, 150);
-        }
-
-        themeOptions.forEach(opt => opt.classList.remove('hovered'));
-        currentHoveredTheme = null;
-    }
-}
-
-const chatHeader = document.querySelector('.ig-active-header');
-if (chatHeader) {
-    chatHeader.addEventListener('mousedown', handlePressStart);
-    window.addEventListener('mousemove', handleMove);
-    window.addEventListener('mouseup', handlePressEnd);
-
-    chatHeader.addEventListener('touchstart', handlePressStart, { passive: false });
-    window.addEventListener('touchmove', handleMove, { passive: false });
-    window.addEventListener('touchend', handlePressEnd);
-}
-
-
-// ==========================================
-// 11. ประวัติการเล่นเกม
-// ==========================================
 
 function renderGameActivity() {
     const activityContainer = document.getElementById('game-activity-list');
@@ -1119,109 +888,7 @@ function renderGameActivity() {
 
 
 // ==========================================
-// 12. ระบบระบุพิกัดตำแหน่งปัจจุบัน (Geolocation)
-// ==========================================
-
-const geoLocationBtn = document.getElementById('geo-location-btn');
-const locationModal = document.getElementById('location-modal');
-const closeLocationBtn = document.getElementById('close-location');
-const refreshGeoBtn = document.getElementById('refresh-geo-btn');
-
-const countryVal = document.getElementById('country-val');
-const provinceVal = document.getElementById('province-val');
-const subdistrictVal = document.getElementById('subdistrict-val');
-const latVal = document.getElementById('lat-val');
-const lngVal = document.getElementById('lng-val');
-const accVal = document.getElementById('acc-val');
-
-function getCurrentCoordinates() {
-    if (countryVal) countryVal.textContent = 'กำลังค้นหา...';
-    if (provinceVal) provinceVal.textContent = 'กำลังค้นหา...';
-    if (subdistrictVal) subdistrictVal.textContent = 'กำลังค้นหา...';
-    if (latVal) latVal.textContent = '-';
-    if (lngVal) lngVal.textContent = '-';
-    if (accVal) accVal.textContent = '-';
-
-    if (!navigator.geolocation) {
-        useFallbackCoordinates();
-        return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-        async (position) => {
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
-            const accuracy = position.coords.accuracy.toFixed(1);
-
-            if (latVal) latVal.textContent = latitude.toFixed(6);
-            if (lngVal) lngVal.textContent = longitude.toFixed(6);
-            if (accVal) accVal.textContent = accuracy;
-
-            await fetchAddressFromCoords(latitude, longitude);
-        },
-        (error) => {
-            console.warn('Geolocation Error, using fallback:', error);
-            useFallbackCoordinates();
-        },
-        { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 }
-    );
-}
-
-async function fetchAddressFromCoords(lat, lng) {
-    try {
-        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}&accept-language=th`);
-        const data = await response.json();
-
-        if (data && data.address) {
-            const addr = data.address;
-            const country = addr.country || 'ประเทศไทย';
-            const province = addr.state || addr.province || addr.city || 'กรุงเทพมหานคร';
-            const subdistrict = addr.suburb || addr.subdistrict || addr.quarter || addr.neighbourhood || addr.town || addr.city_district || 'ไม่ระบุตำบล/แขวง';
-
-            if (countryVal) countryVal.textContent = country;
-            if (provinceVal) provinceVal.textContent = province;
-            if (subdistrictVal) subdistrictVal.textContent = subdistrict;
-        } else {
-            useFallbackAddress();
-        }
-    } catch (err) {
-        console.error('Reverse Geocoding error:', err);
-        useFallbackAddress();
-    }
-}
-
-function useFallbackCoordinates() {
-    const mockLat = 13.756331;
-    const mockLng = 100.501762;
-
-    if (latVal) latVal.textContent = `${mockLat} (จำลอง)`;
-    if (lngVal) lngVal.textContent = `${mockLng} (จำลอง)`;
-    if (accVal) accVal.textContent = '15.0';
-
-    if (countryVal) countryVal.textContent = 'ประเทศไทย (จำลอง)';
-    if (provinceVal) provinceVal.textContent = 'กรุงเทพมหานคร (จำลอง)';
-    if (subdistrictVal) subdistrictVal.textContent = 'แขวงพระบรมมหาราชวัง (จำลอง)';
-}
-
-function useFallbackAddress() {
-    if (countryVal && countryVal.textContent === 'กำลังค้นหา...') countryVal.textContent = 'ประเทศไทย';
-    if (provinceVal && provinceVal.textContent === 'กำลังค้นหา...') provinceVal.textContent = 'กรุงเทพมหานคร';
-    if (subdistrictVal && subdistrictVal.textContent === 'กำลังค้นหา...') subdistrictVal.textContent = 'เขตพระนคร';
-}
-
-if (geoLocationBtn) {
-    geoLocationBtn.addEventListener('click', () => {
-        if (locationModal) locationModal.style.display = 'flex';
-        getCurrentCoordinates();
-    });
-}
-
-if (closeLocationBtn) closeLocationBtn.addEventListener('click', () => locationModal.style.display = 'none');
-if (refreshGeoBtn) refreshGeoBtn.addEventListener('click', getCurrentCoordinates);
-
-
-// ==========================================
-// 13. เริ่มต้นการทำงานของแอปพลิเคชัน (Init App)
+// 8. เริ่มต้นแอปพลิเคชัน (Init App)
 // ==========================================
 
 function initApp() {
@@ -1230,7 +897,4 @@ function initApp() {
     renderVideos();
     renderShorts();
     renderGameActivity();
-    
-    const savedTheme = localStorage.getItem('streamgram_chat_theme') || 'default';
-    applyChatTheme(savedTheme);
 }
