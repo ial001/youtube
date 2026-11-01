@@ -1296,7 +1296,7 @@ body {
 
 /* ข้อความและปุ่มแจ้งเตือนสถานะเน็ต */
 .net-status-text {
-    font-size: 0.9rem;
+    font-size: 0.9rem; 
     color: #aaa;
     margin-top: 5px;
 }
