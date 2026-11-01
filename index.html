@@ -15,11 +15,14 @@
             <div class="splash-logo">
                 <i class="fa-solid fa-earth-americas"></i>
             </div>
+            
             <div class="splash-title-box">
                 <h1 class="splash-title">StreamGram</h1>
             </div>
+
             <div class="splash-loader" id="splash-loader"></div>
             <p class="net-status-text" id="net-status-text">กำลังตรวจสอบการเชื่อมต่ออินเทอร์เน็ต...</p>
+            
             <button id="retry-net-btn" class="retry-btn" style="display: none;">
                 <i class="fa-solid fa-rotate-right"></i> ลองเชื่อมต่ออีกครั้ง
             </button>
@@ -41,7 +44,7 @@
         <div class="nav-right">
             <button class="icon-btn" id="upload-trigger" title="อัปโหลดวิดีโอ"><i class="fa-solid fa-video"></i></button>
             <button class="icon-btn" id="settings-trigger" title="ตั้งค่าระบบ"><i class="fa-solid fa-gear"></i></button>
-            <div class="user-avatar" id="current-user-avatar" title="ดูและจัดการโปรไฟล์"></div>
+            <div class="user-avatar" id="current-user-avatar" title="จัดการโปรไฟล์ & บัญชี"></div>
         </div>
     </header>
 
@@ -61,55 +64,190 @@
 
         <!-- Main Content Area -->
         <main class="content" id="main-content">
+            <!-- View: หน้าแรก (Home) -->
             <div id="view-home" class="page-view active-view">
                 <section class="stories-wrapper">
                     <div class="stories-container" id="stories-container"></div>
                 </section>
+
                 <section class="video-section">
                     <h2>วิดีโอแนะนำสำหรับคุณ</h2>
                     <div class="video-grid" id="video-grid"></div>
                 </section>
             </div>
 
+            <!-- View: สำรวจ (Explore) -->
             <div id="view-explore" class="page-view">
                 <h2><i class="fa-solid fa-compass"></i> สำรวจเทรนด์ยอดฮิต</h2>
                 <div class="video-grid" id="explore-grid"></div>
             </div>
 
+            <!-- View: คลิปสั้น (Shorts) -->
             <div id="view-shorts" class="page-view">
                 <h2><i class="fa-solid fa-clapperboard"></i> คลิปสั้น (Shorts)</h2>
                 <div class="shorts-container" id="shorts-container"></div>
             </div>
 
+            <!-- View: การติดตาม (Subscriptions) -->
             <div id="view-subscriptions" class="page-view">
                 <h2><i class="fa-solid fa-bolt"></i> การติดตามของคุณ</h2>
                 <div class="video-grid" id="subscriptions-grid"></div>
             </div>
 
+            <!-- View: ช่องของคุณ & จัดการโปรไฟล์ (Full Page Profile View) -->
             <div id="view-channel" class="page-view">
-                <h2><i class="fa-solid fa-user-shield"></i> ช่องของคุณ</h2>
-                <div class="channel-header-box">
-                    <div class="user-avatar" style="width:70px; height:70px;"></div>
-                    <div>
-                        <h3 id="channel-page-name">Dev Channel</h3>
-                        <p style="color:#aaa; font-size:0.9rem;">ผู้ติดตาม 1.2K คน • วิดีโอ 4 รายการ</p>
-                    </div>
-                </div>
+                <div class="full-profile-container">
+                    <!-- Banner ด้านบน -->
+                    <div class="profile-banner-full" id="user-profile-banner"></div>
 
-                <h3 style="margin-top:20px; margin-bottom:15px;">วิดีโอที่อัปโหลด</h3>
-                <div class="video-grid" id="my-videos-grid"></div>
+                    <!-- ข้อมูลส่วนตัวหลัก -->
+                    <div class="profile-header-full">
+                        <div class="avatar-box-full" id="avatar-click-zone" title="คลิกเพื่อเปลี่ยนรูปโปรไฟล์">
+                            <div class="main-avatar-img" id="user-profile-avatar"></div>
+                            <div class="avatar-hover-icon"><i class="fa-solid fa-camera"></i></div>
+                            <input type="file" id="profile-avatar-file-input" accept="image/*" hidden>
+                        </div>
 
-                <div class="gaming-section-box" style="margin-top: 30px; border-top: 1px solid #333; padding-top: 20px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <h3><i class="fa-solid fa-gamepad" style="color: #3ea6ff;"></i> ประวัติการเล่นเกมล่าสุด</h3>
-                        <button class="primary-btn" id="gamer-chat-trigger" style="background: #e1306c; color: #fff; border-radius: 20px; padding: 6px 16px; border: none; cursor: pointer;">
-                            <i class="fa-solid fa-comments"></i> แชทกลุ่มเกมเมอร์
-                        </button>
+                        <div class="profile-title-group">
+                            <h2 id="user-profile-name">Dev Channel (หลัก)</h2>
+                            <p class="profile-tag" id="user-profile-tag">@dev_channel</p>
+                            <p class="profile-bio-text" id="user-profile-bio">นักพัฒนาเว็บสายการสร้างโซเชียลมีเดีย</p>
+                            
+                            <div class="profile-badges">
+                                <span class="badge badge-vip" id="vip-status-badge" style="display: none;"><i class="fa-solid fa-crown"></i> VIP Member</span>
+                                <span class="badge badge-creator"><i class="fa-solid fa-circle-check"></i> Creator</span>
+                                <span class="badge badge-online"><i class="fa-solid fa-circle"></i> ออนไลน์</span>
+                            </div>
+                        </div>
+
+                        <div class="profile-actions-full">
+                            <button class="action-btn-pill btn-edit" id="toggle-edit-mode-btn">
+                                <i class="fa-solid fa-pen-to-square"></i> แก้ไขโปรไฟล์
+                            </button>
+                            <button class="action-btn-pill btn-vip" id="open-vip-modal-btn">
+                                <i class="fa-solid fa-crown"></i> <span>สมัคร VIP</span>
+                            </button>
+                            <button class="action-btn-pill btn-logout" id="logout-btn" title="ออกจากระบบ/ลบบัญชี">
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                            </button>
+                        </div>
                     </div>
-                    <div class="game-activity-list" id="game-activity-list"></div>
+
+                    <!-- ตัวเลขสถิติ -->
+                    <div class="profile-stats-bar-full">
+                        <div class="stat-item">
+                            <strong id="stat-followers-count">1,240</strong>
+                            <span>ผู้ติดตาม</span>
+                        </div>
+                        <div class="stat-item">
+                            <strong>158</strong>
+                            <span>กำลังติดตาม</span>
+                        </div>
+                        <div class="stat-item">
+                            <strong>45.8K</strong>
+                            <span>ยอดไลก์รวม</span>
+                        </div>
+                    </div>
+
+                    <!-- ฟอร์มแก้ไขข้อมูลโปรไฟล์ -->
+                    <div class="profile-edit-box" id="profile-edit-box" style="display: none; margin-bottom: 25px;">
+                        <h4><i class="fa-solid fa-sliders"></i> แก้ไขข้อมูลบัญชีของคุณ</h4>
+                        <form id="edit-profile-form">
+                            <div class="form-group">
+                                <label>ชื่อโปรไฟล์ / ชื่อช่อง</label>
+                                <input type="text" id="edit-profile-name" placeholder="กรอกชื่อผู้ใช้..." required>
+                            </div>
+                            <div class="form-group">
+                                <label>คำอธิบายช่อง (Bio)</label>
+                                <textarea id="edit-profile-bio" rows="2" placeholder="อธิบายเกี่ยวกับตัวคุณ..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>เลือกรูปโปรไฟล์ตัวอย่าง</label>
+                                <div class="preset-avatar-grid">
+                                    <img src="https://picsum.photos/seed/user1/100" class="preset-avatar-item" onclick="selectPresetAvatar(this.src)" alt="Preset 1">
+                                    <img src="https://picsum.photos/seed/user2/100" class="preset-avatar-item" onclick="selectPresetAvatar(this.src)" alt="Preset 2">
+                                    <img src="https://picsum.photos/seed/user3/100" class="preset-avatar-item" onclick="selectPresetAvatar(this.src)" alt="Preset 3">
+                                    <img src="https://picsum.photos/seed/user4/100" class="preset-avatar-item" onclick="selectPresetAvatar(this.src)" alt="Preset 4">
+                                </div>
+                            </div>
+                            <button type="submit" class="primary-btn"><i class="fa-solid fa-floppy-disk"></i> บันทึกการเปลี่ยนแปลง</button>
+                        </form>
+                    </div>
+
+                    <!-- Grid 2 ฝั่ง: ฝั่งซ้ายจัดการบัญชี / ฝั่งขวาแสดงวิดีโอผลงาน -->
+                    <div class="profile-content-layout">
+                        <!-- คอลัมน์ซ้าย: จัดการบัญชี & สิทธิ VIP -->
+                        <div class="profile-sidebar-left">
+                            <div class="accounts-section-card">
+                                <div class="section-title-row">
+                                    <h3><i class="fa-solid fa-users-gear"></i> สลับบัญชี / จัดการผู้ใช้</h3>
+                                    <span class="active-acc-count" id="active-acc-count">1 บัญชีในระบบ</span>
+                                </div>
+                                
+                                <div id="accounts-list" class="accounts-list"></div>
+                                
+                                <div class="add-account-group">
+                                    <input type="text" id="new-account-name" placeholder="ชื่อบัญชีใหม่...">
+                                    <button type="button" class="primary-btn" id="add-account-btn"><i class="fa-solid fa-plus"></i> เพิ่ม</button>
+                                </div>
+                            </div>
+
+                            <!-- สิทธิ VIP (กรอบรูป 120 แบบ & ธีม 120 แบบ) -->
+                            <div class="vip-exclusive-box" id="vip-exclusive-box" style="display: none;">
+                                <h3><i class="fa-solid fa-gem" style="color: #ffd700;"></i> สิทธิพิเศษสมาชิก VIP</h3>
+                                
+                                <!-- เลือกธีมแบนเนอร์ 120 แบบ -->
+                                <div class="vip-feature">
+                                    <label style="font-weight: 600; color: #fff; font-size: 0.85rem;">🎨 เลือกธีมแบนเนอร์โปรไฟล์ (120 แบบ):</label>
+                                    <div class="theme-scroll-grid" id="banner-theme-selector"></div>
+                                </div>
+
+                                <!-- เลือกกรอบรูปมีเอฟเฟกต์ 120 แบบ -->
+                                <div class="vip-feature border-top" style="margin-top: 15px; padding-top: 15px;">
+                                    <label style="font-weight: 600; color: #fff; font-size: 0.85rem;">✨ เลือกกรอบรูปโปรไฟล์เอฟเฟกต์ (120 แบบ):</label>
+                                    <div class="frame-scroll-grid" id="avatar-frame-selector"></div>
+                                </div>
+
+                                <!-- โค้ดส่วนลดสำหรับส่งให้เพื่อน -->
+                                <div class="vip-feature border-top" style="margin-top: 15px; padding-top: 15px;">
+                                    <label style="font-size: 0.8rem; color: #aaa;">🎁 สร้างโค้ดส่วนลด 20% ส่งให้เพื่อน:</label>
+                                    <div class="code-generator-row" style="display: flex; gap: 8px; margin-top: 6px;">
+                                        <input type="text" id="generated-vip-code" readonly placeholder="กดเพื่อสร้างโค้ด" style="flex: 1; padding: 6px 10px; background: #101010; border: 1px solid #333; border-radius: 6px; color: #ffd700; font-weight: bold; font-size: 0.85rem;">
+                                        <button class="primary-btn" id="generate-code-btn" style="padding: 6px 14px; font-size: 0.8rem;">สร้าง</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- คอลัมน์ขวา: รายการวิดีโอ & คลิปสั้น & ประวัติเล่นเกม -->
+                        <div class="profile-main-right">
+                            <div class="profile-tab-menu">
+                                <button class="profile-tab-btn active" data-tab="tab-videos"><i class="fa-solid fa-video"></i> วิดีโอของคุณ</button>
+                                <button class="profile-tab-btn" data-tab="tab-shorts"><i class="fa-solid fa-clapperboard"></i> คลิปสั้น</button>
+                            </div>
+
+                            <div class="profile-tab-content active-tab-content" id="tab-videos">
+                                <div class="video-grid" id="profile-user-videos"></div>
+                            </div>
+                            <div class="profile-tab-content" id="tab-shorts">
+                                <div class="video-grid" id="profile-user-shorts"></div>
+                            </div>
+
+                            <div class="gaming-section-box" style="margin-top: 30px; border-top: 1px solid #333; padding-top: 20px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                                    <h3><i class="fa-solid fa-gamepad" style="color: #3ea6ff;"></i> ประวัติการเล่นเกมล่าสุด</h3>
+                                    <button class="primary-btn" id="gamer-chat-trigger" style="background: #e1306c; color: #fff; border-radius: 20px; padding: 6px 16px; border: none; cursor: pointer;">
+                                        <i class="fa-solid fa-comments"></i> แชทกลุ่มเกมเมอร์
+                                    </button>
+                                </div>
+                                <div class="game-activity-list" id="game-activity-list"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
+            <!-- View: ประวัติการเข้าชม (History) -->
             <div id="view-history" class="page-view">
                 <h2><i class="fa-solid fa-clock-rotate-left"></i> ประวัติการเข้าชม</h2>
                 <div class="video-grid" id="history-grid"></div>
@@ -126,6 +264,7 @@
             </div>
             <h2><i class="fa-solid fa-location-dot" style="color: #ff4e45;"></i> ตำแหน่งปัจจุบันของคุณ</h2>
             <p style="color: #aaa; font-size: 0.85rem; margin-top: 5px;">ตำแหน่งจริงจากอุปกรณ์ของคุณ</p>
+            
             <div style="background: #181818; padding: 15px; border-radius: 12px; border: 1px solid #333; margin-top: 15px; text-align: left;">
                 <p style="margin: 6px 0; color: #fff;"><strong>ประเทศ:</strong> <span id="country-val" style="color: #3ea6ff;">กำลังค้นหา...</span></p>
                 <p style="margin: 6px 0; color: #fff;"><strong>จังหวัด:</strong> <span id="province-val" style="color: #3ea6ff;">กำลังค้นหา...</span></p>
@@ -135,6 +274,7 @@
                 <p style="margin: 4px 0; color: #888; font-size: 0.8rem;"><strong>ลองจิจูด (Lng):</strong> <span id="lng-val">-</span></p>
                 <p style="margin: 4px 0; color: #888; font-size: 0.8rem;"><strong>ความแม่นยำ:</strong> <span id="acc-val">-</span> เมตร</p>
             </div>
+
             <button class="primary-btn" id="refresh-geo-btn" style="width: 100%; margin-top: 15px; padding: 10px; border-radius: 8px;">
                 <i class="fa-solid fa-rotate-right"></i> อัปเดตตำแหน่งอีกครั้ง
             </button>
@@ -159,118 +299,17 @@
         </div>
     </div>
 
-    <!-- Modal: หน้าโปรไฟล์สาธารณะสไตล์โซเชียลฉบับใหม่ (แทนที่ตัวเก่าทั้งหมด) -->
-    <div class="modal" id="profile-modal">
-        <div class="modal-content profile-view-card">
-            <span class="close-modal" id="close-profile">&times;</span>
-            
-            <!-- Banner โปรไฟล์ -->
-            <div class="profile-banner" id="user-profile-banner"></div>
-            
-            <!-- ข้อมูลส่วนหัวโปรไฟล์ -->
-            <div class="profile-header-details">
-                <div class="profile-avatar-wrapper" style="position: relative; cursor: pointer;" title="คลิกเพื่อเปลี่ยนรูปโปรไฟล์">
-                    <div class="profile-main-avatar" id="user-profile-avatar"></div>
-                    <input type="file" id="profile-avatar-file-input" accept="image/*" style="display: none;">
-                </div>
-                <div class="profile-actions-btns">
-                    <button class="primary-btn edit-btn" id="edit-profile-btn" style="background: #333; border: 1px solid #555; border-radius: 20px;">
-                        <i class="fa-solid fa-pen-to-square"></i> แก้ไขโปรไฟล์
-                    </button>
-                    <button class="primary-btn vip-buy-btn" id="open-vip-modal-btn" style="background: linear-gradient(135deg, #ffd700, #ffa500); color: #000; font-weight: bold; border-radius: 20px;">
-                        <i class="fa-solid fa-crown"></i> ซื้อ VIP
-                    </button>
-                </div>
-            </div>
-
-            <div class="profile-info-body">
-                <h2 id="user-profile-name">Dev Channel (หลัก)</h2>
-                <p class="profile-tag" id="user-profile-tag">@dev_channel</p>
-                <p class="profile-bio-text" id="user-profile-bio">นักพัฒนาเว็บสายการสร้างโซเชียลมีเดีย</p>
-                
-                <!-- ตรา Badges -->
-                <div class="profile-badges">
-                    <span class="badge badge-vip" id="vip-status-badge" style="display: none;"><i class="fa-solid fa-crown"></i> VIP Member</span>
-                    <span class="badge badge-creator"><i class="fa-solid fa-circle-check"></i> Creator</span>
-                </div>
-
-                <!-- สถิติยอดต่างๆ -->
-                <div class="profile-stats-bar">
-                    <div class="stat-item">
-                        <strong id="stat-followers-count">1,240</strong>
-                        <span>ผู้ติดตาม</span>
-                    </div>
-                    <div class="stat-item">
-                        <strong>158</strong>
-                        <span>กำลังติดตาม</span>
-                    </div>
-                    <div class="stat-item">
-                        <strong>45.8K</strong>
-                        <span>ยอดไลก์รวม</span>
-                    </div>
-                </div>
-
-                <!-- สิทธิพิเศษเฉพาะสมาชิก VIP -->
-                <div class="vip-exclusive-box" id="vip-exclusive-box" style="display: none; background: #121212; border: 1px dashed #ffd700; border-radius: 12px; padding: 12px; margin-bottom: 15px;">
-                    <h3 style="font-size: 0.95rem; color: #ffd700; margin: 0 0 8px 0;"><i class="fa-solid fa-gem"></i> สิทธิพิเศษสมาชิก VIP</h3>
-                    
-                    <div>
-                        <label style="font-size: 0.85rem; color: #ccc;">🎨 เปลี่ยนสีธีม Banner โปรไฟล์ของคุณ:</label>
-                        <div class="theme-color-picker" style="display: flex; gap: 8px; margin-top: 5px;">
-                            <span class="color-dot" style="width:26px; height:26px; border-radius:50%; cursor:pointer; background: linear-gradient(135deg, #1e3d59, #17b978);" onclick="changeProfileTheme('#1e3d59', '#17b978')"></span>
-                            <span class="color-dot" style="width:26px; height:26px; border-radius:50%; cursor:pointer; background: linear-gradient(135deg, #ff007f, #7f00ff);" onclick="changeProfileTheme('#ff007f', '#7f00ff')"></span>
-                            <span class="color-dot" style="width:26px; height:26px; border-radius:50%; cursor:pointer; background: linear-gradient(135deg, #f97316, #eab308);" onclick="changeProfileTheme('#f97316', '#eab308')"></span>
-                            <span class="color-dot" style="width:26px; height:26px; border-radius:50%; cursor:pointer; background: linear-gradient(135deg, #06b6d4, #3b82f6);" onclick="changeProfileTheme('#06b6d4', '#3b82f6')"></span>
-                        </div>
-                    </div>
-
-                    <div style="margin-top: 10px; border-top: 1px solid #2a2a2a; padding-top: 8px;">
-                        <label style="font-size: 0.85rem; color: #ccc;">🎁 สร้างโค้ดส่วนลด 20% แบ่งปันให้เพื่อน:</label>
-                        <div style="display: flex; gap: 8px; margin-top: 5px;">
-                            <input type="text" id="generated-vip-code" readonly placeholder="กดปุ่มเพื่อสร้างโค้ด" style="flex: 1; padding: 6px 10px; background: #000; border: 1px solid #444; color: #ffd700; border-radius: 6px; font-size: 0.85rem; font-weight: bold;">
-                            <button class="primary-btn" id="generate-code-btn" style="padding: 6px 12px; font-size: 0.8rem; background: #ffd700; color: #000; border: none; font-weight: bold; cursor: pointer;">สร้างโค้ด</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- แท็บเลือกดูผลงาน -->
-                <div class="profile-tab-menu">
-                    <button class="profile-tab-btn active" data-tab="tab-videos"><i class="fa-solid fa-video"></i> วิดีโอ</button>
-                    <button class="profile-tab-btn" data-tab="tab-shorts"><i class="fa-solid fa-clapperboard"></i> คลิปสั้น</button>
-                </div>
-
-                <div class="profile-tab-content active-tab-content" id="tab-videos">
-                    <div class="profile-video-grid" id="profile-user-videos"></div>
-                </div>
-                <div class="profile-tab-content" id="tab-shorts">
-                    <div class="profile-video-grid" id="profile-user-shorts"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal: ระบบซื้อ VIP ด้วยเงินจริง (จำลองการชำระเงิน) -->
+    <!-- VIP Buy Modal -->
     <div class="modal" id="vip-buy-modal">
         <div class="modal-content" style="max-width: 400px; text-align: center; padding: 25px;">
             <span class="close-modal" id="close-vip-modal">&times;</span>
-            
             <div style="font-size: 3.5rem; color: #ffd700; margin-bottom: 10px;">
                 <i class="fa-solid fa-crown"></i>
             </div>
-            <h2>สมัครสมาชิก StreamGram VIP</h2>
-            <p style="color: #aaa; font-size: 0.85rem; margin-top: 4px;">ปลดล็อกสิทธิพิเศษ ปรับแต่งสีโปรไฟล์ และแจกโค้ดส่วนลดให้เพื่อนได้ไม่จำกัด!</p>
+            <h2>สมัครสมาชิก VIP</h2>
+            <p style="color: #aaa; font-size: 0.85rem; margin-top: 4px;">ปลดล็อกสิทธิพิเศษ กรอบรูปมีเอฟเฟกต์ 120 แบบ และธีม 120 แบบ!</p>
             
-            <div style="background: #121212; border: 1px solid #ffd700; border-radius: 12px; padding: 15px; margin: 15px 0; text-align: left;">
-                <p style="margin: 5px 0; color: #fff;">✨ <strong>สิทธิประโยชน์ VIP:</strong></p>
-                <ul style="color: #ccc; font-size: 0.85rem; padding-left: 20px; margin: 5px 0;">
-                    <li>ปลดล็อกการเปลี่ยนสีธีม Banner โปรไฟล์</li>
-                    <li>ตราสัญลักษณ์ VIP Member สุดเท่</li>
-                    <li>สิทธิสร้างโค้ดส่วนลด 20% ส่งต่อให้เพื่อนในแอป</li>
-                </ul>
-                <h3 style="color: #ffd700; margin-top: 10px; text-align: right;" id="vip-price-display">ราคาเพียง 99 บาท / เดือน</h3>
-            </div>
-
-            <div style="margin-bottom: 15px; text-align: left;">
+            <div style="margin: 15px 0; text-align: left;">
                 <label style="font-size: 0.8rem; color: #aaa;">มีโค้ดส่วนลดจากเพื่อนหรือไม่?</label>
                 <div style="display: flex; gap: 8px; margin-top: 4px;">
                     <input type="text" id="vip-discount-input" placeholder="ใส่โค้ดส่วนลด เช่น VIPGIFT..." style="flex:1; padding: 8px; background: #181818; border: 1px solid #444; color: #fff; border-radius: 6px; outline: none;">
@@ -279,7 +318,7 @@
                 <p id="discount-msg" style="font-size: 0.75rem; margin-top: 4px;"></p>
             </div>
 
-            <button class="primary-btn" id="confirm-pay-vip-btn" style="width: 100%; background: linear-gradient(135deg, #ffd700, #ffa500); color: #000; font-weight: bold; padding: 12px; border-radius: 8px; font-size: 1rem; border: none; cursor: pointer;">
+            <button class="primary-btn" id="confirm-pay-vip-btn" style="width: 100%; padding: 12px; background: linear-gradient(135deg, #ffd700, #ffa500); color: #000; font-weight: bold; border-radius: 8px; border: none; cursor: pointer;">
                 💳 ชำระเงิน 99 บาท (เปิดใช้งาน VIP ทันที)
             </button>
         </div>
@@ -311,13 +350,11 @@
         </div>
     </div>
 
-    <!-- Support Contact Modal -->
+    <!-- Support Modal -->
     <div class="modal" id="support-modal">
         <div class="modal-content support-box">
             <span class="close-modal" id="close-support">&times;</span>
             <h2><i class="fa-solid fa-headset" style="color: #3ea6ff;"></i> ศูนย์ช่วยเหลือ & ติดต่อเจ้าหน้าที่</h2>
-            <p style="font-size: 0.85rem; color: #aaa; margin-bottom: 15px;">ส่งข้อความหาทีมงานได้ทุกบัญชี ระบบจะบันทึกคำขอของคุณไว้ในระบบกลาง</p>
-
             <form id="support-form">
                 <div class="form-group" style="margin-bottom: 12px;">
                     <label style="font-size: 0.85rem; display:block; margin-bottom:5px;">บัญชีผู้ติดต่อ</label>
@@ -334,11 +371,10 @@
                 </div>
                 <div class="form-group" style="margin-bottom: 15px;">
                     <label style="font-size: 0.85rem; display:block; margin-bottom:5px;">รายละเอียดข้อความ</label>
-                    <textarea id="support-message" rows="4" placeholder="อธิบายปัญหาหรือสิ่งที่ต้องการสอบถาม..." required style="width: 100%; padding: 10px; background: #121212; border: 1px solid #444; border-radius: 6px; color: #fff; outline: none;"></textarea>
+                    <textarea id="support-message" rows="4" placeholder="อธิบายปัญหา..." required style="width: 100%; padding: 10px; background: #121212; border: 1px solid #444; border-radius: 6px; color: #fff; outline: none;"></textarea>
                 </div>
                 <button type="submit" class="primary-btn" style="width: 100%;">ส่งข้อความถึงเจ้าหน้าที่</button>
             </form>
-
             <div class="support-history" style="margin-top: 20px; border-top: 1px solid #333; padding-top: 15px;">
                 <h3 style="font-size: 0.95rem; margin-bottom: 10px;">ประวัติการติดต่อของระบบ</h3>
                 <div id="tickets-list" style="max-height: 120px; overflow-y: auto; font-size: 0.8rem; color: #ccc;"></div>
@@ -419,7 +455,7 @@
     <div class="modal" id="video-player-modal">
         <div class="modal-content video-player-box" id="video-player-box">
             <div class="player-actions">
-                <button id="pip-btn" title="แยกจอเล่นวิดีโอ (Picture-in-Picture)"><i class="fa-solid fa-clone"></i></button>
+                <button id="pip-btn" title="แยกจอเล่นวิดีโอ"><i class="fa-solid fa-clone"></i></button>
                 <button id="toggle-size-btn" title="ย่อหน้าจอเพื่อแชท"><i class="fa-solid fa-compress" id="size-icon"></i></button>
                 <span class="close-modal" id="close-video-player">&times;</span>
             </div>
@@ -428,7 +464,6 @@
                     <div class="video-container">
                         <video id="main-video-player" controls autoplay style="width: 100%; height: 100%; object-fit: contain;">
                             <source id="video-source" src="" type="video/mp4">
-                            เบราว์เซอร์ของคุณไม่รองรับการเล่นวิดีโอ
                         </video>
                     </div>
                     <div class="video-play-details" style="margin-top: 15px;">
@@ -455,7 +490,7 @@
                         <h3><i class="fa-solid fa-comments" style="color: #3ea6ff;"></i> แชทสด</h3>
                     </div>
                     <div class="chat-box" id="live-chat-messages">
-                        <div class="chat-item bot"><strong>ระบบ:</strong> ยินดีต้อนรับเข้าสู่แชทสด! พูดคุยระหว่างรับชมคลิปได้เลย</div>
+                        <div class="chat-item bot"><strong>ระบบ:</strong> ยินดีต้อนรับเข้าสู่แชทสด!</div>
                     </div>
                     <form id="live-chat-form" class="chat-input-area" style="padding: 10px; display: flex; gap: 8px;">
                         <input type="text" id="live-chat-input" placeholder="พิมพ์ข้อความ..." required autocomplete="off" style="flex: 1; padding: 8px 12px; background: #121212; border: 1px solid #444; border-radius: 20px; color: #fff; outline: none;">
@@ -477,5 +512,6 @@
     </div>
 
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
+  
