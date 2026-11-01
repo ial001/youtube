@@ -5,57 +5,107 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StreamGram - โซเชียลวิดีโอและสตอรี่</title>
     <link rel="stylesheet" href="style.css">
-    <!-- FontAwesome สำหรับไอคอน -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <!-- Top Navigation Bar (YouTube Style Header) -->
+    <!-- Header Navigation Bar -->
     <header class="navbar">
         <div class="nav-left">
             <i class="fa-solid fa-bars menu-icon"></i>
             <h1 class="logo"><i class="fa-solid fa-play-circle"></i> StreamGram</h1>
         </div>
         <div class="nav-center">
-            <input type="text" placeholder="ค้นหาวิดีโอ, สตอรี่...">
+            <input type="text" id="main-search-input" placeholder="ค้นหาวิดีโอ, สตอรี่...">
             <button class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
         </div>
         <div class="nav-right">
-            <button class="icon-btn" id="upload-trigger"><i class="fa-solid fa-video"></i></button>
-            <button class="icon-btn"><i class="fa-solid fa-bell"></i></button>
-            <div class="user-avatar"></div>
+            <button class="icon-btn" id="upload-trigger" title="อัปโหลดวิดีโอ"><i class="fa-solid fa-video"></i></button>
+            <button class="icon-btn" id="settings-trigger" title="ตั้งค่าระบบ"><i class="fa-solid fa-gear"></i></button>
+            <div class="user-avatar" id="current-user-avatar" title="บัญชีปัจจุบัน"></div>
         </div>
     </header>
 
     <div class="main-container">
-        <!-- Sidebar -->
+        <!-- Sidebar Navigation -->
         <aside class="sidebar">
-            <a href="#" class="sidebar-item active"><i class="fa-solid fa-house"></i> หน้าแรก</a>
-            <a href="#" class="sidebar-item"><i class="fa-solid fa-compass"></i> สำรวจ</a>
-            <a href="#" class="sidebar-item"><i class="fa-solid fa-clapperboard"></i> คลิปสั้น</a>
-            <a href="#" class="sidebar-item"><i class="fa-solid fa-bolt"></i> การติดตาม</a>
+            <a href="#" class="sidebar-item active" data-page="home"><i class="fa-solid fa-house"></i> หน้าแรก</a>
+            <a href="#" class="sidebar-item" data-page="explore"><i class="fa-solid fa-compass"></i> สำรวจ</a>
+            <a href="#" class="sidebar-item" data-page="shorts"><i class="fa-solid fa-clapperboard"></i> คลิปสั้น</a>
+            <a href="#" class="sidebar-item" data-page="subscriptions"><i class="fa-solid fa-bolt"></i> การติดตาม</a>
             <hr>
-            <a href="#" class="sidebar-item"><i class="fa-solid fa-user-shield"></i> ช่องของคุณ</a>
-            <a href="#" class="sidebar-item"><i class="fa-solid fa-clock-rotate-left"></i> ประวัติการเข้าชม</a>
+            <a href="#" class="sidebar-item" data-page="channel"><i class="fa-solid fa-user-shield"></i> ช่องของคุณ</a>
+            <a href="#" class="sidebar-item" data-page="history"><i class="fa-solid fa-clock-rotate-left"></i> ประวัติการเข้าชม</a>
+            <hr>
+            <a href="#" class="sidebar-item" id="support-trigger"><i class="fa-solid fa-headset"></i> ติดต่อเจ้าหน้าที่</a>
         </aside>
 
         <!-- Main Content Area -->
-        <main class="content">
-            
-            <!-- Instagram Style Stories Bar -->
-            <section class="stories-wrapper">
-                <div class="stories-container" id="stories-container">
-                    <!-- สตอรี่จะถูกสร้างด้วย JavaScript -->
-                </div>
-            </section>
+        <main class="content" id="main-content">
+            <!-- View: หน้าแรก (Home) -->
+            <div id="view-home" class="page-view active-view">
+                <section class="stories-wrapper">
+                    <div class="stories-container" id="stories-container"></div>
+                </section>
 
-            <!-- YouTube Style Video Grid -->
-            <section class="video-section">
-                <h2>วิดีโอแนะนำสำหรับคุณ</h2>
-                <div class="video-grid" id="video-grid">
-                    <!-- วิดีโอจะถูกสร้างด้วย JavaScript -->
+                <section class="video-section">
+                    <h2>วิดีโอแนะนำสำหรับคุณ</h2>
+                    <div class="video-grid" id="video-grid"></div>
+                </section>
+            </div>
+
+            <!-- View: สำรวจ (Explore) -->
+            <div id="view-explore" class="page-view">
+                <h2><i class="fa-solid fa-compass"></i> สำรวจเทรนด์ยอดฮิต</h2>
+                <div class="video-grid" id="explore-grid"></div>
+            </div>
+
+            <!-- View: คลิปสั้น (Shorts) -->
+            <div id="view-shorts" class="page-view">
+                <h2><i class="fa-solid fa-clapperboard"></i> คลิปสั้น (Shorts)</h2>
+                <div class="shorts-container" id="shorts-container"></div>
+            </div>
+
+            <!-- View: การติดตาม (Subscriptions) -->
+            <div id="view-subscriptions" class="page-view">
+                <h2><i class="fa-solid fa-bolt"></i> การติดตามของคุณ</h2>
+                <div class="video-grid" id="subscriptions-grid"></div>
+            </div>
+
+            <!-- View: ช่องของคุณ (Channel) -->
+            <div id="view-channel" class="page-view">
+                <h2><i class="fa-solid fa-user-shield"></i> ช่องของคุณ</h2>
+                <div class="channel-header-box">
+                    <div class="user-avatar" style="width:70px; height:70px;"></div>
+                    <div>
+                        <h3 id="channel-page-name">Dev Channel</h3>
+                        <p style="color:#aaa; font-size:0.9rem;">ผู้ติดตาม 1.2K คน • วิดีโอ 4 รายการ</p>
+                    </div>
                 </div>
-            </section>
+
+                <!-- ส่วนวิดีโอที่อัปโหลด -->
+                <h3 style="margin-top:20px; margin-bottom:15px;">วิดีโอที่อัปโหลด</h3>
+                <div class="video-grid" id="my-videos-grid"></div>
+
+                <!-- ส่วนประวัติการเล่นเกม & แชทกลุ่มเกมเมอร์ -->
+                <div class="gaming-section-box" style="margin-top: 30px; border-top: 1px solid #333; padding-top: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h3><i class="fa-solid fa-gamepad" style="color: #3ea6ff;"></i> ประวัติการเล่นเกมล่าสุด</h3>
+                        <button class="primary-btn" id="gamer-chat-trigger" style="background: #e1306c; color: #fff; border-radius: 20px; padding: 6px 16px; border: none; cursor: pointer;">
+                            <i class="fa-solid fa-comments"></i> แชทกลุ่มเกมเมอร์
+                        </button>
+                    </div>
+
+                    <!-- รายการประวัติการเล่นเกมที่จะแสดงผลจาก JavaScript -->
+                    <div class="game-activity-list" id="game-activity-list"></div>
+                </div>
+            </div>
+
+            <!-- View: ประวัติการเข้าชม (History) -->
+            <div id="view-history" class="page-view">
+                <h2><i class="fa-solid fa-clock-rotate-left"></i> ประวัติการเข้าชม</h2>
+                <div class="video-grid" id="history-grid"></div>
+            </div>
         </main>
     </div>
 
@@ -63,7 +113,7 @@
     <div class="modal" id="upload-modal">
         <div class="modal-content">
             <span class="close-modal" id="close-modal">&times;</span>
-            <h2>อัพโหลดวิดีโอใหม่</h2>
+            <h2>อัปโหลดวิดีโอใหม่</h2>
             <form id="upload-form">
                 <div class="upload-dropzone" id="dropzone">
                     <i class="fa-solid fa-cloud-arrow-up"></i>
@@ -77,6 +127,81 @@
         </div>
     </div>
 
+    <!-- Settings & Shared Code Modal -->
+    <div class="modal" id="settings-modal">
+        <div class="modal-content settings-box">
+            <span class="close-modal" id="close-settings">&times;</span>
+            <h2><i class="fa-solid fa-gear"></i> การตั้งค่า & จัดการบัญชี</h2>
+            
+            <div class="settings-section">
+                <h3>👤 บัญชีปัจจุบัน</h3>
+                <div class="current-account-card">
+                    <div class="mini-avatar" id="settings-avatar"></div>
+                    <div>
+                        <strong id="settings-username">User_1</strong>
+                        <p style="font-size: 0.8rem; color: #aaa;">สถานะ: ออนไลน์</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3>🔄 สลับบัญชี / เพิ่มบัญชีใหม่</h3>
+                <div id="accounts-list" class="accounts-list"></div>
+                <div class="add-account-group">
+                    <input type="text" id="new-account-name" placeholder="ชื่อบัญชีใหม่...">
+                    <button type="button" class="primary-btn" id="add-account-btn">เพิ่มบัญชี</button>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3>🎟️ ระบบใส่โค้ดเดียวกัน (Shared Code)</h3>
+                <p style="font-size: 0.85rem; color: #aaa; margin-bottom: 8px;">ใส่โค้ดลับหรือโค้ดกิจกรรมร่วมกันได้ทุกบัญชี</p>
+                <div class="code-input-group">
+                    <input type="text" id="shared-code-input" placeholder="กรอกโค้ด เช่น STREAM2026">
+                    <button type="button" class="primary-btn" id="submit-code-btn">ใช้โค้ด</button>
+                </div>
+                <p id="code-feedback" class="code-feedback"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Support Contact Modal -->
+    <div class="modal" id="support-modal">
+        <div class="modal-content support-box">
+            <span class="close-modal" id="close-support">&times;</span>
+            <h2><i class="fa-solid fa-headset" style="color: #3ea6ff;"></i> ศูนย์ช่วยเหลือ & ติดต่อเจ้าหน้าที่</h2>
+            <p style="font-size: 0.85rem; color: #aaa; margin-bottom: 15px;">
+                ส่งข้อความหาทีมงานได้ทุกบัญชี ระบบจะบันทึกคำขอของคุณไว้ในระบบกลาง
+            </p>
+
+            <form id="support-form">
+                <div class="form-group" style="margin-bottom: 12px;">
+                    <label style="font-size: 0.85rem; display:block; margin-bottom:5px;">บัญชีผู้ติดต่อ</label>
+                    <input type="text" id="support-user-display" readonly style="width:100%; padding:8px; background:#181818; border:1px solid #333; color:#888; border-radius:6px;">
+                </div>
+                <div class="form-group" style="margin-bottom: 12px;">
+                    <label style="font-size: 0.85rem; display:block; margin-bottom:5px;">หัวข้อที่ต้องการความช่วยเหลือ</label>
+                    <select id="support-topic" style="width: 100%; padding: 10px; background: #121212; border: 1px solid #444; border-radius: 6px; color: #fff; outline: none;">
+                        <option value="general">ปัญหาการใช้งานทั่วไป</option>
+                        <option value="account">ปัญหาเกี่ยวกับบัญชี / สลับบัญชี</option>
+                        <option value="code">ปัญหาการใช้โค้ด (Shared Code)</option>
+                        <option value="video">ปัญหาการอัปโหลดวิดีโอ</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label style="font-size: 0.85rem; display:block; margin-bottom:5px;">รายละเอียดข้อความ</label>
+                    <textarea id="support-message" rows="4" placeholder="อธิบายปัญหาหรือสิ่งที่ต้องการสอบถาม..." required style="width: 100%; padding: 10px; background: #121212; border: 1px solid #444; border-radius: 6px; color: #fff; outline: none;"></textarea>
+                </div>
+                <button type="submit" class="primary-btn" style="width: 100%;">ส่งข้อความถึงเจ้าหน้าที่</button>
+            </form>
+
+            <div class="support-history" style="margin-top: 20px; border-top: 1px solid #333; padding-top: 15px;">
+                <h3 style="font-size: 0.95rem; margin-bottom: 10px;">ประวัติการติดต่อของระบบ</h3>
+                <div id="tickets-list" style="max-height: 120px; overflow-y: auto; font-size: 0.8rem; color: #ccc;"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- Story Viewer Modal -->
     <div class="story-viewer" id="story-viewer">
         <span class="close-story" id="close-story">&times;</span>
@@ -86,90 +211,152 @@
                 <div id="story-avatar" class="mini-avatar"></div>
                 <span id="story-username">Username</span>
             </div>
-            <div class="story-content-display" id="story-display">
-                <!-- เนื้อหาสตอรี่ -->
+            <div class="story-content-display" id="story-display"></div>
+        </div>
+    </div>
+
+    <!-- Chat Modal (Instagram DM & Notes Style) -->
+    <div class="modal" id="chat-modal">
+        <div class="modal-content ig-dm-box">
+            <span class="close-modal" id="close-chat">&times;</span>
+            
+            <!-- Header -->
+            <div class="ig-dm-header">
+                <h2><i class="fa-solid fa-paper-plane" style="color: #e1306c;"></i> ข้อความแชท (Direct Messages)</h2>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="ig-dm-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="dm-search-input" placeholder="ค้นหาเพื่อน หรือข้อความ...">
+            </div>
+
+            <!-- Instagram Notes Section -->
+            <div class="ig-notes-section">
+                <div class="ig-notes-container" id="ig-notes-container"></div>
+            </div>
+
+            <!-- Messages Header -->
+            <div class="ig-messages-title">
+                <span>ข้อความ</span>
+                <span class="requests-link">คำขอ (1)</span>
+            </div>
+
+            <!-- Messages List -->
+            <div class="ig-chat-list" id="ig-chat-list"></div>
+
+            <!-- Active Conversation Window -->
+            <div class="ig-active-chat" id="ig-active-chat" style="display: none;">
+                <div class="ig-active-header">
+                    <button id="back-to-list" class="icon-btn"><i class="fa-solid fa-chevron-left"></i></button>
+                    <div class="mini-avatar" id="active-user-avatar"></div>
+                    <strong id="active-user-name">User</strong>
+                </div>
+                
+                <div class="chat-messages" id="chat-messages">
+                    <div class="chat-message bot">
+                        <strong>ระบบ:</strong> เริ่มต้นการพูดคุย!
+                    </div>
+                </div>
+
+                <form id="chat-form" class="chat-input-area">
+                    <input type="text" id="chat-input" placeholder="ส่งข้อความ..." required autocomplete="off">
+                    <button type="submit" class="primary-btn"><i class="fa-solid fa-paper-plane"></i></button>
+                </form>
             </div>
         </div>
     </div>
 
-    <script src="script.js"></script>
-</body>
-</html>
-<!-- ในส่วน .nav-right ของ index.html ให้เปลี่ยนเป็นแบบนี้ -->
-<div class="nav-right">
-    <button class="icon-btn" id="upload-trigger" title="อัพโหลดวิดีโอ"><i class="fa-solid fa-video"></i></button>
-    <button class="icon-btn" id="settings-trigger" title="ตั้งค่าระบบ"><i class="fa-solid fa-gear"></i></button>
-    <div class="user-avatar" id="current-user-avatar" title="บัญชีปัจจุบัน"></div>
-</div>
-<!-- Settings & Account Modal -->
-<div class="modal" id="settings-modal">
-    <div class="modal-content settings-box">
-        <span class="close-modal" id="close-settings">&times;</span>
-        <h2><i class="fa-solid fa-gear"></i> การตั้งค่า & จัดการบัญชี</h2>
-        
-        <div class="settings-section">
-            <h3>👤 บัญชีปัจจุบัน</h3>
-            <div class="current-account-card">
-                <div class="mini-avatar" id="settings-avatar"></div>
-                <div>
-                    <strong id="settings-username">User_1</strong>
-                    <p style="font-size: 0.8rem; color: #aaa;">สถานะ: ออนไลน์</p>
+    <!-- Note Viewer Modal -->
+    <div class="modal" id="note-viewer-modal">
+        <div class="modal-content note-viewer-box">
+            <span class="close-modal" id="close-note-viewer">&times;</span>
+            
+            <div class="note-viewer-content">
+                <div class="note-big-bubble" id="note-view-text">
+                    Hanging with friends!
+                </div>
+                <div class="note-avatar-wrapper">
+                    <img src="" id="note-view-avatar" class="note-big-avatar" alt="User Avatar">
+                </div>
+                <h3 id="note-view-username" style="margin-top: 12px; font-size: 1.1rem;">Username</h3>
+                <p style="color: #888; font-size: 0.8rem; margin-top: 4px;">Shared with followers you follow back</p>
+
+                <form id="note-reply-form" style="margin-top: 20px; width: 100%; display: flex; gap: 8px;">
+                    <input type="text" id="note-reply-input" placeholder="ส่งข้อความตอบกลับ..." style="flex: 1; padding: 10px 14px; background: #121212; border: 1px solid #444; border-radius: 20px; color: #fff; outline: none;">
+                    <button type="submit" class="primary-btn" style="border-radius: 20px; padding: 0 16px;">ส่ง</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Theme Selector Modal -->
+    <div class="modal" id="chat-theme-modal">
+        <div class="modal-content theme-box">
+            <span class="close-modal" id="close-theme-modal">&times;</span>
+            <h2><i class="fa-solid fa-palette" style="color: #3ea6ff;"></i> เลือกธีมสีแชท</h2>
+            <p style="font-size: 0.85rem; color: #aaa; margin-bottom: 15px;">เลือกโทนสีที่คุณต้องการใช้งานสำหรับห้องแชทนี้</p>
+            
+            <div class="theme-options-grid">
+                <div class="theme-card" onclick="changeChatTheme('default')">
+                    <div class="theme-preview" style="background: #121212; border: 1px solid #333;">
+                        <span style="background: #3ea6ff;"></span>
+                    </div>
+                    <span>มืดคลาสสิก (ดั้งเดิม)</span>
+                </div>
+                <div class="theme-card" onclick="changeChatTheme('instagram')">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #405de6, #833ab4, #c13584);">
+                        <span style="background: #fd1d1d;"></span>
+                    </div>
+                    <span>อินสตาแกรม กราเดียนต์</span>
+                </div>
+                <div class="theme-card" onclick="changeChatTheme('cyberpunk')">
+                    <div class="theme-preview" style="background: #0f172a;">
+                        <span style="background: #ec4899;"></span>
+                    </div>
+                    <span>ไซเบอร์พังก์ พิงค์</span>
+                </div>
+                <div class="theme-card" onclick="changeChatTheme('emerald')">
+                    <div class="theme-preview" style="background: #064e3b;">
+                        <span style="background: #10b981;"></span>
+                    </div>
+                    <span>เอเมอรัลด์ กรีน</span>
+                </div>
+                <div class="theme-card" onclick="changeChatTheme('sunset')">
+                    <div class="theme-preview" style="background: #451a03;">
+                        <span style="background: #f97316;"></span>
+                    </div>
+                    <span>ซันเซ็ต ออเรนจ์</span>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="settings-section">
-            <h3>🔄 สลับบัญชี / เพิ่มบัญชีใหม่</h3>
-            <div id="accounts-list" class="accounts-list">
-                <!-- รายการบัญชีจะถูกเรนเดอร์ด้วย JS -->
+    <!-- Video Player Modal (หน้าต่างเล่นวิดีโอ & คลิปสั้น) -->
+    <div class="modal" id="video-player-modal">
+        <div class="modal-content video-player-box" style="max-width: 800px; padding: 20px; background: #0f0f0f; border-radius: 12px; position: relative;">
+            <span class="close-modal" id="close-video-player" style="position: absolute; right: 15px; top: 10px; font-size: 28px; cursor: pointer; color: #fff;">&times;</span>
+            
+            <!-- ตัวเล่นวิดีโอ -->
+            <div class="video-container" style="width: 100%; height: 450px; background: #000; border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; margin-top: 20px;">
+                <video id="main-video-player" controls autoplay style="width: 100%; height: 100%; object-fit: contain;">
+                    <source id="video-source" src="" type="video/mp4">
+                    เบราว์เซอร์ของคุณไม่รองรับการเล่นวิดีโอ
+                </video>
             </div>
-            <div class="add-account-group">
-                <input type="text" id="new-account-name" placeholder="ชื่อบัญชีใหม่...">
-                <button type="button" class="primary-btn" id="add-account-btn">เพิ่มบัญชี</button>
+
+            <!-- รายละเอียดวิดีโอ -->
+            <div class="video-play-details" style="margin-top: 15px;">
+                <h2 id="player-video-title" style="font-size: 1.2rem; color: #fff;">ชื่อวิดีโอ</h2>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px; color: #aaa; font-size: 0.9rem;">
+                    <span id="player-video-channel">ชื่อช่อง</span>
+                    <span id="player-video-views">ยอดชม</span>
+                </div>
             </div>
         </div>
-
-        <div class="settings-section">
-            <h3>🎟️ ระบบใส่โค้ดเดียวกัน (Shared Code)</h3>
-            <p style="font-size: 0.85rem; color: #aaa; margin-bottom: 8px;">ใส่โค้ดลับหรือโค้ดกิจกรรมร่วมกันได้ทุกบัญชี</p>
-            <div class="code-input-group">
-                <input type="text" id="shared-code-input" placeholder="กรอกโค้ด เช่น STREAM2026">
-                <button type="button" class="primary-btn" id="submit-code-btn">ใช้โค้ด</button>
-            </div>
-            <p id="code-feedback" class="code-feedback"></p>
-        </div>
     </div>
-</div>
-<!-- ในส่วนของ <aside class="sidebar"> ให้เพิ่มเมบานี้ต่อท้ายได้เลย -->
-<hr>
-<a href="#" class="sidebar-item" id="support-trigger"><i class="fa-solid fa-headset"></i> ติดต่อเจ้าหน้าที่</a>
-<!-- Support Contact Modal -->
-<div class="modal" id="support-modal">
-    <div class="modal-content support-box">
-        <span class="close-modal" id="close-support">&times;</span>
-        <h2><i class="fa-solid fa-headset" style="color: #3ea6ff;"></i> ศูนย์ช่วยเหลือ & ติดต่อเจ้าหน้าที่</h2>
-        <p style="font-size: 0.85rem; color: #aaa; margin-bottom: 15px;">
-            ส่งข้อความหาทีมงานได้ทุกบัญชี ระบบจะบันทึกคำขอของคุณไว้
-        </p>
 
-        <form id="support-form">
-            <div class="form-group" style="margin-bottom: 12px;">
-                <label style="font-size: 0.85rem; display:block; margin-bottom:5px;">หัวข้อที่ต้องการความช่วยเหลือ</label>
-                <select id="support-topic" style="width: 100%; padding: 10px; background: #121212; border: 1px solid #444; border-radius: 6px; color: #fff; outline: none;">
-                    <option value="general">ปัญหาการใช้งานทั่วไป</option>
-                    <option value="account">ปัญหาเกี่ยวกับบัญชี / สลับบัญชี</option>
-                    <option value="code">ปัญหาการใช้โค้ด / โค้ดใช้งานไม่ได้</option>
-                    <option value="video">ปัญหาการอัปโหลดวิดีโอ</option>
-                </select>
-            </div>
-
-            <div class="form-group" style="margin-bottom: 15px;">
-                <label style="font-size: 0.85rem; display:block; margin-bottom:5px;">รายละเอียด / ข้อความถึงเจ้าหน้าที่</label>
-                <textarea id="support-message" placeholder="พิมพ์ข้อความของคุณที่นี่..." rows="4" style="width: 100%; padding: 10px; background: #121212; border: 1px solid #444; border-radius: 6px; color: #fff; outline: none; resize: none;" required></textarea>
-            </div>
-
-            <button type="submit" class="primary-btn" style="width: 100%;">ส่งเรื่องหาเจ้าหน้าที่</button>
-        </form>
-        <p id="support-feedback" style="font-size: 0.85rem; margin-top: 10px; text-align: center;"></p>
-    </div>
-</div>
+    <!-- Script File -->
+    <script src="script.js"></script>
+</body>
+</html>
