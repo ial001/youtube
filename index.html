@@ -9,11 +9,22 @@
 </head>
 <body>
 
+    <!-- Splash Screen (หน้าเปิดแอปรูปโลก) -->
+    <div id="splash-screen">
+        <div class="splash-content">
+            <div class="splash-logo">
+                <i class="fa-solid fa-earth-americas"></i>
+            </div>
+            <h1 class="splash-title">StreamGram</h1>
+            <div class="splash-loader"></div>
+        </div>
+    </div>
+
     <!-- Header Navigation Bar -->
     <header class="navbar">
         <div class="nav-left">
             <i class="fa-solid fa-bars menu-icon"></i>
-            <h1 class="logo"><i class="fa-solid fa-play-circle"></i> StreamGram</h1>
+            <h1 class="logo"><i class="fa-solid fa-earth-americas"></i> StreamGram</h1>
         </div>
         <div class="nav-center">
             <input type="text" id="main-search-input" placeholder="ค้นหาวิดีโอ, สตอรี่...">
@@ -29,15 +40,15 @@
     <div class="main-container">
         <!-- Sidebar Navigation -->
         <aside class="sidebar">
-            <a href="#" class="sidebar-item active" data-page="home"><i class="fa-solid fa-house"></i> หน้าแรก</a>
-            <a href="#" class="sidebar-item" data-page="explore"><i class="fa-solid fa-compass"></i> สำรวจ</a>
-            <a href="#" class="sidebar-item" data-page="shorts"><i class="fa-solid fa-clapperboard"></i> คลิปสั้น</a>
-            <a href="#" class="sidebar-item" data-page="subscriptions"><i class="fa-solid fa-bolt"></i> การติดตาม</a>
+            <a href="#" class="sidebar-item active" data-page="home"><i class="fa-solid fa-house"></i> <span>หน้าแรก</span></a>
+            <a href="#" class="sidebar-item" data-page="explore"><i class="fa-solid fa-compass"></i> <span>สำรวจ</span></a>
+            <a href="#" class="sidebar-item" data-page="shorts"><i class="fa-solid fa-clapperboard"></i> <span>คลิปสั้น</span></a>
+            <a href="#" class="sidebar-item" data-page="subscriptions"><i class="fa-solid fa-bolt"></i> <span>การติดตาม</span></a>
             <hr>
-            <a href="#" class="sidebar-item" data-page="channel"><i class="fa-solid fa-user-shield"></i> ช่องของคุณ</a>
-            <a href="#" class="sidebar-item" data-page="history"><i class="fa-solid fa-clock-rotate-left"></i> ประวัติการเข้าชม</a>
+            <a href="#" class="sidebar-item" data-page="channel"><i class="fa-solid fa-user-shield"></i> <span>ช่องของคุณ</span></a>
+            <a href="#" class="sidebar-item" data-page="history"><i class="fa-solid fa-clock-rotate-left"></i> <span>ประวัติการเข้าชม</span></a>
             <hr>
-            <a href="#" class="sidebar-item" id="support-trigger"><i class="fa-solid fa-headset"></i> ติดต่อเจ้าหน้าที่</a>
+            <a href="#" class="sidebar-item" id="support-trigger"><i class="fa-solid fa-headset"></i> <span>ติดต่อเจ้าหน้าที่</span></a>
         </aside>
 
         <!-- Main Content Area -->
@@ -83,11 +94,9 @@
                     </div>
                 </div>
 
-                <!-- ส่วนวิดีโอที่อัปโหลด -->
                 <h3 style="margin-top:20px; margin-bottom:15px;">วิดีโอที่อัปโหลด</h3>
                 <div class="video-grid" id="my-videos-grid"></div>
 
-                <!-- ส่วนประวัติการเล่นเกม & แชทกลุ่มเกมเมอร์ -->
                 <div class="gaming-section-box" style="margin-top: 30px; border-top: 1px solid #333; padding-top: 20px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                         <h3><i class="fa-solid fa-gamepad" style="color: #3ea6ff;"></i> ประวัติการเล่นเกมล่าสุด</h3>
@@ -268,7 +277,7 @@
         </div>
     </div>
 
-    <!-- Chat Modal (Instagram DM & Notes Style) -->
+    <!-- Chat Modal -->
     <div class="modal" id="chat-modal">
         <div class="modal-content ig-dm-box">
             <span class="close-modal" id="close-chat">&times;</span>
@@ -432,14 +441,5 @@
 
     <!-- Script File -->
     <script src="script.js"></script>
-  <div id="splash-screen">
-    <div class="splash-content">
-        <div class="splash-logo">
-            <img src="world-icon.png" alt="World Logo" id="splash-img">
-        </div>
-        <h1 class="splash-title">StreamGram</h1>
-        <div class="splash-loader"></div>
-    </div>
-</div>
 </body>
 </html>
